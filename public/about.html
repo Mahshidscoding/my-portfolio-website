@@ -17,43 +17,9 @@
   
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/sections.css">
-    <link rel="stylesheet" href="css/about.css">
 
 
-    <style>
-        /* Custom cursor styles */
-        body, html {
-            cursor: none; /* Hide the default cursor */
-        }
-
-        .cursor {
-            position: fixed;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            background-color: white;
-            transform: translate(-50%, -50%);
-            transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
-            will-change: transform, width, height;
-        }
-        
-        /* Make all interactive elements use the custom cursor */
-        a, button, .skills-cta-button, .contact-button, input, 
-        select, textarea, [role="button"], .lets-chat-button,
-        .nav-button, .title-icon, .icon-container {
-            cursor: none !important;
-        }
-        
-        /* Duplicate declaration to match ARCH page exactly */
-        body, html {
-            cursor: none;
-        }
-
-
-    </style>
+    <link rel="stylesheet" href="css/pages/about.css">
 </head>
   
 <body>
@@ -115,7 +81,7 @@
                                     <img src="images/exp.svg" alt="Skill Icon 3" class="skill-svg">
         <a href="images/cv.pdf" download>
     <button class="skills-cta-button">
-        <img src="images/png/download.svg" alt="Download" class="button-icon">
+        <img src="images/social/download.svg" alt="Download" class="button-icon">
         Download CV
     </button>
 </a>
@@ -194,7 +160,7 @@
                 <!-- Left side: Icon and Title -->
                 <div class="contact-left">
                     <div class="contact-title-container">
-                        <img src="images/png/title.svg" alt="Chat" class="contact-title-icon">
+                        <img src="images/social/title.svg" alt="Chat" class="contact-title-icon">
                         <h3 class="contact-title">Let's chat!</h3>
                     </div>
                 </div>
@@ -212,28 +178,28 @@
             <div class="contact-buttons-container">
                 <a href="mahshidmdnn@gmail.com" class="contact-button" id="copy-email-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/email.svg" alt="Email" class="icon" width="24" height="24">
+                        <img src="images/social/email.svg" alt="Email" class="icon" width="24" height="24">
                     </div>
                     <span class="contact-button-text">Copy email</span>
                 </a>
                 
                 <a href="https://calendly.com/mahshidmdnn/30min" class="contact-button" id="book-call-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/call.svg" alt="Call" width="24" height="24">
+                        <img src="images/social/call.svg" alt="Call" width="24" height="24">
                     </div>
                     <span class="contact-button-text">Book call</span>
                 </a>
                 
                 <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="contact-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/linkedin.svg" alt="LinkedIn" width="24" height="24">
+                        <img src="images/social/linkedin.svg" alt="LinkedIn" width="24" height="24">
                     </div>
                     <span class="contact-button-text">LinkedIn</span>
                 </a>
                 
                 <a href="https://dribbble.com/MahshidDesign" target="_blank" class="contact-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/dribbble.svg" alt="Dribbble" width="24" height="24">
+                        <img src="images/social/dribbble.svg" alt="Dribbble" width="24" height="24">
                     </div>
                     <span class="contact-button-text">Dribbble</span>
                 </a>
@@ -246,6 +212,6 @@
 
 <div class="bottom-spacer"></div>
 
-<script src="components.js"></script>
+<script src="js/project-pages.js"></script>
 </body>
 </html>

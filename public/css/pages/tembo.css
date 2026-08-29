@@ -1,0 +1,1080 @@
+/* --- merged from css/tembo.css --- */
+/* ====================== 
+   1. Base Styles & Dark Theme Overrides 
+   ====================== */
+   body, html {
+    background-color: #120F0E !important;
+    color: white;
+    cursor: none; /* Hide the default cursor */
+}
+
+/* Custom cursor styles */
+.cursor {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    background-color: white;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+}
+
+/* Make all interactive elements use the custom cursor */
+a, button, .project-card, .contact-button, input, 
+select, textarea, [role="button"], .lets-chat-button,
+.nav-button, .title-icon, .icon-container {
+    cursor: none !important;
+}
+
+/* Make the main nav bar "Let's chat" button white text for Tembo */
+.top-nav .lets-chat-button {
+    background-color: transparent !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.top-nav .lets-chat-button:hover {
+    background-color: white !important;
+    color: #120F0E !important;
+}
+
+.top-nav .lets-chat-button .circle-overlay {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ====================== 
+   2. Text & Content Colors for Dark Theme 
+   ====================== */
+.project-description,
+.project-hero-title,
+.section-title,
+.default-title,
+.project-card-title {
+    color: white !important;
+}
+
+.stat-label {
+    color: #888888;
+}
+
+/* Make stats value text white */
+.stat-value {
+    color: white !important;
+}
+
+.stat-value a {
+    color: white !important;
+}
+
+.hover-title {
+    color: #BBBBBB !important; /* Lighter gray for better visibility */
+}
+
+.project-card-content {
+    color: white;
+}
+
+.project-hero-content h1 {
+    position: relative;
+    z-index: 2;
+    color: rgb(255, 255, 255);
+    font-size: 120px;
+    font-weight: 400;
+    text-align: center;
+}
+
+/* ====================== 
+   3. Navigation Elements 
+   ====================== */
+/* Top Nav */
+.top-nav {
+    background-color: transparent !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 24px 40px 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2000 !important;
+}
+
+/* Let's Chat Button */
+.lets-chat-button {
+    background-color: white !important;
+    color: #120F0E !important;
+    position: relative;
+    display: inline-block;
+    width: 127px;
+    padding: 14px 0;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: none !important;
+}
+
+.lets-chat-button .circle-overlay {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    transition: width 0.5s ease, height 0.5s ease;
+}
+
+.lets-chat-button:hover .circle-overlay {
+    width: 300px;
+    height: 300px;
+}
+
+.lets-chat-button span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating Nav */
+.floating-nav {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 8px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(23, 23, 23, 0.08);
+    z-index: 2000 !important;
+    height: 64px;
+}
+
+.floating-nav .back-button,
+.floating-nav .project-name {
+    color: white !important;
+}
+
+.floating-nav .project-name {
+    margin: 0;
+    padding: 0 24px 0 16px;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.floating-nav .start-project-button {
+    background-color: white !important;
+    color: #120F0E !important;
+    text-decoration: none !important;
+    display: flex;
+    width: 104px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0 8px 0 0;
+}
+
+/* Back button styling */
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px 0 0;
+    color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    height: 40px;
+    margin: auto 0;
+}
+
+/* Invert back button icon */
+.back-button img {
+    filter: brightness(0) invert(1) !important;
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+}
+
+/* ====================== 
+   4. Hero & Parallax Effects
+   ====================== */
+.parallax-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.project-hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    z-index: 1;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    will-change: transform, opacity;
+}
+
+/* Adjust TEMBO title for responsive design */
+
+/* Medium screens (tablets) */
+@media (max-width: 1024px) {
+    .project-hero-content h1 {
+        font-size: 80px !important; /* Reduced size for tablets */
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    .project-hero-content h1 {
+        font-size: 64px; /* Significantly smaller on mobile */
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .project-hero-content h1 {
+        font-size: 48px; /* Even smaller on very small screens */
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+    .project-hero-content h1 {
+        font-size: 42px; /* Minimum size for very small screens */
+    }
+}
+
+
+.project-hero-image {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    border-radius: 8px;
+    overflow: hidden;
+    will-change: transform;
+    height: calc(100vh - 48px);
+    background-size: cover;
+    background-position: center;
+}
+
+.project-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important;
+    object-position: center;
+    border-radius: 8px;
+    transition: transform 0.5s ease;
+    max-width: none;
+}
+
+.project-hero-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    z-index: 2;
+    padding: 24px;
+}
+
+/* ====================== 
+   5. Project Info Section 
+   ====================== */
+.project-info {
+    position: relative;
+    z-index: 2;
+    background-color: #120F0E !important;
+    padding-top: 80px;
+    margin-top: -40px;
+    transform: translateY(100%);
+    transition: transform 0.5s ease-out;
+    will-change: transform;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.project-action-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F4F4F4;
+    color: #120F0E;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: var(--font-size-button);
+    font-weight: 400;
+    cursor: pointer;
+    font-family: var(--font-primary);
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
+
+.project-description {
+    font-size: var(--font-size-body);
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+.stats-divider {
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2) 10px, transparent 10px);
+    background-size: 20px 1px;
+    background-repeat: repeat-x;
+    margin: 40px 0;
+}
+
+.project-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 80px;
+    width: 100%;
+}
+
+.stat-item {
+    width: 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-label {
+    font-size: var(--font-size-h5);
+    font-weight: 400;
+}
+
+.stat-value {
+    font-size: var(--font-size-sub);
+    font-weight: 500;
+}
+
+.stat-value a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ====================== 
+   6. Project Cards & Images
+   ====================== */
+/* Project images section */
+.project-images {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-bottom: 80px;
+    width: calc(100% - 0px); /* This ensures 24px on each side */
+}
+
+.image-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.grid-row {
+    display: flex;
+    gap: 24px;
+    height: 578px;
+}
+
+/* Default grid item */
+.grid-item {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+}
+
+.grid-item img,
+.grid-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Row patterns */
+.grid-row.pattern-1 .grid-item {
+    width: 100%;
+}
+
+.grid-row.pattern-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-row.pattern-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.video-content {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+/* Project Card Structure */
+.projects-container {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: calc(100% - 0px);
+    background: transparent !important;
+}
+
+.projects-title-section {
+    padding: 60px 0 40px;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+.section-title {
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    margin: 0;
+}
+
+.project-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    margin-bottom: 80px;
+}
+
+.project-card {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: transparent;
+    border-radius: 8px;
+    height: 512px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card-image-container {
+    width: 100%;
+    height: 460px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.project-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-card-image {
+    transform: scale(1.05);
+}
+
+.project-card-content {
+    margin-top: 16px;
+}
+
+/* Title & Icon Styles */
+.project-title-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.project-card-title-container {
+    position: relative;
+}
+
+.default-title {
+    opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(0);
+    font-size: var(--font-size-h3);
+    font-weight: 500;
+    margin: 0;
+}
+
+.hover-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
+    font-size: var(--font-size-normal);
+}
+
+.project-card:hover .default-title {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.project-card:hover .hover-title {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Icon Container */
+.icon-container {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.icon-default {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.icon-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background-color: white;
+}
+
+.project-card:hover .icon-default {
+    opacity: 0;
+}
+
+.project-card:hover .icon-hover {
+    opacity: 1;
+}
+
+/* Make icon white in dark theme */
+.icon-default img {
+    filter: brightness(0) invert(1) !important;
+}
+
+/* Section Divider */
+.section-divider {
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2) 10px, transparent 10px);
+    background-size: 20px 1px;
+    background-repeat: repeat-x;
+    margin: 80px auto 40px;
+    max-width: 1600px;
+}
+
+/* ====================== 
+   7. Contact Section 
+   ====================== */
+   #contact {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: calc(100% - 0px);
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.contact-window {
+    max-width: none;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(34, 34, 34) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.window-header {
+    background-color: rgb(67, 67, 67) !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 36px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.window-dots {
+    display: flex;
+    gap: 6px;
+    margin-right: 12px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-sizing: border-box;
+}
+
+.window-title {
+    font-family: monospace;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8) !important;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.window-content {
+    padding: 32px;
+}
+
+.contact-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+.contact-left {
+    flex: 1;
+}
+
+.contact-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.contact-title-container {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.contact-title-icon {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px;
+    min-height: 50px;
+    object-fit: contain !important;
+    display: block;
+    filter: brightness(0) invert(1) !important;
+}
+
+.contact-title {
+    font-size: 45px;
+    font-weight: 400;
+    color: white !important;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.contact-location {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 0px;
+    width: 100%;
+    text-align: right;
+    line-height: 1.5;
+}
+
+.contact-location span {
+    font-size: 16px;
+    color: white !important;
+    display: inline-block;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.contact-text {
+    font-size: 18px;
+    line-height: 1.2;
+    color: white !important;
+    margin: 0;
+    text-align: right;
+}
+
+.contact-buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 32px;
+    width: 100%;
+}
+
+.contact-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 100px;
+    width: 100%;
+    background-color: #2A2A2A !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 4px;
+    padding: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-button:hover {
+    background-color: white !important;
+    color: #120F0E !important;
+}
+
+.contact-button img {
+    filter: brightness(0) invert(1) !important;
+}
+
+.contact-button:hover img {
+    filter: brightness(0) !important;
+}
+
+.contact-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.contact-button-text {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* Contact Button States for Tembo dark theme */
+.contact-button.selected {
+    background-color: white !important;
+    color: #120F0E !important;
+    border: 1px solid white !important;
+}
+
+.contact-button.selected img {
+    filter: brightness(0) !important;
+}
+
+.contact-button.copied {
+    background-color: white !important;
+    color: #120F0E !important;
+    border: 1px solid white !important;
+}
+
+.contact-button.copied img {
+    filter: brightness(0) !important;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.contact-button.copied .email-icon {
+    display: none;
+}
+
+.contact-button.copied .checkmark-icon {
+    display: inline-block;
+    animation: popIn 0.4s ease forwards;
+}
+
+.contact-button.copied:hover,
+body .contact-button.copied:hover {
+    background-color: white !important;
+    color: #120F0E !important;
+}
+
+.bottom-spacer {
+    height: 120px;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+
+/* ====================== 
+   8. Responsive Styles 
+   ====================== */
+@media (max-width: 1200px) {
+    .project-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .project-card-image-container {
+        height: 350px;
+    }
+    
+    .project-card {
+        height: 400px;
+    }
+    
+    .image-grid,
+    .projects-container,
+    .project-images,
+    #contact {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        width: calc(100% - 32px) !important;
+    }
+    
+    .grid-row {
+        height: auto;
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .grid-row.pattern-2,
+    .grid-row.pattern-3 {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .grid-item {
+        height: 0;
+        padding-bottom: 100%;
+        position: relative;
+        margin-bottom: 0;
+    }
+    
+    .project-hero {
+        height: 70vh;
+        min-height: 400px;
+    }
+    
+    .project-hero-image {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+    }
+    
+    .grid-item img, 
+    .grid-item video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    .grid-row.pattern-1 .grid-item {
+        padding-bottom: 75%;
+    }
+    
+    .top-nav {
+        padding: 16px 24px;
+    }
+    
+    .lets-chat-button {
+        width: 110px;
+        padding: 12px;
+        font-size: 13px;
+    }
+    
+    .contact-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .contact-right {
+        align-items: flex-start;
+    }
+    
+    .contact-location,
+    .contact-text {
+        text-align: left;
+        width: 80%;
+    }
+    
+    .contact-title {
+        font-size: 36px;
+    }
+    
+    .window-content {
+        padding: 25px;
+    }
+    
+    .contact-buttons-container {
+        flex-direction: column;
+    }
+    
+    .contact-button {
+        height: 80px;
+    }
+    
+    .contact-button-text {
+        font-size: 14px;
+    }
+    
+    .contact-title-container {
+        gap: 12px;
+    }
+    
+    .contact-title-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-hero {
+        padding: 16px;
+    }
+    
+    .project-hero-image {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+    }
+    
+    .project-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-item {
+        padding-bottom: 100%;
+    }
+    
+    .grid-row.pattern-1 .grid-item {
+        padding-bottom: 100%;
+    }
+    
+    .grid-row {
+        gap: 16px;
+    }
+}
+
+/* Handle very small screens by setting a minimum height */
+@media (max-height: 500px) {
+    .project-hero, 
+    .parallax-container {
+        height: 500px;
+    }
+    
+    .project-hero-image {
+        height: calc(500px - 48px);
+    }
+}
+
+/* --- moved out of tembo.html inline <style> --- */
+/* Dark theme contact styling for Tembo */
+.contact-window {
+    max-width: none;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(34, 34, 34) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.window-header {
+    background-color: rgb(67, 67, 67) !important;
+    color: white !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.contact-title {
+    color: white !important;
+}
+
+.contact-location span {
+    color: white !important;
+}
+
+/* Make sure icon is white */
+.contact-title-icon {
+    filter: brightness(0) invert(1) !important;
+}
+
+.contact-button {
+    background-color: #2A2A2A !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Ensure button icons are white */
+.contact-button img {
+    filter: brightness(0) invert(1) !important;
+}
+
+/* Button hover states for dark theme */
+.contact-button:hover {
+    background-color: white !important;
+    color: #120F0E !important;
+}
+
+.contact-button:hover img {
+    filter: brightness(0) !important;
+}

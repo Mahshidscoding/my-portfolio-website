@@ -23,123 +23,7 @@
 
     <link rel="stylesheet" href="css/projects.css">
 
-    <style>
-        /* Custom cursor styles */
-        body, html {
-            cursor: none; /* Hide the default cursor */
-            background-color: var(--color-homebg) !important;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Standard syntax */
-        }
-        
-        .cursor {
-            position: fixed;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            background-color: white;
-            transform: translate(-50%, -50%);
-            transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
-            will-change: transform, width, height;
-        }
-        
-        /* Make all interactive elements use the custom cursor */
-        a, button, .project-card, .contact-button, input, 
-        select, textarea, [role="button"], .lets-chat-button,
-        .nav-button, .title-icon, .icon-container,
-        .draggable-window, .draggable-icon, .window-header,
-        .window-content, .window-buttons {
-            cursor: none !important;
-        }
-        
-        /* Ensure content inside draggable elements also uses custom cursor */
-        .draggable-window *,
-        .draggable-icon * {
-            cursor: none !important;
-        }
-        
-        /* Prevent cursor from changing during drag operations */
-        .dragging {
-            cursor: none !important;
-        }
-        
-        /* Adjusted window content padding */
-        .draggable-window .window-content {
-            padding: 16px; /* Reduced padding */
-        }
-        
-        /* Specific padding for hello-window text */
-        #hello-window .window-content p {
-            margin: 2px 0; /* Reduced vertical margin for text */
-            margin-bottom: 24px; /* Increase bottom margin for text */
-        }
-        
-        /* Adjust button spacing */
-        #hello-window .window-buttons {
-            margin-top: 18px; /* Adjusted from original value */
-        }
-        
-        /* Different padding for image windows */
-        #hello-image-1 .window-content {
-            padding: 8px; /* Smaller padding for image windows */
-        }
-        
-        /* Animation keyframes for navigation */
-        @keyframes navPopIn {
-            0% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            70% {
-                transform: translateY(10px);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes navPopOut {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-        }
-
-        body.homepage .lets-chat-button {
-    /* Increase background opacity for better visibility on homepage */
-    background-color: rgba(255, 255, 255, 0.25) !important;
-    
-    /* Stronger blur effect specifically for homepage */
-    background-color: rgba(255, 255, 255, 0.01) !important; /* 1% opacity white */
-    backdrop-filter: blur(5px) !important; /* Background blur */
-    -webkit-backdrop-filter: blur(5px) !important; /* For Safari */
-    
-    /* Ensure proper layering */
-    z-index: 1001 !important; /* Higher than other elements in the navigation */
-    
-    /* Add a subtle gradient background as fallback */
-    background-image: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.3),
-      rgba(255, 255, 255, 0.2)
-    ) !important;
-
-    /* Ensure the button is actually in front of other elements */
-    position: relative !important;
-  }
-
-
-    </style>
+    <link rel="stylesheet" href="css/pages/home.css">
 </head>
   
 <body class="homepage">
@@ -162,7 +46,7 @@
     <!-- Draggable Container -->
     <div class="draggable-container">
         <div class="background-title">
-            <img src="images/Icons/mashup.svg" alt="Mashup Studio" class="site-title-svg">
+            <img src="images/icons/mashup.svg" alt="Mashup Studio" class="site-title-svg">
         </div>
 
         
@@ -172,18 +56,17 @@
                 <h1>I'm a Digital Designer exploring the world of<br>technology and AI.</h1>
                 <div class="intro-icons">
                     <a href="mailto:mahshidmdnn@gmail.com" class="intro-icon">
-                        <img src="images/png/email.svg" alt="Email" width="14" height="14">
+                        <img src="images/social/email.svg" alt="Email" width="14" height="14">
                     </a>
                     <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="intro-icon">
-                        <img src="images/png/linkedin.svg" alt="LinkedIn" width="14" height="14">
+                        <img src="images/social/linkedin.svg" alt="LinkedIn" width="14" height="14">
                     </a>
                 </div>
             </div>
         </div>
         
 
-        <!-- Add this right after the hello-image-1 window in your HTML -->
-<div class="draggable-window" id="overlay-window">
+        <div class="draggable-window" id="overlay-window">
     <div class="window-header">
         <div class="window-dots">
             <span class="dot"></span>
@@ -234,7 +117,7 @@
         <!-- Draggable Icons -->
         <div class="draggable-icon" id="work-icon">
             <div class="icon-img">
-                <img src="images/png/work.png" alt="Work">
+                <img src="images/social/work.png" alt="Work">
             </div>
             <span class="icon-label">Work</span>
         </div>
@@ -242,14 +125,14 @@
 
         <div class="draggable-icon" id="about-icon">
             <div class="icon-img">
-                <img src="images/png/me.png" alt="About me">
+                <img src="images/social/me.png" alt="About me">
             </div>
             <span class="icon-label">About me</span>
         </div>
         
         <div class="draggable-icon" id="chat-icon">
             <div class="icon-img">
-                <img src="images/png/chat.png" alt="Let's chat">
+                <img src="images/social/chat.png" alt="Let's chat">
             </div>
             <span class="icon-label">Let's chat</span>
         </div>
@@ -319,8 +202,8 @@
               <a href="command.html" style="text-decoration: none; color: inherit;">
                 <div class="project-card">
                     <div class="project-card-image-container gif-container">
-                        <img src="images/CF/card.png" alt="CommandFreak Product Design" class="project-card-image static-image">
-                        <img src="images/CF/card.png" alt="CommandFreak Product Design" class="project-card-image animated-gif">
+                        <img src="images/commandfreak/card.png" alt="CommandFreak Product Design" class="project-card-image static-image">
+                        <img src="images/commandfreak/card.png" alt="CommandFreak Product Design" class="project-card-image animated-gif">
                     </div>
                     <div class="project-card-content">
                         <div class="project-title-with-icon">
@@ -462,7 +345,7 @@
                 <!-- Left side: Icon and Title -->
                 <div class="contact-left">
                     <div class="contact-title-container">
-                        <img src="images/png/title.svg" alt="Chat" class="contact-title-icon">
+                        <img src="images/social/title.svg" alt="Chat" class="contact-title-icon">
                         <h3 class="contact-title">Let's chat!</h3>
                     </div>
                 </div>
@@ -479,28 +362,28 @@
             <div class="contact-buttons-container">
                 <a href="mahshidmdnn@gmail.com" class="contact-button" id="copy-email-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/email.svg" alt="Email" class="icon" width="24" height="24">
+                        <img src="images/social/email.svg" alt="Email" class="icon" width="24" height="24">
                     </div>
                     <span class="contact-button-text">Copy email</span>
                 </a>
                 
                 <a href="https://calendly.com/mahshidmdnn/30min" class="contact-button" id="book-call-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/call.svg" alt="Call" width="24" height="24">
+                        <img src="images/social/call.svg" alt="Call" width="24" height="24">
                     </div>
                     <span class="contact-button-text">Book call</span>
                 </a>
                 
                 <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="contact-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/linkedin.svg" alt="LinkedIn" width="24" height="24">
+                        <img src="images/social/linkedin.svg" alt="LinkedIn" width="24" height="24">
                     </div>
                     <span class="contact-button-text">LinkedIn</span>
                 </a>
                 
                 <a href="https://dribbble.com/MahshidDesign" target="_blank" class="contact-button">
                     <div class="contact-button-icon">
-                        <img src="images/png/dribbble.svg" alt="Dribbble" width="24" height="24">
+                        <img src="images/social/dribbble.svg" alt="Dribbble" width="24" height="24">
                     </div>
                     <span class="contact-button-text">Dribbble</span>
                 </a>
@@ -517,14 +400,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.17/interact.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 
 
-<script src="home.js"></script>
-<script src="components.js"></script>
+<script src="js/home.js"></script>
+<script src="js/project-pages.js"></script>
 
 
 
