@@ -1,0 +1,1305 @@
+/* ====================================================
+   1. CENTERED INTRODUCTION STYLES
+   ==================================================== */
+   .centered-intro {
+    position: absolute;
+    top: 57% !important;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 10;
+  }
+  
+  .intro-text h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    margin: 0 0 16px 0;
+    color: #000;
+  }
+  
+  .intro-text sm {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    margin: 0 0 16px 0;
+    color: #171717;
+  }
+  
+  /* Small icon styles */
+  .intro-icons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .intro-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .intro-icon img {
+    width: 20px;
+    height: 20px;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Apply specific adjustment to email icon if needed */
+  .intro-icon img[alt="Email"] {
+    transform: translateY(2px);
+  }
+  
+
+
+
+
+
+
+
+  /* ====================================================
+     2. BACKGROUND TITLE AND CONTAINER
+     ==================================================== */
+  .background-title {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .site-title-svg {
+    width: auto;
+    max-width: 90%;
+    max-height: 150px;
+    object-fit: contain;
+  }
+  
+  /* Draggable container */
+  .draggable-container {
+    min-height: 95vh;
+    position: relative;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    overflow: hidden;
+    margin-bottom: 100px;
+    z-index: 1;
+  }
+  
+  /* Background effect */
+  .draggable-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('bg.png');
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  }
+
+  /* Add this to your CSS to create an oval shape behind your title */
+
+
+
+
+/* If you want it to match your design more closely, 
+   you can use this alternative that creates an exact oval shape */
+.centered-intro::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -50%);
+  width: 400px !important; /* Width of the oval */
+  height: 300px; /* Height of the oval */
+  border-radius: 50% / 50%; /* Creates the oval shape */
+
+  background: transparent;
+  z-index: -1;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+
+  
+  /* ====================================================
+     3. DRAGGABLE WINDOW STYLES
+     ==================================================== */
+  /* Base styles for draggable windows */
+  .draggable-window {
+    position: absolute;
+    background-color: transparent;
+    border: 1px solid #000000;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    transition: box-shadow 0.2s ease;
+    will-change: transform;
+  }
+  
+  .draggable-window:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dragging {
+    transition: none !important;
+    z-index: 1000 !important;
+  }
+  
+  /* Window header */
+  .window-header {
+    border-top-right-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    z-index: 2;
+    position: relative;
+    background: transparent !important;
+  }
+  
+  .window-dots {
+    display: flex;
+    gap: 6px;
+    margin-right: 12px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid #000;
+    box-sizing: border-box;
+  }
+  
+  .window-title {
+    font-family: monospace;
+    font-size: 14px;
+  }
+  
+  /* Window content */
+  .window-content {
+    padding: 16px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #000;
+  }
+  
+  /* Window buttons */
+  .window-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+  }
+  
+  .window-button {
+    background-color: #f8f8f8;
+    border: 1px solid #000;
+    padding: 8px 0;
+    width: 48%;
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #000;
+    transition: background-color 0.2s ease;
+  }
+  
+  .window-button:hover {
+    background-color: #e8e8e8;
+  }
+  
+  /* Hello window specific styles */
+  #hello-window {
+    width: 320px;
+    max-width: 100%;
+  }
+  
+  #hello-window .window-content p {
+    margin: 2px 0 24px 0;
+    font-size: 16px;
+    color: #000;
+  }
+  
+  /* Hello image window */
+  #hello-image-1 {
+    width: 320px;
+    height: 320px;
+    max-width: 100%;
+    top: 80px;
+    left: 180px;
+  }
+  
+  #hello-image-1 .window-content {
+    padding: 6px;
+    height: calc(100% - 36px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #hello-image-1 .window-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+    margin: 0;
+  }
+  
+  /* Overlay window styles */
+  #overlay-window {
+    width: 320px;
+    height: 320px;
+    position: absolute;
+    top: 400px;
+    right: 100px;
+    overflow: hidden;
+    z-index: 90;
+  }
+  
+  #overlay-window .window-content {
+    padding: 0 !important;
+    height: calc(100% - 36px);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* Second overlay window */
+  #overlay-window-2 {
+    width: 320px;
+    height: 320px;
+    position: absolute;
+    top: 180px;
+    left: 100px;
+    overflow: hidden;
+    z-index: 90;
+  }
+  
+  #overlay-window-2 .window-content {
+    padding: 0 !important;
+    height: calc(100% - 36px);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /* Overlay image container */
+  .overlay-image-container {
+    position: absolute;
+    top: -226px;
+    right: -100px;
+    width: 100vw;
+    height: 100vh;
+    transform-origin: top left;
+    pointer-events: none;
+  }
+  
+  #overlay-window .overlay-image-container img {
+    position: absolute;
+    top: -210px; /* Adjust this value (originally -226px) */
+    right: -16px;
+    width: 100%;
+    height: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: top left;
+    pointer-events: none;
+  }
+  
+  /* Second overlay image container */
+  #overlay-window-2 .overlay-image-container {
+    top: -217px;
+    left: -110px;
+  }
+  
+  #overlay-window-2 .overlay-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Image styling inside windows */
+  .window-content img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+
+    /* Fixed PNG Layer Styles */
+.fixed-png-layer {
+  position: absolute;
+  top: 0;
+  left: 23%;
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* Above the moving overlay image */
+  pointer-events: none; /* Allows clicks to pass through to the draggable area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fixed-png-layer img {
+  max-width: 80%; /* Adjust as needed */
+  max-height: 80%; /* Adjust as needed */
+  object-fit: contain;
+}
+
+/* Make sure our overlay windows position is relative for proper stacking */
+#overlay-window .window-content,
+#overlay-window-2 .window-content {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ensure the overlay container is properly positioned with z-index */
+.overlay-image-container {
+  z-index: 5; /* Below the fixed PNG layer */
+}
+
+/* Add this to your CSS to create a separate positioning for the second overlay window's fixed PNG layer */
+#overlay-window-2 .fixed-png-layer {
+  position: absolute;
+  top: 0;
+  left: -15%; /* You can adjust this value to match the desired position */
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* Above the moving overlay image */
+  pointer-events: none; /* Allows clicks to pass through to the draggable area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-window-2 .fixed-png-layer img {
+  max-width: 80%; /* Adjust as needed */
+  max-height: 80%; /* Adjust as needed */
+  object-fit: contain;
+}
+
+
+  /* ====================================================
+     4. DRAGGABLE ICON STYLES
+     ==================================================== */
+  .draggable-icon {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    text-align: center;
+    z-index: 150;
+    transition: transform 0.2s ease;
+    will-change: transform;
+  }
+  
+  /* Icon positioning */
+  #work-icon {
+    bottom: 50px;
+    left: calc(48% - 100px);
+  }
+  
+  #about-icon {
+    bottom: 50px;
+    left: 48%;
+    transform: none; /* Reset any transform */
+}
+
+  
+  #chat-icon {
+    bottom: 50px;
+    right: calc(50% - 150px);
+  }
+  
+  /* Icon styles */
+  .icon-img {
+    background-color: transparent;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  
+  .icon-img img {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+  
+  .icon-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000 !important;
+    margin-top: 4px;
+  }
+  
+  /* Icon hover effect */
+  .draggable-icon:hover {
+    transform: translateY(-2px);
+}
+  
+  /* Selected state styling */
+  .draggable-icon.selected .icon-img {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .draggable-icon.selected .icon-label {
+    font-weight: 600;
+  }
+  
+  /* Icon click feedback */
+  .draggable-icon.clicked {
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Ensure no transitions during drag */
+  .draggable-icon.dragging {
+    transition: none !important;
+  }
+  
+  /* ====================================================
+     5. HOMEPAGE SPECIFIC STYLES
+     ==================================================== */
+  /* Homepage Hero Styles */
+  .homepage-hero {
+    position: relative;
+    width: 100%;
+    height: 93vh;
+    margin-top: 24px;
+    margin-bottom: 80px;
+    overflow: hidden;
+  }
+  
+  .homepage-hero-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .homepage-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Hero navigation styling */
+  .homepage-hero .hero-navigation {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 32px;
+    z-index: 5;
+  }
+  
+  /* CSS to apply cobalt theme only to the homepage */
+  body.homepage {
+    background-color: var(--color-homebg) !important;
+    color: var(--color-white);
+  }
+  
+  body.homepage header,
+  body.homepage .top-nav {
+    background-color: transparent;
+  }
+  
+  body.homepage .section-title {
+    color: var(--color-primary);
+  }
+  
+  body.homepage .project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  body.homepage .project-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  body.homepage .project-card-content {
+    color: var(--color-white);
+  }
+  
+  /* Homepage card title colors */
+  body.homepage .default-title {
+    color: var(--color-primary);
+  }
+  
+  body.homepage .hover-title {
+    color: #505050;
+    font-weight: 400;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+  
+  body.homepage .project-card:hover .hover-title {
+    opacity: 1;
+    transform: translateY(0);
+    color: #505050;
+  }
+  
+  body.homepage .icon-default img {
+    filter: brightness(0) invert(0);
+  }
+  
+  body.homepage .contact-window .contact-button img {
+    filter: none !important;
+  }
+  
+  /* ====================================================
+     6. PROJECT CARD STYLES
+     ==================================================== */
+  /* Project Title Section */
+  .projects-title-section {
+    padding: 60px var(--spacing-md) 40px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    animation: reveal linear;
+    animation-timeline: view();
+    animation-range: entry 25% cover 50%;
+    animation-fill-mode: both;
+  }
+  
+  .section-title {
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  /* Project Cards Layout */
+  body.homepage .project-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+  }
+  
+  /* Project Card Styling */
+  body.homepage .project-card {
+    width: 100%;
+    height: 512px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    opacity: 1 !important;
+    clip-path: inset(0 0 0 0) !important;
+    animation: none !important;
+  }
+  
+  body.homepage .project-card-image-container {
+    width: 100%;
+    height: 460px;
+    position: relative;
+    overflow: hidden;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  body.homepage .project-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  body.homepage .project-card-content {
+    flex: 1;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  
+  /* Project Card Title with Icon */
+  .project-title-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .icon-container {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid #bcbcbc;
+  }
+  
+  .icon-default {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    background-color: transparent;
+  }
+  
+  .icon-hover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+    z-index: 3;
+  }
+  
+  .icon-default img {
+    transition: opacity 0.3s ease;
+  }
+  
+  .icon-hover img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .title-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .project-card:hover .icon-hover {
+    transform: translateY(0);
+  }
+  
+  .project-card:hover .icon-default img {
+    opacity: 0;
+  }
+  
+  .project-card:hover .icon-hover img {
+    opacity: 1;
+  }
+  
+  /* Project Card Title Container */
+  .project-card-title-container {
+    position: relative;
+    height: auto;
+    min-height: 30px;
+    width: auto;
+    height: 30px;
+    max-width: 100%;
+    overflow: visible !important;
+  }
+  
+  .project-card-title-container .default-title,
+  .project-card-title-container .hover-title {
+    display: block;
+    transition: transform 0.4s ease;
+    font-size: var(--font-size-title, 24px);
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .project-card-title-container .default-title {
+    position: relative;
+    display: block;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+    opacity: 1;
+    color: var(--color-primary);
+    white-space: nowrap;
+    overflow: visible;
+  }
+  
+  .project-card-title-container .hover-title {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    color: var(--color-gray);
+    white-space: nowrap;
+    overflow: visible;
+    bottom: -30px;
+  }
+  
+  .project-card:hover .default-title {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  
+  .project-card:hover .hover-title {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  /* GIF Hover Effect */
+  .gif-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .gif-container .static-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  
+  .gif-container .animated-gif {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+  }
+  
+  .gif-container:hover .animated-gif {
+    opacity: 1;
+  }
+  
+  @supports (content-visibility: auto) {
+    .gif-container .animated-gif:not(:hover) {
+      content-visibility: auto;
+    }
+  }
+  
+  /* ====================================================
+     7. DESIGN REFLECTIONS STYLES
+     ==================================================== */
+  .reflection-card-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 60px auto;
+  }
+  
+  .reflection-card {
+    display: flex;
+    width: 100%;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+    margin-bottom: 180px;
+  }
+  
+  .reflection-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .reflection-card-image {
+    width: 230px;
+    min-width: 230px;
+    height: 150px;
+    background-color: #e0e0e0;
+  }
+  
+  .reflection-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .reflection-card-content {
+    padding: 24px;
+    flex-grow: 1;
+  }
+  
+  .reflection-card-title {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    font-weight: 500;
+    color: #000;
+  }
+  
+  .reflection-card-description {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .reflection-card-date {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* ====================================================
+     8. ANIMATIONS
+     ==================================================== */
+  /* Reveal animation */
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      clip-path: inset(100% 100% 0 0);
+    }
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  
+  /* Navigation animations */
+  @keyframes navPopIn {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    70% {
+      transform: translateY(10px);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes navPopOut {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+  
+  /* Animation fallback */
+  @supports not (animation-timeline: view()) {
+    .projects-title-section {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+    
+    .project-card {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  
+  /* ====================================================
+     9. RESPONSIVE STYLES - CONSOLIDATED AND ORGANIZED
+     ==================================================== */
+  /* Desktop adjustments */
+  @media (min-width: 1025px) {
+    .centered-intro {
+      top: 60% !important;
+    }
+    
+    .mobile-icons-wrapper {
+      display: none;
+    }
+  }
+  
+  /* Tablet (769px to 1024px) */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    /* Hide draggable windows */
+    .draggable-window {
+      display: none !important;
+    }
+    
+    /* Position intro content */
+    .centered-intro {
+      position: absolute !important;
+      top: 60% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      max-width: 450px !important;
+    }
+  }
+  
+  /* Mobile (768px and below) */
+  @media (max-width: 768px) {
+    /* Hide draggable windows */
+    .draggable-window {
+      display: none !important;
+    }
+    
+    /* Center intro content */
+    .centered-intro {
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      transform: none !important;
+      width: 90% !important;
+      max-width: 350px !important;
+      margin: 100px auto 90px !important;
+      padding: 0 !important;
+      text-align: center !important;
+    }
+    
+    .intro-text h1 {
+      font-size: 18px !important;
+      font-weight: 400 !important;
+      margin: 0 0 16px 0 !important;
+      text-align: center !important;
+      line-height: 1.4 !important;
+      color: #000 !important;
+      font-family: 'Space Grotesk', sans-serif !important;
+    }
+    
+    /* Icon wrapper for mobile */
+    .mobile-icons-wrapper {
+      position: absolute !important;
+      bottom: 40px !important; /* Distance from bottom */
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      margin: 0 !important; /* Remove top/bottom margins */
+      padding: 15px 0 !important;
+      z-index: 15 !important; /* Ensure icons are above other content */
+    }
+    
+    
+       /* Reset positioning for all icons on mobile */
+       .mobile-icons-wrapper .draggable-icon {
+        position: static;
+        width: 60px;
+        margin: 0;
+        transform: none;
+    }
+    
+    /* Smaller icon images on mobile */
+    .mobile-icons-wrapper .icon-img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    /* Smaller icon labels on mobile */
+    .mobile-icons-wrapper .icon-label {
+        font-size: 12px;
+    }
+
+    
+    /* Mobile overrides */
+@media (max-width: 768px) {
+  /* Ensure static positioning for all icons in mobile view */
+  .mobile-icons-wrapper #about-icon,
+  .mobile-icons-wrapper #work-icon,
+  .mobile-icons-wrapper #chat-icon {
+      position: static !important;
+      transform: none !important; /* Reset any transforms */
+      transition: transform 0.2s ease !important;
+  }
+  
+  /* Apply a simpler hover/click effect on mobile */
+  .mobile-icons-wrapper .draggable-icon:hover,
+  .mobile-icons-wrapper .draggable-icon:active,
+  .mobile-icons-wrapper .draggable-icon.clicked {
+      transform: scale(0.95) !important; /* Only scale, don't translate */
+  }
+}
+
+    
+    /* Container sizing */
+    .draggable-container {
+      position: relative !important;
+      min-height: 90vh !important; /* Ensure container has enough height */
+      padding-bottom: 0px !important; /* Space for icons */
+    }
+    
+    /* Background title adjustments */
+    .background-title {
+      position: absolute !important;
+      top: 18px !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      margin: 0 auto !important;
+      text-align: center !important;
+    }
+    
+    .site-title-svg {
+      max-height: 80px !important;
+      max-width: 90% !important;
+    }
+    
+    /* Project cards adjustments */
+    body.homepage .projects-container {
+      width: calc(100% - 32px);
+      padding: 16px;
+    }
+    
+    body.homepage .projects-title-section {
+      margin-bottom: 60px;
+      width: calc(100% - 32px);
+    }
+    
+    body.homepage .project-cards {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    
+    body.homepage .project-card {
+      height: 400px;
+    }
+    
+    body.homepage .project-card-image-container {
+      height: 350px;
+    }
+    
+    /* Homepage hero adjustments */
+    .homepage-hero {
+      height: 60vh;
+      margin-bottom: 60px;
+    }
+    
+    .homepage-hero .hero-navigation {
+      bottom: 40px;
+      gap: 16px;
+    }
+    
+    /* Design reflection card */
+    .reflection-card {
+      flex-direction: column;
+    }
+    
+    .reflection-card-image {
+      width: 100%;
+      height: 180px;
+    }
+    
+    .reflection-card-content {
+      padding: 20px;
+    }
+    
+    /* Contact section */
+    .contact-title-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .contact-title-icon {
+      width: 36px !important;
+      height: 36px !important;
+      min-width: 36px;
+      min-height: 36px;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: block !important;
+      float: left !important;
+      position: relative;
+      left: 0;
+    }
+    
+    .contact-title {
+      font-size: 32px;
+      line-height: 1.2;
+      margin-top: 4px;
+      align-self: flex-start;
+      text-align: left;
+    }
+    
+    .contact-window .window-content {
+      padding: 24px 20px;
+    }
+    
+    .contact-header {
+      margin-bottom: 24px;
+    }
+    
+    .bottom-spacer {
+      height: 60px;
+    }
+  }
+
+  /* Media query for adjusting the oval on different screen sizes */
+@media (max-width: 768px) {
+  .centered-intro::before {
+    max-width: 380px;
+    height: 280px;
+  }
+}
+
+  
+  /* Larger mobile phones */
+  @media (min-width: 480px) and (max-width: 768px) {
+    .contact-title-container {
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+  
+  /* Very small screens */
+  @media (max-width: 360px) {
+    .contact-title {
+      font-size: 18px;
+    }
+    
+    .contact-title-icon {
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px;
+      min-height: 32px;
+    }
+  }
+
+
+
+
+
+/* 
+   Add this CSS to the end of your stylesheet to fix both the position
+   of the centered intro and ensure the oval and text are properly aligned
+*/
+
+/* Updated centered-intro positioning */
+.draggable-container .centered-intro {
+  position: absolute !important;
+  top: 57% !important; /* Adjust this to move the whole element up */
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  z-index: 10 !important;
+
+    /* Add these properties to make the intro a flex container */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* This centers the content vertically */
+    align-items: center !important;
+    
+    /* Give it a specific height to match the oval */
+    height: 150px !important;
+
+
+}
+
+/* Update oval position to match */
+.draggable-container .centered-intro::before {
+  position: absolute !important;
+  left: 50% !important;
+  top: 30% !important; /* Center the oval vertically within the container */
+  transform: translate(-50%, -50%) !important;
+  width: 537px !important;
+  height: 325px !important;
+  border-radius: 50% / 50% !important;
+  z-index: -1 !important;
+}
+
+/* Mobile-specific overrides */
+@media (max-width: 768px) {
+  /* Combined rules for better mobile centering */
+  .draggable-container .centered-intro {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 90% !important;
+    max-width: 350px !important;
+    margin: 120px auto 90px !important; /* Adjusted top margin */
+    padding: 0 !important; /* Remove padding */
+    height: 220px !important; /* Fixed height container */
+    display: flex !important; /* Use flexbox for vertical centering */
+    flex-direction: column !important;
+    justify-content: center !important; /* This centers the content vertically */
+    align-items: center !important;
+    text-align: center !important;
+  }
+  
+  
+  /* Adjust the oval to maintain proportions */
+  .draggable-container .centered-intro::before {
+    position: absolute !important;
+    left: 50% !important;
+    top: 42% !important; /* Center at exactly 50% */
+    transform: translate(-50%, -50%) !important;
+    width: 110% !important; /* Make the oval wider */
+    height: 220px !important; /* Match height with the container */
+    border-radius: 50% / 50% !important;
+  }
+  
+  /* Ensure text is centered and visible */
+  .draggable-container .centered-intro .intro-text,
+  .draggable-container .centered-intro .intro-icons {
+    position: relative !important;
+    z-index: 10 !important;
+    max-width: 90% !important; /* Prevent text from extending beyond oval */
+  }
+}
+
+
+/* Add this to your CSS to fix the email and LinkedIn icons centering on mobile */
+@media (max-width: 768px) {
+  .intro-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin: 16px auto;
+  }
+  
+  .intro-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 5px;
+  }
+  
+  .intro-icon img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0 auto;
+  }
+}

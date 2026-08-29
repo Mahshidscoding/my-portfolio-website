@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Command</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="css/sections.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom cursor styles */
+        body, html {
+            background-color: #ffffff !important;
+            cursor: none; /* Hide the default cursor */
+        }
+
+        .cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            background-color: white;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
+            will-change: transform, width, height;
+        }
+
+        /* Make all interactive elements use the custom cursor */
+        a, button, .project-card, .contact-button, input, 
+        select, textarea, [role="button"], .lets-chat-button,
+        .nav-button, .title-icon, .icon-container {
+            cursor: none !important;
+        }
+
+        /* Duplicate declaration to match other pages */
+        body, html {
+            cursor: none;
+        }
+        
+        /* Updated project card styles to match homepage */
+        .project-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            width: 100%;
+        }
+        
+        .project-card {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .project-card-image-container {
+            width: 100%;
+            height: 523px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .project-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-card:hover .project-card-image {
+            transform: scale(1.05);
+        }
+        
+        .project-card-content {
+            margin-top: 16px;
+        }
+        
+        .project-title-with-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .icon-container {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .icon-default {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .icon-hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-card:hover .icon-default {
+            opacity: 0;
+        }
+        
+        .project-card:hover .icon-hover {
+            opacity: 1;
+        }
+        
+        .project-card-title-container {
+            position: relative;
+        }
+        
+        .default-title {
+            opacity: 1;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(0);
+            font-size: var(--font-size-h3);
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .hover-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            font-size: var(--font-size-normal);
+            color: var(--color-gray);
+        }
+        
+        .project-card:hover .default-title {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        
+        .project-card:hover .hover-title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .project-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-card-image-container {
+                height: 400px;
+            }
+
+
+
+            /* Add these responsive title styles to your CommandFreak page */
+
+.project-hero-content h1 {
+    position: relative;
+    z-index: 2;
+    color: rgb(255, 255, 255);
+    font-size: 98px;
+    font-weight: 400;
+    text-align: center;
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 1024px) {
+    .project-hero-content h1 {
+        font-size: 50px !important; /* Reduced size for tablets */
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    .project-hero-content h1 {
+        font-size: 40px; /* Significantly smaller on mobile */
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .project-hero-content h1 {
+        font-size: 32px; /* Even smaller on very small screens */
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+    .project-hero-content h1 {
+        font-size: 24px; /* Minimum size for very small screens */
+    }
+}
+
+
+        }
+
+        
+    </style>
+</head>
+<body>
+
+<!-- Custom cursor element -->
+<div class="cursor"></div>
+
+<!-- Top Navigation Bar -->
+<div class="top-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo.svg" alt="Logo">
+    </a>
+    <a href="#contact" class="lets-chat-button">
+      <div class="circle-overlay"></div>
+      <span>Let's chat</span>
+   </a>
+</div>
+  
+<!-- Floating Navigation Bar -->
+<div class="floating-nav">
+    <a href="javascript:void(0);" class="back-button" onclick="history.back()">
+    <img src="images/back.svg" alt="Back">
+    Back
+  </a>
+    <div class="project-name">CommandFreak</div>
+    <a href="#contact" class="start-project-button">Start project</a>
+</div>
+
+<div class="parallax-container">
+
+    <!-- Hero Section with Large Image -->
+    <section class="project-hero">
+        <div class="project-hero-image">
+            <img src="images/CF/header.png" alt="Command Project Hero Image">
+        </div>
+        <div class="project-hero-content">
+            <h1>CommandFreak</h1>
+        </div>
+    </div>
+
+   <!-- Project Info Section -->
+   <section class="project-info">
+
+
+    <p class="project-description">
+        CommandFreak is an XR application designed for smart glasses that provides real-time, interactive guidance for learning keyboard shortcuts. While the concept is built for smart glasses, it has been prototyped in both AR and VR to explore its full potential.
+    </p>
+    
+    <div class="stats-divider"></div>
+    
+    <!-- Project Stats Grid -->
+    <div class="project-stats">
+        <div class="stat-item">
+            <span class="stat-label">Project type</span>
+            <span class="stat-value">Personal</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Software</span>
+            <span class="stat-value">Unity</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Year</span>
+            <span class="stat-value">2024-25</span>
+        </div>
+    </div>
+</section>
+
+    <!-- Project Images Grid -->
+    <section class="projects-container">
+
+            <!-- Two column layout -->
+            <div class="grid-row pattern-2">
+                <div class="grid-item">
+                    <img src="images/CF/1.png" alt="Command Project Image 1">
+                </div>
+                <div class="grid-item">
+                    <img src="images/CF/2.png" alt="Command Project Image 2">
+                </div>
+            </div>
+            
+            <!-- Full width image -->
+            <div class="grid-row pattern-1">
+                <div class="grid-item">
+                    <img src="images/CF/3.png" alt="Command Project Image 3">
+                </div>
+            </div>
+        
+
+                       <!-- Text section with subtitle layout -->
+           <section class="text-section">
+            <div class="text-section-container">
+                <div class="text-section-title">
+                    <div class="section-subtitle">Research</div>
+                    <h2>Problem</h2>
+                </div>
+                <div class="text-section-content">
+                    <p>People struggle to remember keyboard shortcuts, slowing down their workflow. Most existing solutions require switching screens or memorizing lists, making learning inefficient.</p>
+                </div>
+            </div>
+        </section>
+
+
+            <!-- Single Centered Image Container -->
+<div class="single-image-container">
+    <img src="images/CF/4.png" alt="Keyboard shortcuts statistics and user challenges">
+</div>
+
+
+            <!-- Text section with subtitle layout -->
+            <section class="text-section">
+                <div class="text-section-container">
+                    <div class="text-section-title">
+                        <div class="section-subtitle">Research</div>
+                        <h2>Insights</h2>
+                    </div>
+                    <div class="text-section-content">
+                        <p>Users learn best when shortcuts appear in context, right when they need them. Many want a way to practice without disrupting their work.</p>
+                    </div>
+                </div>
+            </section>
+
+
+                    <!-- Single Centered Image Container -->
+<div class="single-image-container">
+    <img src="images/CF/5.png" alt="Keyboard shortcuts statistics and user challenges">
+</div>
+
+
+
+
+            <!-- Text section with subtitle layout -->
+            <section class="text-section">
+                <div class="text-section-container">
+                    <div class="text-section-title">
+                        <div class="section-subtitle">Research</div>
+                        <h2>Target users</h2>
+                    </div>
+                    <div class="text-section-content">
+                        <p>Designers, developers, and power users who rely on shortcuts but find them hard to learn or remember.</p>
+                    </div>
+                </div>
+            </section>
+
+
+                    <!-- Single Centered Image Container -->
+<div class="single-image-container">
+    <img src="images/CF/6.png" alt="Keyboard shortcuts statistics and user challenges">
+</div>
+
+
+
+
+
+<section class="text-section">
+    <div class="text-section-container">
+        <div class="text-section-title">
+            <h2>Branding</h2>
+        </div>
+        <div class="text-section-content">
+            <p>Inspired by FL Studio’s keyboard, the color palette uses soft pastels to highlight each key intuitively. The logo is designed for flexibility, making it easy to adapt and collaborate with other brands through logo swaps in campaigns and partnerships.</p>
+        </div>
+    </div>
+</section>
+
+
+            <!-- Two column layout -->
+            <div class="grid-row pattern-2">
+                <div class="grid-item">
+                    <img src="images/CF/7.png" alt="Command Project Image 1">
+                </div>
+                <div class="grid-item">
+                    <img src="images/CF/8.png" alt="Command Project Image 2">
+                </div>
+            </div>
+            
+            <!-- Full width image -->
+            <div class="grid-row pattern-1">
+                <div class="grid-item">
+                    <img src="images/CF/9.png" alt="Command Project Image 3">
+                </div>
+            </div>
+
+
+<!-- Text section with subtitle layout -->
+<section class="text-section">
+    <div class="text-section-container">
+        <div class="text-section-title">
+            <div class="section-subtitle">Phase one</div>
+            <h2>AR Prototype</h2>
+        </div>
+        <div class="text-section-content">
+            <p>In the first phase, I developed an AR filter prototype for CommandFreak using TikTok Effect House to make it more accessible for users.</p>
+            
+            <!-- Tech specs container -->
+            <div class="tech-specs-container">
+                <div class="tech-spec-item">
+                    <div class="tech-spec-label">Hardware</div>
+                    <div class="tech-spec-value">Mobile</div>
+                </div>
+                
+                <div class="tech-spec-item">
+                    <div class="tech-spec-label">Software</div>
+                    <div class="tech-spec-value">TikTok App</div>
+                </div>
+                
+                <div class="tech-spec-item">
+                    <div class="tech-spec-label">Platform</div>
+                    <div class="tech-spec-value">Effect House</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+            <!-- Two column layout -->
+            <div class="grid-row pattern-2">
+                <div class="grid-item">
+                    <img src="images/CF/10.png" alt="Command Project Image 1">
+                </div>
+                <div class="grid-item">
+                    <img src="images/CF/11.png" alt="Command Project Image 2">
+                </div>
+            </div>
+
+                        <!-- Two column layout -->
+                        <div class="grid-row pattern-2">
+                            <div class="grid-item">
+                                <img src="images/CF/12.png" alt="Command Project Image 1">
+                            </div>
+                            <div class="grid-item">
+                                <img src="images/CF/13.png" alt="Command Project Image 2">
+                            </div>
+                        </div>
+
+                        <div class="grid-row pattern-1">
+                            <div class="video-container">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/6R1VNFiKH4E?autohide=1" 
+                                    title="YouTube video player" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+
+            <!-- Text section with subtitle layout -->
+<section class="text-section">
+    <div class="text-section-container">
+        <div class="text-section-title">
+            <div class="section-subtitle">Phase two</div>
+            <h2>XR Prototype</h2>
+        </div>
+        <div class="text-section-content">
+            <p>In the second phase, I developed CommandFreak in Unity for the Meta Quest headset, testing its functionalities with passthrough mode and gesture interactions. This helped explore how MR could be integrated into everyday life.</p>
+            
+            <!-- Tech specs container -->
+            <div class="tech-specs-container">
+                <div class="tech-spec-item">
+                    <div class="tech-spec-label">Hardware</div>
+                    <div class="tech-spec-value">Meta Quest 3</div>
+                </div>
+                
+                <div class="tech-spec-item">
+                    <div class="tech-spec-label">Software</div>
+                    <div class="tech-spec-value">Unity</div>
+                </div>
+                
+                <div class="tech-spec-item">
+                    <div class="tech-spec-label">Platform</div>
+                    <div class="tech-spec-value">Application</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+                       <!-- Two column layout -->
+                       <div class="grid-row pattern-2">
+                        <div class="grid-item">
+                            <img src="images/CF/14.png" alt="Command Project Image 1">
+                        </div>
+                        <div class="grid-item">
+                            <img src="images/CF/15.png" alt="Command Project Image 2">
+                        </div>
+                    </div>
+
+
+                    <div class="grid-row pattern-1">
+                        <div class="video-container">
+                            <iframe 
+                                src="https://youtu.be/S_CKPUHyOAM" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div> 
+
+
+
+
+    <div class="section-divider"></div>
+
+    <!-- More Work Section with Homepage Styling -->
+    <section class="projects-container">
+        <div class="projects-title-section">
+            <h2 class="section-title">More Work</h2>
+        </div>
+
+        <div class="project-cards">
+            <!-- Project Card 1: Tembo -->
+            <a href="tembo.html" style="text-decoration: none; color: inherit;">
+                <div class="project-card">
+                    <div class="project-card-image-container gif-container">
+                        <!-- Static image (first frame) -->
+                        <img src="images/tembo/card.png" alt="Tembo Product Design" class="project-card-image static-image">
+                        <!-- Animated GIF (initially hidden) -->
+                        <img src="images/tembo/card.gif" alt="Tembo Product Design" class="project-card-image animated-gif">
+                    </div>
+                    <div class="project-card-content">
+                        <div class="project-title-with-icon">
+                            <div class="icon-container">
+                                <div class="icon-default">
+                                    <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
+                                </div>
+                                <div class="icon-hover">
+                                    <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
+                                </div>
+                            </div>
+                            <div class="project-card-title-container">
+                                <h3 class="default-title">Tembo</h3>
+                                <span class="hover-title">Product Design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Project Card 2: Arch -->
+            <a href="arch.html" style="text-decoration: none; color: inherit;">
+                <div class="project-card">
+                    <div class="project-card-image-container gif-container">
+                        <!-- Static image (first frame) -->
+                        <img src="images/arch/1.png" alt="Arch Product Design" class="project-card-image static-image">
+                        <!-- Animated GIF (initially hidden) -->
+                        <img src="images/arch/gif1.gif" alt="Arch Product Design" class="project-card-image animated-gif">
+                    </div>
+                    <div class="project-card-content">
+                        <div class="project-title-with-icon">
+                            <div class="icon-container">
+                                <div class="icon-default">
+                                    <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
+                                </div>
+                                <div class="icon-hover">
+                                    <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
+                                </div>
+                            </div>
+                            <div class="project-card-title-container">
+                                <h3 class="default-title">Arch</h3>
+                                <span class="hover-title">Product Design</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Section - Window Style -->
+    <div class="site-container" id="contact" style="max-width: 1600px !important; margin-left: auto !important; margin-right: auto !important; padding-left: 0px !important; padding-right: 0px !important; width: calc(100% - 0px) !important;">
+        <div class="contact-window">
+            <!-- Window Header -->
+            <div class="window-header">
+                <div class="window-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <div class="window-title">contact.txt</div>
+            </div>
+            
+            <!-- Window Content -->
+            <div class="window-content">
+                <div class="contact-header">
+                    <!-- Left side: Icon and Title -->
+                    <div class="contact-left">
+                        <div class="contact-title-container">
+                            <img src="images/png/title.svg" alt="Chat" class="contact-title-icon">
+                            <h3 class="contact-title">Let's chat!</h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Right side: Location text -->
+                    <div class="contact-right">
+                        <div class="contact-location">
+                            <span>Currently in Toronto, Canada (GMT-4)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-buttons-container">
+                    <a href="mahshidmdnn@gmail.com" class="contact-button" id="copy-email-button">
+                        <div class="contact-button-icon">
+                            <img src="images/png/email.svg" alt="Email" class="icon" width="24" height="24">
+                        </div>
+                        <span class="contact-button-text">Copy email</span>
+                    </a>
+                    
+                    <a href="https://calendly.com/mahshidmdnn/30min" class="contact-button" id="book-call-button">
+                        <div class="contact-button-icon">
+                            <img src="images/png/call.svg" alt="Call" width="24" height="24">
+                        </div>
+                        <span class="contact-button-text">Book call</span>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="contact-button">
+                        <div class="contact-button-icon">
+                            <img src="images/png/linkedin.svg" alt="LinkedIn" width="24" height="24">
+                        </div>
+                        <span class="contact-button-text">LinkedIn</span>
+                    </a>
+                    
+                    <a href="https://dribbble.com/MahshidDesign" target="_blank" class="contact-button">
+                        <div class="contact-button-icon">
+                            <img src="images/png/dribbble.svg" alt="Dribbble" width="24" height="24">
+                        </div>
+                        <span class="contact-button-text">Dribbble</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+
+    <script src="components.js"></script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+/* ======================
+   1. Reset and Base Styles 
+   ====================== */
+   * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Consistent containers */
+.site-container {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+}
+
+/* Standard section spacing */
+.projects-section,
+.contact-section,
+.text-section {
+    margin-bottom: 80px;
+}
+
+/* Consistent grid spacing */
+.project-cards,
+.image-grid,
+.grid-row,
+.text-section-container {
+    gap: 24px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .site-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .project-cards,
+    .image-grid,
+    .grid-row,
+    .text-section-container {
+        gap: 16px;
+    }
+}
+
+  a, button, .project-card, .contact-button, input, 
+select, textarea, [role="button"], .lets-chat-button,
+.nav-button, .title-icon, .icon-container {
+    cursor: none !important;
+}
+
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-background);
+    font-family: var(--font-primary);
+    color: var(--color-text);
+    cursor: none; /* Hide the default cursor */
+}
+
+[data-scroll-container] {
+    background: var(--color-background);
+}
+
+main {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-background);
+    margin: 0;
+    padding: 0;
+}
+
+.cursor {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    pointer-events: none; /* So it doesn't interfere with hovering */
+    z-index: 9999;
+    mix-blend-mode: difference; /* This creates the complementary color effect */
+    background-color: white; /* Using white with difference blend mode gives complementary colors */
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+}
+
+
+/* ======================
+   2. Typography Styles 
+   ====================== */
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h5 {
+    font-size: var(--font-size-h5);
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.body-text {
+    font-size: var(--font-size-body);
+    font-weight: 300;
+    line-height: 1.4;
+}
+
+.button-text {
+    font-size: var(--font-size-button);
+    font-weight: 400;
+}
+
+.sub-text {
+    font-size: var(--font-size-sub);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.title-text {
+    font-size: var(--font-size-title);
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+/* ======================
+   3. Layout & Container Styles
+   ====================== */
+.container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.section {
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-image {
+    position: absolute;
+    width: 100%;
+    top: 24px;
+    left: -24px;  /* Negative margin to compensate for container padding */
+    right: -24px; /* Negative margin to compensate for container padding */
+    bottom: 24px;
+    z-index: 1;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.hero-title {
+    position: relative;
+    z-index: 2;
+    color: var(--color-white);
+    font-size: var(--font-size-h1);
+    font-weight: bold;
+    text-align: center;
+}
+
+/* First Section */
+.first-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: var(--color-background);
+    overflow: hidden;
+}
+
+.two-column-container {
+    display: flex;
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    gap: var(--spacing-md);
+}
+
+.left-column {
+    width: 730px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    padding-right: var(--spacing-md);
+}
+
+.right-column {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-column img {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: var(--spacing-xl) var(--spacing-md);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: var(--color-white);
+}
+
+.contact-container {
+    display: flex;
+    width: 100%;
+    gap: var(--spacing-md);
+    max-width: var(--container-default);
+    margin: 0 auto;
+}
+
+.contact-left, .contact-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.contact-heading {
+    font-size: var(--font-size-h3);
+    margin: 0;
+    color: var(--color-primary);
+}
+
+.contact-text {
+    font-size: var(--font-size-normal);
+    color: var(--color-text);
+    max-width: 400px;
+    line-height: 1.5;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.social-link {
+    font-size: var(--font-size-h5);
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.social-dot {
+    color: var(--color-primary);
+    font-size: var(--font-size-h5);
+    margin: 0 0.5rem;
+}
+
+.contact-email {
+    font-size: var(--font-size-h3);
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+
+/* ======================
+   spacer
+   ====================== */
+
+.bottom-spacer {
+    height: 120px !important; /* Adjust height as needed */
+    width: 100%;
+  }
+
+
+
+  /* ======================
+  HOVER
+   ====================== */
+
+/* Add this to your components.css file */
+
+/* Circle Reveal Button Effect for Let's Chat */
+/* Circle Reveal Button Effect - FIXED VERSION */
+
+/* Reset existing button styles first */
+
+
+/* ======================
+   5. Media Queries 
+   ====================== */
+@media (max-width: 1200px) {
+    .two-column-container {
+        flex-direction: column;
+    }
+    
+    .left-column {
+        width: 100%;
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section, 
+    .first-section,
+    .contact-section {
+        padding: var(--spacing-md);
+    }
+    
+    .hero-title {
+        font-size: 32px;
+    }
+    
+    .contact-container {
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .contact-left, .contact-right {
+        width: 100%;
+    }
+
+    .contact-text {
+        max-width: 100%;
+    }
+
+    .contact-email {
+        font-size: var(--font-size-h4);
+    }
+    
+    .social-links {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        padding: var(--spacing-lg) var(--spacing-md);
+        gap: var(--spacing-md);
+        margin-left: var(--spacing-md);
+    }
+    
+    .footer-links {
+        gap: var(--spacing-md);
+    }
+}

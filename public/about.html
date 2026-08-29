@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+  
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/about.css">
+
+
+    <style>
+        /* Custom cursor styles */
+        body, html {
+            cursor: none; /* Hide the default cursor */
+        }
+
+        .cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            background-color: white;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
+            will-change: transform, width, height;
+        }
+        
+        /* Make all interactive elements use the custom cursor */
+        a, button, .skills-cta-button, .contact-button, input, 
+        select, textarea, [role="button"], .lets-chat-button,
+        .nav-button, .title-icon, .icon-container {
+            cursor: none !important;
+        }
+        
+        /* Duplicate declaration to match ARCH page exactly */
+        body, html {
+            cursor: none;
+        }
+
+
+    </style>
+</head>
+  
+<body>
+    <!-- Custom cursor element -->
+    <div class="cursor"></div>
+
+    <div class="noise-overlay"></div>
+    
+    <!-- Navigation -->
+    <header>
+        <div class="top-nav">
+            <a href="index.html" class="nav-logo">
+              <img src="images/logo.svg" alt="Logo">
+            </a>
+            <a href="#contact" class="lets-chat-button">
+                <div class="circle-overlay"></div>
+                <span>Let's chat</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="site-container">
+        <main>
+            <!-- First Section: Text left, image right -->
+            <section class="about-intro">
+                <div class="two-column-container">
+                    <div class="left-column">
+                        <h1>I'm Mahshid</h1>
+                        <p class="subtitle">A multidisciplinary designer</p>
+                        
+                        <div class="about-text">
+                            <p>Working in different fields of design taught me the core <strong>principles</strong> that apply everywhere, how to solve <strong>problems, communicate</strong> clearly, and create <strong>experiences</strong> that make sense.</p>
+                            
+                            <p>I believe that while art <strong>asks questions</strong>, design offers <strong>practical answers</strong>. In my work, I try to combine the two to blend curiosity and functionality in order to create more <strong>powerful and engaging</strong> experiences.</p>
+                        </div>
+
+                    </div>
+                    <div class="right-column">
+                        <div class="about-image">
+                            <img src="images/about/me.png" alt="Profile Image">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+                        <!-- Third Section: Skills & experiences (responsive updates) -->
+                        <section class="about-skills">
+                            <div class="skills-title">
+                                <h2 class="section-title color: #fff ">Skills & experiences</h2>
+                            </div>
+                            <div class="skills-content">
+                                <div class="skills-row-1">
+                                    <img src="images/soft.svg" alt="Skill Icon 1" class="skill-svg">
+                                    <img src="images/hard.svg" alt="Skill Icon 2" class="skill-svg">
+                                </div>
+                                <div class="skills-row-2">
+                                    <img src="images/exp.svg" alt="Skill Icon 3" class="skill-svg">
+        <a href="images/cv.pdf" download>
+    <button class="skills-cta-button">
+        <img src="images/png/download.svg" alt="Download" class="button-icon">
+        Download CV
+    </button>
+</a>
+                                </div>
+                            </div>
+                        </section>
+
+                        
+
+<!-- Second Section: Text left (mobile), image right (mobile) -->
+<section class="about-goals">
+    <div class="two-column-container">
+        <!-- Note the mobile-order-2 class to push this down on mobile -->
+        <div class="left-column mobile-order-2">
+            <div class="about-secondary-image">
+                <img src="images/about/goal.png" alt="Secondary Profile Image">
+            </div>
+        </div>
+        <!-- Note the mobile-order-1 class to pull this up on mobile -->
+        <div class="right-column mobile-order-1">
+            <h2>Current goal</h2>
+        <!-- For the Current goal section -->
+        <div class="about-text">
+    
+            <p>Lately, I've been diving deeper into <strong>development</strong> to bring more of my <strong>spatial design</strong> ideas to life. I've been experimenting with <strong>node-based programming</strong>, <strong>Python</strong>, and <strong>JavaScript</strong>, and even built this site from scratch! I'm interested in how interactive environments, installations, and interfaces can create more engaging, spatial experiences.</p>
+    <p>I've also been exploring the world of <strong>Artificial Intelligence</strong>, learning how to incorporate it into my projects. My goal is to gain a <strong>deeper understanding</strong> of all the tools needed to create meaningful products and experiences.</p>
+        </div>
+        </div>
+    </div>
+</section>
+
+
+                        <!-- First Section: Text left, image right -->
+                        <section class="about-intro">
+                            <div class="two-column-container">
+                                <div class="left-column">
+                                    <h1>How I use AI</h1>
+                                    <div class="about-text">
+                                        <p>AI tools like <strong>MidJourney</strong>, <strong>Kling</strong>, and <strong>Claude</strong> help me speed up my creative process. whether it's generating mockups, refining visuals, or brainstorming ideas. This lets me focus on the bigger picture, delivering high-quality work while saving time on repetitive tasks.</p>
+                                    </div>
+            
+                                </div>
+                                <div class="right-column">
+                                    <div class="about-image">
+                                        <img src="images/about/ai.png" alt="Profile Image">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+
+
+
+
+                        <div class="bottom-spacer"></div>
+            
+
+
+
+<!-- Contact Section - Window Style -->
+<div class="site-container" id="contact" style="max-width: 1600px !important; margin-left: auto !important; margin-right: auto !important; padding-left: 0px !important; padding-right: 0px !important; width: calc(100% - 0px) !important;">
+    <div class="contact-window">
+        <!-- Window Header -->
+        <div class="window-header">
+            <div class="window-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <div class="window-title">contact.txt</div>
+        </div>
+        
+        <!-- Window Content -->
+        <div class="window-content">
+            <div class="contact-header">
+                <!-- Left side: Icon and Title -->
+                <div class="contact-left">
+                    <div class="contact-title-container">
+                        <img src="images/png/title.svg" alt="Chat" class="contact-title-icon">
+                        <h3 class="contact-title">Let's chat!</h3>
+                    </div>
+                </div>
+                
+                <!-- Right side: Location text -->
+                <div class="contact-right">
+                    <div class="contact-location">
+                        <span>Currently in Toronto, Canada (GMT-4)</span>
+                    </div>
+                </div>
+            </div>
+            
+
+            
+            <div class="contact-buttons-container">
+                <a href="mahshidmdnn@gmail.com" class="contact-button" id="copy-email-button">
+                    <div class="contact-button-icon">
+                        <img src="images/png/email.svg" alt="Email" class="icon" width="24" height="24">
+                    </div>
+                    <span class="contact-button-text">Copy email</span>
+                </a>
+                
+                <a href="https://calendly.com/mahshidmdnn/30min" class="contact-button" id="book-call-button">
+                    <div class="contact-button-icon">
+                        <img src="images/png/call.svg" alt="Call" width="24" height="24">
+                    </div>
+                    <span class="contact-button-text">Book call</span>
+                </a>
+                
+                <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="contact-button">
+                    <div class="contact-button-icon">
+                        <img src="images/png/linkedin.svg" alt="LinkedIn" width="24" height="24">
+                    </div>
+                    <span class="contact-button-text">LinkedIn</span>
+                </a>
+                
+                <a href="https://dribbble.com/MahshidDesign" target="_blank" class="contact-button">
+                    <div class="contact-button-icon">
+                        <img src="images/png/dribbble.svg" alt="Dribbble" width="24" height="24">
+                    </div>
+                    <span class="contact-button-text">Dribbble</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="bottom-spacer"></div>
+
+<script src="components.js"></script>
+</body>
+</html>

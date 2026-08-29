@@ -1,0 +1,834 @@
+/* ====================== 
+   1. Base Styles 
+   ====================== */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-background);
+    font-family: var(--font-primary);
+    color: var(--color-text);
+}
+
+/* Divider between image grid and more work section */
+.section-divider {
+    width: calc(100% - 48px); /* 100% width minus 24px on each side */
+    height: 1px;
+    background-image: linear-gradient(to right, var(--color-gray) 10px, transparent 10px);
+    background-size: 20px 1px;
+    background-repeat: repeat-x;
+    margin: 80px 24px 40px; /* Top, left/right, bottom margins */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* Text Section Styles */
+/* Enhanced Text Section Styles - With adjusted widths */
+.text-section {
+    width: 100%;
+    padding: 48px 0;
+    margin: 32px 0;
+    box-sizing: border-box;
+}
+
+.text-section-container {
+    display: flex;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 24px;
+    gap: 370px !important;
+    box-sizing: border-box;
+    justify-content: flex-start;
+}
+
+/* Increased width for title container to prevent line breaks */
+.text-section-title {
+    flex: 0 0 330px; /* Wider container for title */
+    padding-left: 200px;
+}
+
+.text-section-title h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    line-height: 1.2;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap; /* Prevent line breaks */
+}
+
+/* Make paragraph container narrower and align with right image */
+.text-section-content {
+    flex: 0 0 47%; /* Keep the same width proportion */
+    max-width: 500px;
+    margin-right: 200px;
+}
+
+.text-section-content p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px !important;
+    font-weight: 300 !important;
+    line-height: 1.5;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure the text section doesn't inherit grid row properties */
+.image-grid .text-section {
+    height: auto !important;
+    display: block !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .text-section-title {
+        flex: 0 0 200px; /* Reduced from 250px */
+        padding-left: 40px; /* Reduced from 80px */
+    }
+    
+    .text-section-content {
+        flex: 0 0 60%;
+    }
+}
+
+/* Enhanced Text Section Styles - Mobile Optimization */
+@media (max-width: 768px) {
+    .text-section-container {
+        flex-direction: column;
+        gap: 12px !important;
+        padding: 0 16px; /* Add some padding on sides */
+    }
+    
+    .text-section-title {
+        flex: none !important;
+        padding-left: 0 !important;
+        margin-bottom: 8px !important;
+        width: 100% !important;
+    }
+    
+    .text-section-content {
+        flex: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-right: 0 !important;
+    }
+    
+    .text-section-content p {
+        width: 100% !important;
+    }
+    
+    .section-subtitle {
+        margin-bottom: 4px !important;
+    }
+}
+
+/* ====================== 
+   2. Project Hero Section 
+   ====================== */
+/* Fixed header container with consistent viewport height */
+.project-hero {
+    position: relative;
+    height: 100vh; /* Fixed viewport height */
+    width: 100%;
+    z-index: 1;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    will-change: transform, opacity;
+}
+
+/* Container for the image with fixed positioning within the hero */
+.project-hero-image {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    border-radius: 8px;
+    overflow: hidden;
+    will-change: transform;
+    height: calc(100vh - 48px); /* Fixed height calculation (viewport - margins) */
+    min-height: calc(100% - 48px);
+}
+
+/* Image will fill the container without changing its dimensions */
+.project-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important; /* Force cover mode with !important to override any conflicting styles */
+    object-position: center;
+    border-radius: 8px;
+    transition: transform 0.5s ease;
+    max-width: none; /* Prevents max-width constraints */
+}
+
+/* Ensure the image can scale properly */
+/* This might be needed if your image isn't high enough resolution */
+.project-hero-image {
+    background-size: cover;
+    background-position: center;
+}
+
+/* Additional styles to prevent unwanted height changes */
+.parallax-container {
+    height: 100vh;
+    position: relative;
+    width: 100%;
+}
+
+/* Adjust spacing for the parallax-spacer to prevent content from showing through */
+.parallax-spacer {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* Ensure the parallax script doesn't interfere with responsiveness */
+.project-hero-image img {
+    transform: none !important; /* Override any transform from the parallax effect */
+}
+
+
+
+.project-hero-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    z-index: 2; /* Ensure text is above the image */
+    padding: 24px;
+}
+
+.project-hero-content h1 {
+    position: relative;
+    z-index: 2;
+    color: var(--color-white);
+    font-size: 120px;
+    font-weight: 400;
+    text-align: center;
+}
+
+        /* Section subtitle styles */
+        .section-subtitle {
+            font-size: 16px;
+            font-weight: 300;
+            color: #777;
+            margin-bottom: 4px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+
+
+        /* Tech specs styling */
+.tech-specs-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    margin-top: 32px;
+}
+
+.tech-spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tech-spec-label {
+    font-size: 14px;
+    font-weight: 300;
+    color: #777;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.tech-spec-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tech-specs-container {
+        gap: 24px;
+    }
+}
+
+
+
+/* ====================== 
+   3. Project Description 
+   ====================== */
+
+   .project-info {
+    position: relative;
+    z-index: 2;
+    background-color: var(--color-background);
+    padding-top: 80px;
+    margin-top: -40px;
+    transform: translateY(100%);
+    transition: transform 0.5s ease-out;
+    will-change: transform;
+  }
+
+  .project-info {
+    max-width: 800px;
+    margin: -40px auto 80px;
+    padding: 80px 24px 0;
+  }
+
+.project-action-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #F4F4F4;
+    padding: 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: var(--font-size-button);
+    font-weight: 400;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    color: var(--color-text, #000); /* Use your text color variable or default to black */
+    text-decoration: none; /* Remove any underlining */
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
+
+.project-description {
+    font-size: var(--font-size-body);
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+.stats-divider {
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(to right, var(--color-gray) 10px, transparent 10px);
+    background-size: 20px 1px;
+    background-repeat: repeat-x;
+    margin: 40px 0;
+}
+
+.project-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 80px;
+    width: 100%;
+}
+
+.stat-item {
+    width: 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-label {
+    font-size: var(--font-size-h5);
+    color: var(--color-gray);
+    font-weight: 400;
+}
+
+.stat-value {
+    font-size: var(--font-size-sub);
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
+.stat-value a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+/* Three cards per row styles */
+.project-cards-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 8px; /* Reduced gap between cards */
+    row-gap: 40px; /* Same vertical spacing as original */
+    width: 100%;
+    margin-top: 40px; /* Space between the different card layouts */
+  }
+  
+  .project-card-small {
+    height: 385px; /* Scaled down from 578px */
+    position: relative;
+    overflow: visible;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .project-card-small .project-card-image {
+    width: 100%;
+    height: 330px; /* Scaled down from 523px, maintaining aspect ratio */
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .project-card-small .project-card-content {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 16px;
+    height: 55px; /* Same as original */
+    border-radius: 0;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .project-cards-trio {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .project-cards-trio {
+      grid-template-columns: 1fr;
+    }
+    
+    .project-card-small {
+      height: auto;
+      min-height: 350px;
+    }
+    
+    .project-card-small .project-card-image {
+      height: 300px;
+    }
+  }
+
+
+
+
+  
+/* ====================== 
+   4. Project Images Grid 
+   ====================== */
+/* ADD: Consistent container for image grid */
+
+/* ADD: Clean container styles without !important */
+.projects-container {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    background: transparent !important;
+}
+
+
+.project-images {
+    margin-bottom: 80px;
+}
+
+/* ADD: Consistent spacing and structure */
+.image-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 1600px;
+    margin: 0 auto;
+
+}
+
+.grid-row {
+    display: flex;
+    gap: 24px;
+    height: 578px;
+}
+
+/* Default grid item */
+.grid-item {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+}
+
+.grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Row patterns */
+.grid-row.pattern-1 .grid-item {
+    width: 100%;
+}
+
+.grid-row.pattern-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-row.pattern-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+
+.video-content {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block; /* Ensures proper sizing */
+}
+
+/* Make sure grid items have consistent display for both images and videos */
+.grid-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Mobile image grid fixes */
+@media (max-width: 768px) {
+    .grid-item {
+        height: auto !important;
+        padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
+        position: relative;
+      }
+      
+      .grid-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important; /* Changed from cover to contain */
+        object-position: center !important; /* Center everything */
+      }
+
+    .grid-item video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top; /* Focus on top part of images */
+    }
+    
+    /* Use different aspect ratio for full-width items */
+    .grid-row.pattern-1 .grid-item {
+        padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
+    }
+}
+
+
+/* Single centered image container */
+.single-image-container {
+    width: 100%;
+    max-width: 1028px;
+    margin: 40px auto;
+    overflow: hidden;
+}
+
+.single-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Ensure the single image is responsive */
+@media (max-width: 1100px) {
+    .single-image-container {
+        width: 100%;
+        max-width: 100%;
+        margin: 32px auto;
+    }
+}
+
+/* ====================== 
+   5. Project Navigation 
+   ====================== */
+.project-navigation {
+    max-width: 1600px;
+    margin: 80px auto 0;
+    padding: 40px 24px;
+    border-top: 1px solid var(--color-cobaltblue);
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-button);
+    font-weight: 600;
+    color: var(--color-cobalt);
+    text-decoration: none;
+}
+
+.nav-link img {
+    width: 24px;
+    height: 24px;
+}
+
+.project-name {
+    color: var(--color-gray);
+    font-size: var(--font-size-normal);
+    margin-top: 8px;
+    margin-left: 32px;
+}
+ @media (max-width: 768px) {
+    .image-grid,
+    .projects-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .grid-row {
+        gap: 16px;
+    }
+}
+
+/* ====================== 
+   6. Back Link 
+   ====================== */
+.parallax-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+
+
+  
+  /* Reset margin values for project info to work with parallax */
+  .project-info {
+    max-width: 800px;
+    margin: -40px auto 80px;
+    padding: 80px 24px 0;
+  }
+
+/* ======================
+   parallex 
+   ====================== */
+
+   .parallax-container {
+    position: relative;
+  }
+  
+
+
+
+
+/* ====================== 
+   7. Responsive Design 
+   ====================== */
+@media (max-width: 1200px) {
+    .project-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-hero-title {
+        font-size: var(--font-size-h2);
+    }
+    
+    .project-info {
+        margin: 60px auto;
+    }
+    
+    .project-description {
+        font-size: var(--font-size-normal);
+    }
+    
+    .grid-row {
+        height: auto; /* Remove fixed height on mobile */
+        flex-direction: column;
+        gap: 24px; /* Increase gap between stacked items */
+    }
+    
+    .grid-row.pattern-2,
+    .grid-row.pattern-3 {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Make grid items taller/more square-like on mobile */
+    .grid-item {
+        height: 0;
+        padding-bottom: 100%; /* Makes items square (1:1 aspect ratio) */
+        position: relative;
+        margin-bottom: 0;
+    }
+
+    .project-hero {
+        height: 70vh; /* Slightly smaller on mobile devices */
+        min-height: 400px;
+    }
+    
+    .project-hero-image {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+    }
+    .grid-item img, 
+    .grid-item video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    /* Specific adjustment for full-width items in pattern-1 */
+    .grid-row.pattern-1 .grid-item {
+        padding-bottom: 75%; /* 4:3 aspect ratio for full-width items */
+    }
+
+
+}
+
+@media (max-width: 768px) {
+    .action-button {
+        color: var(--color-text, #000); /* Same color as above */
+    }
+}
+
+/* If there's a specific issue with the location button */
+.action-button .location-icon,
+button.action-button {
+    color: var(--color-text, #000); /* Ensure the button version gets the same treatment */
+}
+
+
+@media (max-height: 600px) {
+    .project-hero, 
+    .parallax-container,
+    .parallax-spacer {
+        min-height: 600px;
+    }
+    
+    .project-hero-image {
+        min-height: 552px; /* 600px - 48px */
+    } }
+
+
+/* Handle very small screens by setting a minimum height */
+@media (max-height: 500px) {
+    .project-hero, 
+    .parallax-container {
+        height: 500px; /* Minimum height for very small screens */
+    }
+    
+    .project-hero-image {
+        height: calc(500px - 48px);
+    }
+}
+
+
+
+@media (max-width: 480px) {
+    .project-hero {
+        padding: 16px;
+    }
+    
+    .project-hero-image {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+    }
+    
+    .project-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-nav,
+    .project-images,
+    .project-navigation {
+        padding: 16px;
+    }
+
+    .grid-item {
+        padding-bottom: 100%; /* Maintain square aspect ratio */
+    }
+    
+    .grid-row.pattern-1 .grid-item {
+        padding-bottom: 100%; /* Make even full-width items square on very small screens */
+    }
+    
+    .grid-row {
+        gap: 16px; /* Slightly reduce gap on very small screens */
+    }
+
+    
+}
+
+
+.video-container {
+    width: 100%;
+    max-width: 1600px; /* Match your grid container max-width */
+    height: 578px; /* Match the grid-row height */
+    margin: 40px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 0 24px; /* Match your grid padding */
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%; /* Fill the container */
+    border-radius: 8px;
+    border: none;
+    display: block; /* Remove any potential spacing issues */
+}
+
+
+@media (max-width: 768px) {
+    .video-container {
+        margin: 24px auto;
+    }
+}
+
+
+@media (max-width: 768px) {
+    iframe {
+        height: 56vw; /* Responsive height based on width for 16:9 ratio */
+    }
+}

@@ -1,0 +1,1229 @@
+/* ======================
+   1. General Button Styles 
+   ====================== */
+   .button-container {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: auto;
+  }
+  
+  .btn {
+    width: var(--button-width);
+    height: var(--button-height);
+    font-family: var(--font-primary);
+    font-size: var(--font-size-button);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition-default);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border: 1px solid var(--color-primary);
+  }
+  
+  .btn-primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: var(--color-white);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+  }
+  
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+  }
+  
+  .btn-secondary:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: 1px solid var(--color-primary);
+  }
+  
+  /* Hero button styles */
+  .hero-navigation {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 32px;
+    z-index: 5;
+  }
+  
+  .nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 52px;
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    font-size: var(--font-size-button);
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: var(--transition-default);
+  }
+  
+  .nav-button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+  
+  /* Skills CTA Button */
+  .skills-cta-button {
+    position: absolute;
+    bottom: 75px;
+    left: 62%;
+    transform: translateX(-50%);
+    width: var(--button-width);
+    height: var(--button-height);
+    font-family: var(--font-primary);
+    font-size: var(--font-size-normal);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition-default);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    z-index: 10;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+  }
+  
+  .skills-cta-button:hover {
+    background: var(--color-cobalt);
+  }
+  
+  .skills-cta-button .button-icon {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+  }
+  
+  /* ======================
+     2. Top Navigation Bar 
+     ====================== */
+  .top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 24px 40px 16px 40px; /* top right bottom left */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+  }
+  
+  .nav-logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-logo img {
+    height: 38px; 
+    width: 80px;
+  }
+  
+  .lets-chat-button {
+    position: relative;
+    display: inline-block;
+    width: 127px;
+    padding: 14px 0;
+    background-color: rgba(255, 255, 255, 0.01) !important; /* 1% opacity white */
+    backdrop-filter: blur(5px) !important; /* Background blur */
+    -webkit-backdrop-filter: blur(5px) !important; /* For Safari */
+    border: #000 1px solid;
+    color: rgb(0, 0, 0) !important;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .lets-chat-button .circle-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: width 0.5s ease, height 0.5s ease;
+  }
+  
+  .lets-chat-button:hover .circle-overlay {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .lets-chat-button span {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* ======================
+     3. Floating Navigation Bar 
+     ====================== */
+  /* Fixed Floating Navigation Bar Styles */
+  .floating-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0 8px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(23, 23, 23, 0.08);
+    z-index: 1000;
+    height: 64px; /* Define a specific height */
+  }
+  
+  /* Fix the back button styling */
+  .back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px 0 0; /* Even padding right and no left padding */
+    color: #777777;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    transition: var(--transition-default);
+    border-right: 1px solid #D1D1D1;
+    height: 40px; /* Set fixed height instead of 100% */
+    margin: auto 0; /* Center vertically */
+  }
+  
+  .back-button img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
+  }
+  
+  /* Fix project name spacing */
+  .floating-nav .project-name {
+    color: var(--color-primary);
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+    padding: 0 24px 0 16px; /* Increased right padding to add space before button */
+  }
+  
+  /* Fix start project button alignment and margins */
+  .start-project-button {
+    text-decoration: none !important;
+    display: flex;
+    width: 104px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
+    background: #FFF;
+    border: #e2e2e2 solid 1px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    margin: 0 8px 0 0; /* Remove bottom margin, keep right margin */
+  }
+  
+  /* ======================
+     4. Mask Effect Styles 
+     ====================== */
+  .masked-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    --clip: circle(0% at var(--x, 50%) var(--y, 50%));
+    -webkit-clip-path: var(--clip);
+    clip-path: var(--clip);
+  }
+  
+  /* ======================
+     5. Project Section Styles
+     ====================== */
+  /* Section Title */
+  .projects-title-section {
+    padding: 60px var(--spacing-md) 40px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .section-title {
+    font-size: var(--font-size-h2);
+    color: var();
+    font-weight: 500;
+    margin: 0;
+  }
+  
+
+  
+  /* Project Cards Grid */
+  .project-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px; /* Consistent 24px spacing */
+    width: 100%;
+    margin-bottom: 80px;
+}
+  
+  /* Individual Project Card */
+  .project-card {
+    height: 578px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .project-card-image-container {
+    width: 100%;
+    height: 523px;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #000000;
+    position: relative;
+  }
+  
+  .project-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transition: transform 0.4s ease;
+  }
+  
+  .project-card:hover .project-card-image {
+    transform: scale(1.02);
+  }
+  
+  /* Project Card Content */
+  .project-card-content {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 16px;
+    height: 55px;
+    border-radius: 0; /* Remove any border radius from content */
+  }
+  
+  .project-card-content h3,
+  .project-card-content p {
+    display: inline;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Project Card Title */
+  .project-card-title {
+    font-size: var(--font-size-title, 24px);
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+  
+  /* Project Card Category */
+  .project-card-category {
+    font-size: var(--font-size-title, 24px);
+    font-weight: 500;
+    color: var(--color-gray, #7B7B7B);
+    margin-left: 8px !important; /* Force space between title and category */
+  }
+  
+  /* Project card text hover effect styles */
+  .project-card-title-container {
+    position: relative;
+    height: auto;
+    min-height: 30px;
+    width: 100%; /* Use full width available */
+    overflow: visible !important; /* Allow content to be visible outside the container */
+    display: inline-block;
+    width: auto; /* Remove fixed width constraint */
+    height: 30px; /* Adjust based on your title font size */
+    max-width: 100%; /* Allow container to use available space */
+  }
+  
+  .project-card-title-container .default-title,
+  .project-card-title-container .hover-title {
+    display: block;
+    transition: transform 0.4s ease;
+    font-size: var(--font-size-title, 24px);
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Position the default title properly */
+  .project-card-title-container .default-title {
+    position: relative;
+    display: block;
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+    opacity: 1;
+    color: var(--color-primary);
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: visible; /* Allow text to be visible */
+  }
+  
+  /* Position the hover title properly - start hidden below */
+  .project-card-title-container .hover-title {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    color: var(--color-gray);
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: visible; /* Allow text to be visible */
+    bottom: -30px; /* Match the container height */
+  }
+  
+  /* On hover, move default title up and out of view */
+  .project-card:hover .default-title {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  
+  /* On hover, move hover title into view */
+  .project-card:hover .hover-title {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  /* Apply the slide effect on hover */
+  .project-card:hover .default-title {
+    transform: translateY(-30px); /* Move up and out */
+  }
+  
+  .project-card:hover .hover-title {
+    transform: translateY(-30px); /* Move up into view */
+  }
+  
+  /* Project title with icon layout */
+  .project-title-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+  }
+  
+  /* Icon container style */
+  .icon-container {
+    position: relative;
+    width: 36px; /* Match your icon width */
+    height: 36px; /* Match your icon height */
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid #bcbcbc;
+  }
+  
+  /* Default icon state */
+  .icon-default {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    background-color: transparent;
+  }
+  
+  /* Hover icon state - black overlay that slides up */
+  .icon-hover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    transform: translateY(100%); /* Start completely below */
+    transition: transform 0.4s ease;
+    z-index: 3;
+  }
+  
+  /* Icon images with fade effect */
+  .icon-default img {
+    transition: opacity 0.3s ease;
+  }
+  
+  .icon-hover img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Icon image styling */
+  .title-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* Icon hover animations - slide up fill effect with fading icons */
+  .project-card:hover .icon-hover {
+    transform: translateY(0); /* Slide up to fill container */
+  }
+  
+  .project-card:hover .icon-default img {
+    opacity: 0; /* Fade out the black arrow */
+  }
+  
+  .project-card:hover .icon-hover img {
+    opacity: 1; /* Fade in the white arrow */
+  }
+  
+  /* ======================
+     6. Project Detail Page Styles
+     ====================== */
+  /* Project Header */
+  .project-nav {
+    padding: 80px 0 0 var(--spacing-lg);
+  }
+  
+  .back-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-cobalt);
+    text-decoration: none;
+  }
+  
+  .back-link img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .project-header {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px var(--spacing-lg);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+  }
+  
+  .project-title {
+    font-size: 64px;
+    font-weight: bold;
+  }
+  
+  .project-content {
+    width: 700px;
+  }
+  
+  .project-description {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  
+  /* Project Stats */
+  .project-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: var(--color-cobalt);
+  }
+  
+  .stat-value {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  /* Image Grid */
+  .image-grid {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+  
+  .grid-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .grid-item {
+    position: relative;
+    height: 475px;
+    overflow: hidden;
+  }
+  
+  .grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .grid-item.span-3 {
+    grid-column: span 3;
+  }
+  
+  .grid-item.span-2 {
+    grid-column: span 2;
+  }
+  
+  .grid-row.full-width {
+    display: block;
+    width: 100%;
+    height: 126px;
+  }
+  
+  .grid-row.full-width .grid-item {
+    height: 126px;
+    width: 100%;
+  }
+  
+  /* Project Navigation */
+  .project-navigation {
+    max-width: 1440px;
+    margin: 80px auto 0;
+    padding: 80px var(--spacing-lg) 32px;
+    border-top: 1px solid var(--color-cobaltblue);
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-cobalt);
+    text-decoration: none;
+  }
+  
+  .nav-link img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .project-name {
+    color: var(--color-gray);
+    font-size: 18px;
+    margin-top: 8px;
+    margin-left: 32px;
+  }
+  
+  /* ======================
+     7. Contact Section 
+     ====================== */
+  /* Contact Window Style 
+  #contact {
+    margin-top: 60px !important;
+    margin-bottom: 60px !important;
+}*/
+  
+  .contact-window {
+    background-color: #f2f3f4 !important;
+    border: 1px solid #000 !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(165, 165, 165, 0.1);
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  /* Window Header */
+  .window-header {
+    background: linear-gradient(180deg, #C4D3E3 0%, #f2f3f4 100%);    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 36px;
+  }
+  
+  .window-dots {
+    display: flex;
+    gap: 6px;
+    margin-right: 12px;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: transparent !important;
+    border: 1px solid #000 !important;
+    box-sizing: border-box;
+  }
+  
+
+
+  .window-title {
+    font-family: monospace;
+    font-size: 14px;
+    color: #000 !important;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+  
+
+
+    /* Title container with icon */
+.contact-title-container {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contact-title-icon {
+  width: 50px !important; /* Force this width */
+  height: 50px !important; /* Force this height */
+  min-width: 50px; /* Prevent flex from shrinking it */
+  min-height: 50px; /* Prevent flex from shrinking it */
+  object-fit: contain !important; /* This preserves aspect ratio */
+  display: block; /* Ensure it takes up specified dimensions */
+}
+
+  /* Window Content */
+  .window-content {
+    padding: 40px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #000 !important;
+  }
+  
+  /* Contact Header Layout */
+  .contact-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    align-items: flex-start;
+  }
+  
+  .contact-left {
+    flex: 1;
+  }
+  
+  /* Contact Right Column */
+  .contact-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  /* Title styling */
+  .contact-title {
+    font-size: 45px;
+    font-weight: 400;
+    color: #000 !important;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  /* Location styling */
+  .contact-location {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 0px;
+    width: 100%;
+    text-align: right;
+    line-height: 1.5;
+  }
+  
+  .contact-location span {
+    font-size: 16px;
+    color: #000 !important;
+    display: inline-block;
+    margin: 0; /* Remove default paragraph margins */
+    white-space: nowrap; /* Keep the text in one line */
+  }
+  
+
+ 
+
+  /* Text styling */
+  .contact-text {
+    font-size: 18px;
+    line-height: 1.2;
+    color: #000 !important;
+    margin: 0;
+    text-align: right;
+    display: block;
+    width: 35%;
+  }
+  
+  /* Contact Buttons */
+
+  
+  
+/* Contact Buttons */
+.contact-buttons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: 32px;
+  width: 100%;
+}
+
+.contact-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100px;
+  width: 100%;
+  background-color: #f8f8f8;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 16px;
+  text-decoration: none;
+  color: #000;
+  transition: all 0.3s ease;
+}
+
+/* Hover state - pink */
+.contact-button:hover {
+  background: linear-gradient(180deg, #C4D3E3 0%, #EDEDED 100%);
+  color: #000;
+  border-color: #000000;
+}
+
+.contact-button:hover img {
+  filter: brightness(0) invert(1); /* Makes icons white on hover */
+}
+
+/* Selected/active state - black with white text */
+.contact-button.selected {
+  background-color: #C4D3E3;
+  color: #000;
+  border-color: #000;
+}
+
+/* Center the "Copied!" text when the icon is hidden */
+.contact-button.copied {
+  background-color: #C4D3E3 !important;
+  color: #000 !important;
+  justify-content: center !important; /* Center the text horizontally */
+}
+
+/* Hide icon in copied state */
+.contact-button.copied .contact-button-icon {
+  display: none !important; /* Completely remove the icon from layout */
+}
+
+/* Make sure the text is properly centered */
+.contact-button.copied .contact-button-text {
+  margin-left: 0 !important; /* Remove any left margin */
+  text-align: center !important; /* Center the text */
+}
+
+.contact-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* Maintain width even when icon is hidden */
+  height: 24px; /* Maintain height even when icon is hidden */
+}
+
+.contact-button-text {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Hide icon in copied state */
+.contact-button.copied .icon {
+  display: none;
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+
+
+  .contact-title-container {
+    gap: 12px;
+  }
+  
+  .contact-title-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .contact-title {
+    font-size: 36px;
+  }
+
+
+  .contact-buttons-container {
+    flex-direction: column; /* Stack vertically on mobile */
+  }
+  
+  .contact-button {
+    height: 80px; /* Shorter height on mobile */
+  }
+  
+  .contact-button-text {
+    font-size: 14px; /* Slightly smaller text on mobile */
+  }
+}
+
+
+/* Add this to your CSS file (components.css or main.css) */
+.contact-button:hover .contact-button-icon img,
+.contact-button.selected .contact-button-icon img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    opacity: 1 !important;
+    fill: currentColor !important;
+    color: inherit !important;
+}
+
+/* If the above doesn't work, try this instead */
+.contact-button:hover img,
+.contact-button.selected img,
+.contact-button:hover .icon,
+.contact-button.selected .icon {
+    filter: none !important;
+    -webkit-filter: none !important;
+    color: inherit !important;
+    fill: inherit !important;
+}
+
+
+/**
+ 
+  
+  /* ======================
+     8. Touch Device & Mobile Styles
+     ====================== */
+  /* Touch device specific styles */
+  body.touch-device .draggable-window,
+  body.touch-device .draggable-icon {
+    cursor: default !important;
+    transition: none !important;
+  }
+  
+  /* Remove hover effects that don't make sense on touch devices */
+  body.touch-device .draggable-window:hover {
+    transform: none !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  body.touch-device .draggable-icon:hover {
+    transform: none !important;
+    filter: none !important;
+  }
+  
+  /* Mobile icons container - ensure it's always horizontal */
+  .mobile-icons-container {
+    display: none; /* Hidden by default, shown in mobile */
+
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+  }
+  
+  /* Ensure the cursor doesn't appear on mobile */
+  @media (pointer: coarse) {
+    .cursor {
+      display: none !important;
+    }
+    
+    /* Re-enable normal cursors on mobile */
+    a, button, .project-card, .contact-button, input, 
+    select, textarea, [role="button"], .lets-chat-button,
+    .nav-button, .title-icon, .icon-container,
+    .draggable-window, .draggable-icon, 
+    .window-header, .window-content, .window-buttons {
+      cursor: auto !important;
+    }
+  }
+  
+  /* ======================
+     9. Media Queries
+     ====================== */
+  /* Large screens */
+  @media (max-width: 1440px) {
+    .hero-button {
+      width: 380px;
+      height: 312px;
+    }
+  
+    .contact-stamp {
+      right: 240px;
+      width: 100px;
+      height: 100px;
+    }
+    
+    .hero-buttons {
+      gap: 25px;
+    }
+  }
+  
+  /* Tablet */
+  @media (max-width: 1024px) {
+    .contact-buttons {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* Mobile and Touch devices */
+  @media (max-width: 768px), (pointer: coarse) {
+    /* Add more spacing above the title */
+    .background-title {
+      position: relative;
+      top: 30px !important; /* Increased from 15px */
+      margin-bottom: 40px !important; /* Increased from 20px */
+    }
+    
+    /* Projects */
+    .projects-container {
+      padding-left: 16px;
+      padding-right: 16px;
+      margin-top: 40px !important; /* Add separation between hero and projects */
+    }
+    
+    .project-cards {
+      grid-template-columns: 1fr;
+      row-gap: 32px;
+    }
+    
+    .project-card {
+      height: auto;
+      min-height: 400px;
+    }
+    
+    .project-card-image-container {
+      height: 350px;
+    }
+    
+    .projects-title-section {
+      padding: 20px var(--spacing-md) 40px;
+    }
+    
+    .section-title {
+      font-size: 28px;
+    }
+    
+    /* Draggable elements */
+    .draggable-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: auto !important;
+      padding-bottom: 50px !important; /* Increased from 30px */
+    }
+    
+    /* Remove absolute positioning from all draggable elements */
+    .draggable-window, 
+    .draggable-icon {
+      position: relative !important;
+      margin: 8px auto !important; /* Reduced from 15px */
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      transform: none !important;
+      z-index: 1 !important;
+    }
+    
+    /* Specific window sizing */
+    #hello-window,
+    #hello-image-1 {
+      width: 85% !important; /* Slightly smaller than before */
+      max-width: 280px !important; /* Reduced from 320px */
+    }
+    
+    /* Make windows more compact */
+    .draggable-window .window-content {
+      padding: 12px !important; /* Smaller padding */
+    }
+    
+    .mobile-icons-container {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+      padding: 10px 0 !important;
+      gap: 30px !important;
+      margin: 25px 0 20px 0 !important;
+  }
+  
+  /* Style each icon in the container */
+  .mobile-icons-container .draggable-icon {
+      width: 60px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+  }
+  
+  /* Make icon images smaller */
+  .mobile-icons-container .icon-img {
+      width: 40px !important;
+      height: 40px !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+  }
+  
+  /* Style the icon images */
+  .mobile-icons-container .icon-img img {
+      width: 32px !important;
+      height: 32px !important;
+      object-fit: contain !important;
+  }
+  
+  /* Make the text labels smaller */
+  .mobile-icons-container .icon-label {
+      font-size: 12px !important;
+      margin-top: 4px !important;
+      text-align: center !important;
+  }
+  
+  /* Override any opacity/visibility issues */
+  .mobile-icons-container .draggable-icon,
+  .mobile-icons-container .icon-img,
+  .mobile-icons-container .icon-img img,
+  .mobile-icons-container .icon-label {
+      opacity: 1 !important;
+      visibility: visible !important;
+  }
+} 
+
+    /* Navigation adjustments */
+    .top-nav {
+      padding: 16px 24px;
+    }
+    
+    .lets-chat-button {
+      width: 110px;
+      padding: 12px;
+      font-size: 13px;
+    }
+    
+    .hero-navigation {
+      gap: 16px;
+      bottom: 40px;
+    }
+    
+    .nav-button {
+      width: 100px;
+      height: 42px;
+      font-size: 16px;
+    }
+    
+    /* Project detail page */
+    .project-header {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 40px 20px;
+    }
+    
+    .project-content {
+      width: 100%;
+      max-width: 680px;
+    }
+    
+    .project-title {
+      font-size: 48px;
+    }
+    
+    .project-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .image-grid {
+      padding: 0 20px;
+    }
+    
+    .grid-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .project-navigation {
+      padding: 40px 20px;
+    }
+    
+    
+    /* Contact section */
+    .contact-header {
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .contact-right {
+      align-items: flex-start;
+    }
+    
+    .contact-location,
+    .contact-text {
+      text-align: left;
+      width: 80%;
+    }
+   
+    .contact-title {
+      font-size: 36px;
+    }
+    
+    .window-content {
+      padding: 25px;
+    }
+    
+  

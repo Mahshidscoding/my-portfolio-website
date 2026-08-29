@@ -1,0 +1,116 @@
+/* variables.css - All global variables and utility classes */
+
+:root {
+  /* Colors */
+  --color-primary: black;
+  --color-white: white;
+  --color-gray: #7B7B7B;
+  --color-lightGrey: #F5F5F5;
+  --color-background: white;
+  --color-homebg: #ffffff;
+  --color-text: #333;
+  --color-cobalt: #0E2C91;
+  --color-cobaltblue: #0114FE;
+
+  /* Typography */
+  --font-primary: 'Space Grotesk', sans-serif;
+  
+  /* Font Sizes */
+  --font-size-h1: 175px;
+  --font-size-h2: 48px;
+  --font-size-h3: 48px;
+  --font-size-h4: 36px;
+  --font-size-body: 24px;
+  --font-size-button: 16px;
+  --font-size-h5: 16px;
+  --font-size-sub: 14px;
+  --font-size-title: 24px;
+  --font-size-normal: 18px;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px; /* Primary margin/padding size */
+  --spacing-lg: 40px;
+  --spacing-xl: 80px;
+  --spacing-2xl: 120px;
+
+  /* Layout */
+  --container-max: 1460px;
+  --container-default: 1272px;
+  --header-height: 80px;
+  --button-height: 60px;
+  --button-width: 175px;
+
+  /* Transitions */
+  --transition-default: all 0.3s ease;
+
+  /* Z-index layers */
+  --z-menu: 1000;
+  --z-overlay: 1001;
+
+  --contact-button-width: 257px;
+  --contact-button-height: 100px;
+}
+
+/* Common Utility Classes */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-2-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Font weight utility classes */
+.font-light {
+  font-family: var(--font-primary);
+  font-weight: 300;
+}
+
+.font-regular {
+  font-family: var(--font-primary);
+  font-weight: 400;
+}
+
+.font-medium {
+  font-family: var(--font-primary);
+  font-weight: 500;
+}
+
+.font-bold {
+  font-family: var(--font-primary);
+  font-weight: 700;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+  :root {
+    --font-size-h1: 120px;
+    --font-size-h2: 56px;
+    --font-size-h3: 40px;
+    --font-size-body: 24px;
+    --spacing-2xl: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-size-h1: 56px;
+    --font-size-h2: 42px;
+    --font-size-h3: 32px;
+    --font-size-body: 18px;
+    --font-size-button: 16px;
+    --font-size-title: 20px;
+    --spacing-xl: 60px;
+    --spacing-2xl: 60px;
+  }
+}
