@@ -1079,13 +1079,6 @@
       z-index: 1 !important;
     }
     
-    /* Specific window sizing */
-    #hello-window,
-    #hello-image-1 {
-      width: 85% !important; /* Slightly smaller than before */
-      max-width: 280px !important; /* Reduced from 320px */
-    }
-    
     /* Make windows more compact */
     .draggable-window .window-content {
       padding: 12px !important; /* Smaller padding */

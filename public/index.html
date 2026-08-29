@@ -72,22 +72,6 @@
             padding: 16px; /* Reduced padding */
         }
         
-        /* Specific padding for hello-window text */
-        #hello-window .window-content p {
-            margin: 2px 0; /* Reduced vertical margin for text */
-            margin-bottom: 24px; /* Increase bottom margin for text */
-        }
-        
-        /* Adjust button spacing */
-        #hello-window .window-buttons {
-            margin-top: 18px; /* Adjusted from original value */
-        }
-        
-        /* Different padding for image windows */
-        #hello-image-1 .window-content {
-            padding: 8px; /* Smaller padding for image windows */
-        }
-        
         /* Animation keyframes for navigation */
         @keyframes navPopIn {
             0% {
@@ -182,8 +166,7 @@
         </div>
         
 
-        <!-- Add this right after the hello-image-1 window in your HTML -->
-<div class="draggable-window" id="overlay-window">
+        <div class="draggable-window" id="overlay-window">
     <div class="window-header">
         <div class="window-dots">
             <span class="dot"></span>

@@ -40,57 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Initialize draggable functionality for windows
-    interact('.plain').draggable({
-        inertia: true,
-        modifiers: [
-            interact.modifiers.restrictRect({
-                restriction: 'parent',
-                endOnly: true
-            })
-        ],
-        autoScroll: true,
-        
-        listeners: {
-            start(event) {
-                // Add dragging class
-                event.target.classList.add('dragging');
-                
-                // Bring window to front
-                const zIndex = getHighestZIndex() + 1;
-                event.target.style.zIndex = zIndex;
-            },
-            
-            move(event) {
-                const target = event.target;
-                
-                // Get current position
-                let x = parseFloat(target.getAttribute('data-x')) || 0;
-                let y = parseFloat(target.getAttribute('data-y')) || 0;
-                
-                // Update position
-                x += event.dx;
-                y += event.dy;
-                
-                // Apply translation
-                target.style.transform = `translate(${x}px, ${y}px)`;
-                
-                // Store updated position
-                target.setAttribute('data-x', x);
-                target.setAttribute('data-y', y);
-            },
-            
-            end(event) {
-                // Remove dragging class
-                event.target.classList.remove('dragging');
-            }
-        }
-    });
-
-
-    
-   
-    
     // Custom cursor functionality
     const cursor = document.querySelector('.cursor');
     
