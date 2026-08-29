@@ -1,0 +1,484 @@
+/* --- merged from css/reflections.css --- */
+.project-title-header {
+    text-align: left;
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 32px;
+    color: #000;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Responsive adjustment for mobile */
+@media (max-width: 768px) {
+    .project-title-header {
+        text-align: left;
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+}
+
+
+.ai-features-subtitle {
+    text-align: center;
+    max-width: 800px;
+    margin: -40px auto 60px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Update margin for the title to reduce space between title and subtitle */
+.ai-features-title {
+    margin-bottom: 24px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ai-features-subtitle {
+        margin: -30px auto 40px;
+        font-size: 16px;
+    }
+}
+
+
+
+
+/* Simple AI Features Styles */
+.ai-features {
+    max-width: 1600px;
+    margin: 80px auto;
+    padding: 0 24px;
+}
+
+.ai-features-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
+    margin-top: 100px; /* Consistent top spacing for all section titles */
+    margin-bottom: 40px;
+}
+
+/* Style for all feature section subtitles */
+.ai-features-subtitle {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 80px; /* Remove negative margins, consistent bottom spacing */
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+
+
+.ai-feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 80px;
+    align-items: center;
+}
+
+.ai-feature-text {
+    padding-right: 20px;
+    max-width: 600px; /* Add a max-width to constrain the text */
+    padding-left: 20px; /* Padding on left now */
+}
+
+.ai-feature-text h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0 0 16px 0;
+    color: #000;
+}
+
+.ai-feature-text p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #313131;
+}
+
+.ai-feature-image-container {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    overflow: hidden;
+
+}
+
+.ai-feature-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 20px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .ai-feature-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .ai-feature-text {
+        order: 2; /* Text below image on mobile */
+        padding-right: 0;
+        max-width: 100%; /* Full width on mobile */
+    }
+    
+    .ai-feature-image-container {
+        order: 1; /* Image above text on mobile */
+        height: 300px;
+    }
+}
+
+
+/* Add space before contact section */
+#contact {
+    margin-top: 120px !important;
+}
+
+/* Add this to your style section */
+
+/* Add more space after the last feature row */
+.ai-feature-row:last-of-type {
+    margin-bottom: 120px; /* Increased from 80px */
+}
+
+/* Add space around the conclusion section */
+.ai-features-title + .ai-features-subtitle {
+    margin-bottom: 80px; /* More space after the conclusion text */
+}
+
+/* Conclusion heading needs more space above it */
+.ai-features-title:nth-of-type(2) {
+    margin-top: 120px; /* Add space above the conclusion heading */
+    margin-bottom: 40px; /* Slightly less space below the heading */
+}
+
+/* Add more space before the contact section */
+.contact-section-wrapper {
+    margin-top: 160px !important; /* Increased from normal margin */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ai-feature-row:last-of-type {
+        margin-bottom: 80px; /* Slightly less on mobile */
+    }
+    
+    .ai-features-title:nth-of-type(2) {
+        margin-top: 80px; /* Less space on mobile */
+    }
+    
+    .contact-section-wrapper {
+        margin-top: 120px !important; /* Less on mobile but still spacious */
+    }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ai-features-title {
+        margin-top: 80px;
+        margin-bottom: 30px;
+        font-size: 28px;
+    }
+    
+    .ai-features-subtitle {
+        margin-bottom: 60px;
+        font-size: 16px;
+    }
+    
+    .ai-feature-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-bottom: 60px;
+    }
+    
+    #contact {
+        margin-top: 80px !important;
+    }
+}
+
+/* First section title needs different spacing (no top margin needed) */
+.ai-features-title:first-of-type {
+    margin-top: 0;
+}
+
+/* Remove any existing negative margins that might be causing issues */
+.ai-features {
+    max-width: 1600px;
+    margin: 80px auto;
+    padding: 0 24px;
+    overflow: visible; /* Ensure no margin collapse issues */
+}
+
+/* --- moved out of AI.html inline <style> --- */
+/* Custom cursor styles */
+
+        body, html {
+            background-color: #ffffff !important;
+
+            cursor: none; /* Hide the default cursor */
+        }
+
+        .cursor {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    background-color: white;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
+    will-change: transform, width, height;
+}
+
+/* Make all interactive elements use the custom cursor */
+a, button, .project-card, .contact-button, input, 
+select, textarea, [role="button"], .lets-chat-button,
+.nav-button, .title-icon, .icon-container {
+    cursor: none !important;
+}
+
+/* Duplicate declaration to match other pages */
+body, html {
+    cursor: none;
+}
+        
+        /* Updated project card styles to match homepage */
+        .project-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            width: 100%;
+        }
+        
+        .project-card {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .project-card-image-container {
+            width: 100%;
+            height: 523px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .project-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-card:hover .project-card-image {
+            transform: scale(1.05);
+        }
+        
+        .project-card-content {
+            margin-top: 16px;
+        }
+        
+        .project-title-with-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .icon-container {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .icon-default {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .icon-hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-card:hover .icon-default {
+            opacity: 0;
+        }
+        
+        .project-card:hover .icon-hover {
+            opacity: 1;
+        }
+        
+        .project-card-title-container {
+            position: relative;
+        }
+        
+        .default-title {
+            opacity: 1;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(0);
+            font-size: var(--font-size-h3);
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .hover-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            font-size: var(--font-size-normal);
+            color: var(--color-gray);
+        }
+        
+        .project-card:hover .default-title {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        
+        .project-card:hover .hover-title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .project-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-card-image-container {
+                height: 400px;
+            }
+        }
+
+
+    /* Make projects-container background transparent on project pages */
+
+    .projects-container {
+        background: transparent !important;
+    }
+    
+    /* Make contact section full width */
+    .contact-section-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    
+    /* Match the contact window width to the projects container width */
+    .contact-window {
+        max-width: none !important;
+        width: 100% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Match contact section to homepage */
+.contact-window {
+    background-color: transparent !important; /* Make background transparent like on homepage */
+}
+
+.window-content {
+    padding: 32px !important; /* Match the padding to your homepage (adjust this value as needed) */
+}
+
+/* Fix padding for homepage-style contact buttons */
+.contact-buttons {
+    padding: 0 !important;
+}
+
+/* Ensure contact text styling matches homepage */
+.contact-text {
+    width: auto !important; /* Reset width constraint */
+}
+
+/* Adjusted margins to prevent compound spacing */
+
+/* Projects container - streamlined margins */
+.projects-container {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: auto !important; /* Let it calculate naturally */
+}
+
+/* Fix contact section wrapper - remove excess width calculations */
+.contact-section-wrapper {
+    max-width: 1600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    width: auto !important; /* Let it calculate naturally */
+}
+
+/* Remove any existing negative padding */
+.project-images {
+    padding: 0 !important;
+}
+
+/* Mobile responsiveness with simplified measurements */
+@media (max-width: 768px) {
+    .projects-container, 
+    .contact-section-wrapper {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+    
+    .section-divider {
+        width: calc(100% - 32px) !important;
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+    }
+}
+
+        /* Medium screens (tablets) */
+        @media (max-width: 1024px) {
+    .project-hero-content h1 {
+        font-size: 70px !important; /* Reduced size for tablets */
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    .project-hero-content h1 {
+        font-size: 56px; /* Significantly smaller on mobile */
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .project-hero-content h1 {
+        font-size: 48px; /* Even smaller on very small screens */
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+    .project-hero-content h1 {
+        font-size: 32px; /* Minimum size for very small screens */
+    }
+}

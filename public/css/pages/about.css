@@ -1,3 +1,4 @@
+/* --- merged from css/about.css --- */
 /* about.css - Styles for the About page */
 
 :root {
@@ -605,5 +606,34 @@ html {
 }
 }
 
+/* --- moved out of about.html inline <style> --- */
+/* Custom cursor styles */
+        body, html {
+            cursor: none; /* Hide the default cursor */
+        }
 
-
+        .cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            background-color: white;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
+            will-change: transform, width, height;
+        }
+        
+        /* Make all interactive elements use the custom cursor */
+        a, button, .skills-cta-button, .contact-button, input, 
+        select, textarea, [role="button"], .lets-chat-button,
+        .nav-button, .title-icon, .icon-container {
+            cursor: none !important;
+        }
+        
+        /* Duplicate declaration to match ARCH page exactly */
+        body, html {
+            cursor: none;
+        }

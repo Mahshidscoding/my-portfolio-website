@@ -1,0 +1,98 @@
+/* --- moved out of index.html inline <style> --- */
+/* Custom cursor styles */
+        body, html {
+            cursor: none; /* Hide the default cursor */
+            background-color: var(--color-homebg) !important;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
+        }
+        
+        .cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            background-color: white;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
+            will-change: transform, width, height;
+        }
+        
+        /* Make all interactive elements use the custom cursor */
+        a, button, .project-card, .contact-button, input, 
+        select, textarea, [role="button"], .lets-chat-button,
+        .nav-button, .title-icon, .icon-container,
+        .draggable-window, .draggable-icon, .window-header,
+        .window-content, .window-buttons {
+            cursor: none !important;
+        }
+        
+        /* Ensure content inside draggable elements also uses custom cursor */
+        .draggable-window *,
+        .draggable-icon * {
+            cursor: none !important;
+        }
+        
+        /* Prevent cursor from changing during drag operations */
+        .dragging {
+            cursor: none !important;
+        }
+        
+        /* Adjusted window content padding */
+        .draggable-window .window-content {
+            padding: 16px; /* Reduced padding */
+        }
+        
+        /* Animation keyframes for navigation */
+        @keyframes navPopIn {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            70% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes navPopOut {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+        }
+
+        body.homepage .lets-chat-button {
+    /* Increase background opacity for better visibility on homepage */
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    
+    /* Stronger blur effect specifically for homepage */
+    background-color: rgba(255, 255, 255, 0.01) !important; /* 1% opacity white */
+    backdrop-filter: blur(5px) !important; /* Background blur */
+    -webkit-backdrop-filter: blur(5px) !important; /* For Safari */
+    
+    /* Ensure proper layering */
+    z-index: 1001 !important; /* Higher than other elements in the navigation */
+    
+    /* Add a subtle gradient background as fallback */
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.2)
+    ) !important;
+
+    /* Ensure the button is actually in front of other elements */
+    position: relative !important;
+  }
