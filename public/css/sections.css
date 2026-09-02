@@ -15,7 +15,7 @@
   .intro-text h1 {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 400;
-    font-size: 24px;
+    font-size: 18px;
     margin: 0 0 16px 0;
     color: #000;
   }
@@ -943,7 +943,7 @@
     }
     
     .intro-text h1 {
-      font-size: 18px !important;
+      font-size: 14px !important;
       font-weight: 400 !important;
       margin: 0 0 16px 0 !important;
       text-align: center !important;
