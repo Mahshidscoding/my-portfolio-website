@@ -298,8 +298,8 @@ html {
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-    bottom: 45px; /* Adjust this value to move up/down */
-    left: 67%; /* Center horizontally - adjust to move left/right */
+    bottom: 28px; /* Adjust this value to move up/down */
+    left: 58%; /* Center horizontally - adjust to move left/right */
     transform: translateX(-50%); /* Ensures true centering */
 
     display: flex;
