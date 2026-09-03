@@ -121,38 +121,51 @@
     if (scroller) scroller.scrollTo({ top: 0, behavior: 'auto' });
   }
 
+  var opening = false;
+
   function openProject(slug, opts) {
     opts = opts || {};
     if (!panels[slug]) return;
+    // ignore a duplicate trigger (interact 'tap' + native 'click' for one press)
+    if (opening) return;
+    if (slug === current && app.dataset.view === 'reading') return;
+    opening = true;
+    setTimeout(function () { opening = false; }, 350);
     stopAllDrift();
 
-    var doOpen = function () {
-      current = slug;
-      app.dataset.view = 'reading';
-      if (!railList.children.length) buildRail();
-      markActiveRail(slug);
-      railList.querySelectorAll('.rail-item__sections').forEach(function (w) { w.innerHTML = ''; });
-      fillSections(slug);
-      showPanel(slug);
-      if (history.replaceState) history.replaceState(null, '', '#' + slug);
-      else location.hash = slug;
-    };
-
     var float = floats.find(function (f) { return f.dataset.slug === slug; });
+    var animate = !(opts.animate === false || reduce || isCompact() || !float);
 
-    if (opts.animate === false || reduce || isCompact() || !float) {
-      doOpen();
-      return;
-    }
+    // capture the card's on-screen box BEFORE we switch views (which hides it)
+    var media = animate ? float.querySelector('.project-float__media') : null;
+    var from = media ? media.getBoundingClientRect() : null;
+    if (float) float.classList.add('is-launching');
 
-    // FLIP: clone the card media, fly it to the rail item slot
-    var media = float.querySelector('.project-float__media');
-    var from = media.getBoundingClientRect();
-    float.classList.add('is-launching');
-
+    // --- show the reading view + content immediately (never rAF-gated) ---
+    current = slug;
     app.dataset.view = 'reading';
     if (!railList.children.length) buildRail();
     markActiveRail(slug);
+    railList.querySelectorAll('.rail-item__sections').forEach(function (w) { w.innerHTML = ''; });
+    fillSections(slug);
+    showPanel(slug);
+    if (history.replaceState) history.replaceState(null, '', '#' + slug);
+    else location.hash = slug;
+
+    if (!animate) {
+      if (float) float.classList.remove('is-launching');
+      return;
+    }
+
+    // --- decorative FLIP clone flying into the rail (best effort) ---
+    var done = false;
+    var finishFlip = function () {
+      if (done) return;
+      done = true;
+      var c = document.querySelector('.flip-clone');
+      if (c) c.remove();
+      float.classList.remove('is-launching');
+    };
 
     requestAnimationFrame(function () {
       var target = railList.querySelector('.rail-item[data-slug="' + slug + '"]');
@@ -164,44 +177,23 @@
       clone.style.top = from.top + 'px';
       clone.style.width = from.width + 'px';
       clone.style.height = from.height + 'px';
-      var img = media.querySelector('.static-image').cloneNode(true);
-      clone.appendChild(img);
+      clone.appendChild(media.querySelector('.static-image').cloneNode(true));
       document.body.appendChild(clone);
 
-      var sx = Math.max(0.12, (to.width || 40) / from.width);
-      var dx = to.left - from.left;
-      var dy = to.top + 10 - from.top;
-
+      var sx = Math.max(0.1, (to.width || 40) / from.width);
       var anim = clone.animate([
         { transform: 'translate(0,0) scale(1)', opacity: 1 },
-        { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ')', opacity: 0 }
+        { transform: 'translate(' + (to.left - from.left) + 'px,' + (to.top + 10 - from.top) + 'px) scale(' + sx + ')', opacity: 0 }
       ], { duration: 460, easing: 'cubic-bezier(0.5,0,0.2,1)' });
-
-      var revealed = false;
-      var reveal = function () {
-        if (revealed) return;
-        revealed = true;
-        fillSections(slug);
-        showPanel(slug);
-        current = slug;
-        if (history.replaceState) history.replaceState(null, '', '#' + slug);
-      };
-      var cleanup = function () {
-        reveal();
-        if (clone.parentNode) clone.remove();
-        float.classList.remove('is-launching');
-      };
-
-      // reveal reading content slightly before the clone lands
-      setTimeout(reveal, 200);
-      anim.onfinish = cleanup;
-      // safety net if the WAAPI callback never fires (throttled tab, interruption)
-      setTimeout(cleanup, 900);
+      anim.onfinish = finishFlip;
     });
+
+    setTimeout(finishFlip, 1000);
   }
 
   function backToCards() {
     current = null;
+    opening = false;
     app.dataset.view = 'cards';
     if (history.replaceState) history.replaceState(null, '', location.pathname);
     else location.hash = '';
@@ -248,23 +240,55 @@
   }
 
   function initDrag() {
-    if (typeof interact === 'undefined' || isCompact()) return;
+    var hasInteract = typeof interact !== 'undefined';
+    // a small move budget so an imprecise click still counts as a "tap" (open)
+    if (hasInteract) interact.pointerMoveTolerance(7);
+
     floats.forEach(function (el) {
-      setTransform(el, 0, 0);
-      interact(el).draggable({
-        inertia: true,
-        listeners: {
-          start: function (e) {
-            stopDrift(e.target.dataset.slug);
-            e.target.classList.add('is-dragging');
-            e.target.style.zIndex = 500;
-          },
-          move: function (e) {
-            var x = (parseFloat(e.target.dataset.x) || 0) + e.dx;
-            var y = (parseFloat(e.target.dataset.y) || 0) + e.dy;
-            setTransform(e.target, x, y);
-          },
-          end: function (e) { e.target.classList.remove('is-dragging'); }
+      setTransform(el, parseFloat(el.dataset.x) || 0, parseFloat(el.dataset.y) || 0);
+
+      var openFromTap = function () { openProject(el.dataset.slug, { animate: true }); };
+
+      if (hasInteract && !isCompact()) {
+        var draggedAt = 0;
+        var ix = interact(el);
+        ix.draggable({
+          inertia: true,
+          listeners: {
+            start: function (e) {
+              stopDrift(e.target.dataset.slug);
+              e.target.classList.add('is-dragging');
+              e.target.style.zIndex = 500;
+            },
+            move: function (e) {
+              var x = (parseFloat(e.target.dataset.x) || 0) + e.dx;
+              var y = (parseFloat(e.target.dataset.y) || 0) + e.dy;
+              setTransform(e.target, x, y);
+            },
+            end: function (e) {
+              draggedAt = Date.now();
+              e.target.classList.remove('is-dragging');
+            }
+          }
+        });
+        // interact's 'tap' = pointer pressed + released without moving past the
+        // tolerance (a real click, not a drag)
+        ix.on('tap', openFromTap);
+        // fallback: a plain click that wasn't the tail of a drag
+        el.addEventListener('click', function () {
+          if (el.classList.contains('is-dragging')) return;
+          if (Date.now() - draggedAt < 200) return;
+          openFromTap();
+        });
+      } else {
+        el.addEventListener('click', openFromTap);
+      }
+
+      // keyboard: the card is role="button"
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openProject(el.dataset.slug, { animate: true });
         }
       });
     });
@@ -298,14 +322,6 @@
 
   function startAllDrift() { SLUGS.forEach(function (s) { setTimeout(function () { startDrift(s); }, Math.random() * 600); }); }
   function stopAllDrift() { SLUGS.forEach(stopDrift); }
-
-  floats.forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      if (el.classList.contains('is-dragging')) return;
-      e.preventDefault();
-      openProject(el.dataset.slug, { animate: true });
-    });
-  });
 
   /* ====================================================================
    * Hash routing

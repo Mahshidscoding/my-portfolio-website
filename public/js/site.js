@@ -55,15 +55,44 @@
     var navInfo = document.querySelector('.nav-info');
     var contactLabel = document.querySelector('.nav-info__contact');
 
-    if (navInfo && contactLabel) {
-      // panel opens only while the Contact label (or the open panel) is hovered
-      var open = function () { navInfo.classList.add('show-contact'); };
-      var close = function () { navInfo.classList.remove('show-contact'); };
-      contactLabel.addEventListener('mouseenter', open);
-      contactLabel.addEventListener('focus', open, true);
-      navInfo.addEventListener('mouseleave', close);
+    var panel = document.querySelector('.nav-contact-panel');
+    if (navInfo && contactLabel && panel) {
+      // Panel opens while the Contact label OR the open panel is hovered.
+      // A short close-delay lets the pointer travel from the label to the panel.
+      var closeTimer = null;
+      var open = function () {
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+        navInfo.classList.add('show-contact');
+      };
+      var scheduleClose = function () {
+        if (closeTimer) clearTimeout(closeTimer);
+        closeTimer = setTimeout(function () {
+          navInfo.classList.remove('show-contact');
+          closeTimer = null;
+        }, 140);
+      };
+      var closeNow = function () {
+        if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+        navInfo.classList.remove('show-contact');
+      };
+
+      [contactLabel, panel].forEach(function (el) {
+        el.addEventListener('pointerenter', open);
+        el.addEventListener('pointerleave', scheduleClose);
+      });
+      // hovering the other tabs, or leaving the whole box, closes immediately
+      navInfo.querySelectorAll('.nav-info__links a').forEach(function (a) {
+        a.addEventListener('pointerenter', closeNow);
+      });
+      navInfo.addEventListener('pointerleave', scheduleClose);
+
+      // keyboard
+      contactLabel.addEventListener('focus', open);
       navInfo.addEventListener('focusout', function (e) {
-        if (!navInfo.contains(e.relatedTarget)) close();
+        if (!navInfo.contains(e.relatedTarget)) closeNow();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeNow();
       });
     }
 

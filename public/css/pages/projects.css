@@ -115,6 +115,8 @@ a, button, [role="button"],
   height: 100%;
   object-fit: cover;
   display: block;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .project-float .animated-gif {

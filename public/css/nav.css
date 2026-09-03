@@ -23,15 +23,23 @@
 }
 
 .nav-logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  padding-top: 4px;
+  gap: 9px;
+  padding: 6px 2px;
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  color: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
 }
 
-.nav-logo img {
-  height: 34px;
-  width: auto;
-  display: block;
+.nav-logo__mark {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: #e5352b;
+  flex-shrink: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -40,6 +48,7 @@
 .nav-info {
   width: 320px;
   max-width: calc(100vw - 48px);
+  flex-shrink: 0;
   background: #ffffff;
   border: 1px solid #000;
   border-radius: 10px;
@@ -204,8 +213,8 @@
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
   .site-nav { padding: 14px 16px; }
-  .nav-logo img { height: 28px; }
-  .nav-info { width: 236px; }
+  .nav-logo { display: none; }         /* the info box already carries the name */
+  .nav-info { width: min(260px, calc(100vw - 32px)); margin-left: auto; }
   .nav-info__bio { display: none; }
   .nav-info__links { padding: 6px; gap: 4px; }
   .nav-info__links a,
@@ -226,6 +235,14 @@
 }
 
 @view-transition { navigation: auto; }
+
+/* The top nav is the same on every page — keep it visually static across
+   navigations instead of letting it fade in and out. */
+.site-nav { view-transition-name: site-nav; }
+::view-transition-group(site-nav),
+::view-transition-old(site-nav),
+::view-transition-new(site-nav) { animation: none !important; }
+::view-transition-old(site-nav) { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
