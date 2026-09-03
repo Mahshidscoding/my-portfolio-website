@@ -224,8 +224,8 @@
 /* Custom cursor styles */
 
         body, html {
-            background-color: #ffffff !important;
-
+            background-color: var(--color-background) !important;
+            color: var(--color-text);
             cursor: none; /* Hide the default cursor */
         }
 

@@ -1,16 +1,18 @@
 /* variables.css - All global variables and utility classes */
 
 :root {
-  /* Colors */
-  --color-primary: black;
-  --color-white: white;
-  --color-gray: #7B7B7B;
-  --color-lightGrey: #F5F5F5;
-  --color-background: white;
-  --color-homebg: #ffffff;
-  --color-text: #333;
-  --color-cobalt: #0E2C91;
-  --color-cobaltblue: #0114FE;
+  /* Colors — dark theme */
+  --color-primary: #f4f4f4;      /* headings / high-contrast text */
+  --color-white: #ffffff;
+  --color-gray: #8f8f8f;         /* muted labels */
+  --color-lightGrey: #1c1c1c;    /* subtle raised surfaces */
+  --color-background: #0e0e0e;
+  --color-homebg: #0e0e0e;
+  --color-text: #cfcfcf;         /* body copy */
+  --color-surface: #161616;      /* cards / panels */
+  --color-hairline: rgba(255, 255, 255, 0.16);
+  --color-cobalt: #3B54D8;
+  --color-cobaltblue: #4258ff;
 
   /* Typography */
   --font-primary: 'Space Grotesk', sans-serif;

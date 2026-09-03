@@ -1,0 +1,90 @@
+/* ==========================================================================
+   theme.css — dark-theme overrides for colours that the older stylesheets
+   hard-coded as #000 / #fff (often with !important). Loaded LAST on every page.
+   ========================================================================== */
+
+html,
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* --- reading view: image-grid text sections were forced black --- */
+.reading-view .text-section-title h2,
+.reading-view .text-section-content p,
+.reading-view .project-description {
+  color: var(--color-primary) !important;
+}
+
+.reading-view .section-subtitle,
+.reading-view .tech-spec-label {
+  color: var(--color-gray) !important;
+}
+
+.reading-view .tech-spec-value {
+  color: var(--color-primary) !important;
+}
+
+.projects-rail {
+  border-right-color: var(--color-hairline) !important;
+}
+
+.rail-item__sections {
+  border-left-color: var(--color-hairline);
+}
+
+.to-cards {
+  background: var(--color-lightGrey);
+  color: var(--color-primary);
+  border-color: var(--color-hairline);
+}
+.to-cards:hover { background: #262626; }
+
+.panel-actions .action-button,
+.reading-view .action-button {
+  background: var(--color-lightGrey) !important;
+  color: var(--color-primary) !important;
+}
+
+/* black line icons -> light on dark surfaces */
+.home-hero .intro-icon img,
+.panel-actions .button-icon,
+.reading-view .action-button .button-icon,
+.skills-cta-button .button-icon {
+  filter: invert(1) brightness(1.6);
+}
+
+/* --- design-reflection card --- */
+.reflection-card {
+  background: var(--color-surface) !important;
+  border-color: var(--color-hairline) !important;
+}
+.reflection-card-title { color: var(--color-primary); }
+.reflection-card-description { color: var(--color-text); }
+.reflection-card-date { color: var(--color-gray); }
+
+/* --- misc text that was pinned black --- */
+.section-title { color: var(--color-primary); }
+.skills-cta-button {
+  color: var(--color-primary) !important;
+  border-color: var(--color-hairline) !important;
+}
+.skills-cta-button:hover {
+  background-color: var(--color-cobalt) !important;
+  color: #fff !important;
+  border-color: var(--color-cobalt) !important;
+}
+.skills-cta-button:hover .button-icon { filter: brightness(0) invert(1); }
+
+/* --- Designing-for-AI reflection page --- */
+.project-title-header,
+.ai-features-title,
+.ai-feature-text h3,
+.formatted-list b { color: var(--color-primary) !important; }
+.ai-features-subtitle,
+.ai-feature-text p { color: var(--color-text) !important; }
+.ai-feature-image-container { background: var(--color-surface); }
+
+/* keep the nav info-box a light card (matches the Figma) — its own icons
+   stay dark, so undo the global invert inside it */
+.nav-contact-row img { filter: none !important; }

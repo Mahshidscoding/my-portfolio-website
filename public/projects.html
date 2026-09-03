@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Mahshid Mahmoudian</title>
+
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/pages/projects.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+
+<body class="projects-page">
+    <div class="cursor"></div>
+
+    <nav class="site-nav" data-reveal>
+        <a href="index.html" class="nav-logo">
+            <img src="images/logo-w.svg" alt="Mahshid Mahmoudian">
+        </a>
+        <div class="nav-info">
+            <div class="nav-info__brand">
+                <span class="nav-info__brand-mark"></span>
+                Mahshid Mahmoudian
+            </div>
+            <div class="nav-info__links">
+                <a href="index.html">About</a>
+                <a href="projects.html" aria-current="page">Projects</a>
+                <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
+            </div>
+            <p class="nav-info__bio">With a strong foundation in software and tool design, I blend precision and creativity to craft simple, efficient experiences full of character. Here&rsquo;s a glimpse of selected work &mdash; reach out for full details.</p>
+            <div class="nav-contact-panel">
+                <div class="nav-contact-panel__inner">
+                    <span class="nav-contact-panel__loc">Currently in Toronto, Canada (GMT-4)</span>
+                    <button type="button" class="nav-contact-row" id="nav-copy-email">
+                        <img src="images/social/email.svg" alt="">
+                        <span class="nav-contact-row__label">Copy email</span>
+                    </button>
+                    <a class="nav-contact-row" href="https://calendly.com/mahshidmdnn/30min" target="_blank" rel="noopener">
+                        <img src="images/social/call.svg" alt="">
+                        <span class="nav-contact-row__label">Book call</span>
+                    </a>
+                    <a class="nav-contact-row" href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">
+                        <img src="images/social/linkedin.svg" alt="">
+                        <span class="nav-contact-row__label">LinkedIn</span>
+                    </a>
+                    <a class="nav-contact-row" href="https://dribbble.com/MahshidDesign" target="_blank" rel="noopener">
+                        <img src="images/social/dribbble.svg" alt="">
+                        <span class="nav-contact-row__label">Dribbble</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="projects-app" data-view="cards">
+
+        <!-- ===================== CARDS VIEW ===================== -->
+        <section class="cards-view" data-reveal>
+            <div class="cards-stage">
+                <button class="project-float" data-slug="arch" style="--x:1%;--y:20px">
+                    <span class="project-float__label">
+                        <span class="project-float__name">Arch</span>
+                        <span class="project-float__desc">Product Design</span>
+                    </span>
+                    <span class="project-float__media gif-container">
+                        <img src="images/arch/card.png" alt="Arch" class="static-image">
+                        <img src="images/arch/card.gif" alt="" class="animated-gif">
+                    </span>
+                </button>
+
+                <button class="project-float" data-slug="tembo" style="--x:41%;--y:150px">
+                    <span class="project-float__label">
+                        <span class="project-float__name">Tembo</span>
+                        <span class="project-float__desc">Product Design</span>
+                    </span>
+                    <span class="project-float__media gif-container">
+                        <img src="images/tembo/card.png" alt="Tembo" class="static-image">
+                        <img src="images/tembo/card.gif" alt="" class="animated-gif">
+                    </span>
+                </button>
+
+                <button class="project-float" data-slug="command" style="--x:6%;--y:560px">
+                    <span class="project-float__label">
+                        <span class="project-float__name">CommandFreak</span>
+                        <span class="project-float__desc">XR application</span>
+                    </span>
+                    <span class="project-float__media gif-container">
+                        <img src="images/commandfreak/card.png" alt="CommandFreak" class="static-image">
+                        <img src="images/commandfreak/card.png" alt="" class="animated-gif">
+                    </span>
+                </button>
+
+                <button class="project-float" data-slug="sqlite" style="--x:39%;--y:700px">
+                    <span class="project-float__label">
+                        <span class="project-float__name">SQLite Cloud</span>
+                        <span class="project-float__desc">Product Design</span>
+                    </span>
+                    <span class="project-float__media gif-container">
+                        <img src="images/sqlite/card1.png" alt="SQLite Cloud" class="static-image">
+                        <img src="images/sqlite/card.gif" alt="" class="animated-gif">
+                    </span>
+                </button>
+
+                <button class="project-float" data-slug="brandmarch" style="--x:2%;--y:1120px">
+                    <span class="project-float__label">
+                        <span class="project-float__name">Brandmarch</span>
+                        <span class="project-float__desc">Product Design</span>
+                    </span>
+                    <span class="project-float__media gif-container">
+                        <img src="images/bm/card1.png" alt="Brandmarch" class="static-image">
+                        <img src="images/bm/card1.png" alt="" class="animated-gif">
+                    </span>
+                </button>
+
+                <button class="project-float" data-slug="descript" style="--x:40%;--y:1250px">
+                    <span class="project-float__label">
+                        <span class="project-float__name">Descript</span>
+                        <span class="project-float__desc">System Design</span>
+                    </span>
+                    <span class="project-float__media gif-container">
+                        <img src="images/descript/card.png" alt="Descript" class="static-image">
+                        <img src="images/descript/card.png" alt="" class="animated-gif">
+                    </span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================== READING VIEW ===================== -->
+        <div class="reading-view">
+            <aside class="projects-rail">
+                <button type="button" class="to-cards">&#9638;&nbsp; All projects</button>
+                <nav class="rail-list"></nav>
+            </aside>
+
+            <div class="reading-scroll">
+                <div class="reading-panels">
+
+                    <!-- ---------- ARCH ---------- -->
+                    <article class="project-panel" data-slug="arch" hidden>
+                        <div class="panel-head">
+                            <h1>ARCH</h1>
+                            <div class="panel-actions">
+                                <span class="action-button"><img src="images/location.svg" alt="" class="button-icon">Texas</span>
+                                <a class="action-button" href="https://arch.dev/" target="_blank" rel="noopener"><img src="images/external.svg" alt="" class="button-icon">Visit site</a>
+                            </div>
+                            <p class="project-description">Arch is an AI Data Analyst which delivers instant AI business insights where you work.</p>
+                            <p class="project-description">At Babco, I led their 2024 rebrand, developing key branding concepts and redesigning both the marketing site and main application interface.</p>
+                            <div class="stats-divider"></div>
+                            <div class="project-stats">
+                                <div class="stat-item"><span class="stat-label">Agency</span><span class="stat-value">BABCO</span></div>
+                                <div class="stat-item"><span class="stat-label">Role</span><span class="stat-value">Creative Lead,<br>Brand designer,<br>Product Designer</span></div>
+                                <div class="stat-item"><span class="stat-label">Year</span><span class="stat-value">2024</span></div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/arch/1.png" alt="ARCH"></div>
+                                <div class="grid-item"><img src="images/arch/2.png" alt="ARCH"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/arch/gif1.gif" alt="ARCH"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><h2>Brand Identity</h2></div>
+                                    <div class="text-section-content"><p>For Arch's rebrand, we introduced the magpie as a symbol of intelligence and adaptability, reflecting the company&rsquo;s data expertise. The new design balances a sharper, more modern look with friendly illustrations, making the brand feel both dynamic and approachable.</p></div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/arch/3.png" alt="ARCH"></div>
+                                <div class="grid-item"><img src="images/arch/4.png" alt="ARCH"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/arch/5.png" alt="ARCH"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><h2>Interface</h2></div>
+                                    <div class="text-section-content"><p>Arch&rsquo;s interface makes it easy to manage data with built-in tools for organization, collaboration, and scheduling. The knowledge base keeps information structured, while report generation lets users work side by side with AI in a split-screen view to customize details before scheduling. With everything in one place, teams can stay organized without the usual hassle.</p></div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/arch/6.png" alt="ARCH"></div>
+                                <div class="grid-item"><img src="images/arch/7.png" alt="ARCH"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/arch/8.png" alt="ARCH"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><h2>Marketing site</h2></div>
+                                    <div class="text-section-content"><p>Arch's marketing site was redesigned to feel more inviting and accessible. We introduced a brighter color palette, playful illustrations, and a clearer layout to make complex ideas easier to understand. The result is a site that feels less corporate and more approachable while still reflecting Arch's expertise.</p></div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/arch/1.png" alt="ARCH"></div>
+                                <div class="grid-item"><img src="images/arch/9.png" alt="ARCH"></div>
+                            </div>
+                        </section>
+                    </article>
+
+                    <!-- ---------- TEMBO ---------- -->
+                    <article class="project-panel" data-slug="tembo" hidden>
+                        <div class="panel-head">
+                            <h1>TEMBO</h1>
+                            <div class="panel-actions">
+                                <span class="action-button"><img src="images/location.svg" alt="" class="button-icon">Ohio</span>
+                                <a class="action-button" href="https://tembo.io/" target="_blank" rel="noopener"><img src="images/external.svg" alt="" class="button-icon">Visit site</a>
+                            </div>
+                            <p class="project-description">Tembo is an AI Data Analyst which delivers instant AI business insights where you work.</p>
+                            <p class="project-description">At Babco, I led their 2024 rebrand, developing key branding concepts and redesigning both the marketing site and main application interface.</p>
+                            <div class="stats-divider"></div>
+                            <div class="project-stats">
+                                <div class="stat-item"><span class="stat-label">Agency</span><span class="stat-value">BABCO</span></div>
+                                <div class="stat-item"><span class="stat-label">Role</span><span class="stat-value">Brand designer,<br>Product Designer</span></div>
+                                <div class="stat-item"><span class="stat-label">Year</span><span class="stat-value">2024</span></div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/tembo/1.png" alt="TEMBO"></div>
+                                <div class="grid-item"><img src="images/tembo/2.png" alt="TEMBO"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/tembo/3.png" alt="TEMBO"></div>
+                            </div>
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/tembo/4.png" alt="TEMBO"></div>
+                                <div class="grid-item">
+                                    <video autoplay loop muted playsinline class="video-content">
+                                        <source src="images/tembo/vid.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/tembo/5.png" alt="TEMBO"></div>
+                            </div>
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/tembo/6.png" alt="TEMBO"></div>
+                                <div class="grid-item"><img src="images/tembo/7.png" alt="TEMBO"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/tembo/8.png" alt="TEMBO"></div>
+                            </div>
+                        </section>
+                    </article>
+
+                    <!-- ---------- COMMANDFREAK ---------- -->
+                    <article class="project-panel" data-slug="command" hidden>
+                        <div class="panel-head">
+                            <h1>CommandFreak</h1>
+                            <p class="project-description">CommandFreak is an XR application designed for smart glasses that provides real-time, interactive guidance for learning keyboard shortcuts. While the concept is built for smart glasses, it has been prototyped in both AR and VR to explore its full potential.</p>
+                            <div class="stats-divider"></div>
+                            <div class="project-stats">
+                                <div class="stat-item"><span class="stat-label">Project type</span><span class="stat-value">Personal</span></div>
+                                <div class="stat-item"><span class="stat-label">Software</span><span class="stat-value">Unity</span></div>
+                                <div class="stat-item"><span class="stat-label">Year</span><span class="stat-value">2024&ndash;25</span></div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/commandfreak/1.png" alt="CommandFreak"></div>
+                                <div class="grid-item"><img src="images/commandfreak/2.png" alt="CommandFreak"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/commandfreak/3.png" alt="CommandFreak"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><div class="section-subtitle">Research</div><h2>Problem</h2></div>
+                                    <div class="text-section-content"><p>People struggle to remember keyboard shortcuts, slowing down their workflow. Most existing solutions require switching screens or memorizing lists, making learning inefficient.</p></div>
+                                </div>
+                            </section>
+                            <div class="single-image-container"><img src="images/commandfreak/4.png" alt="Keyboard shortcut research"></div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><div class="section-subtitle">Research</div><h2>Insights</h2></div>
+                                    <div class="text-section-content"><p>Users learn best when shortcuts appear in context, right when they need them. Many want a way to practice without disrupting their work.</p></div>
+                                </div>
+                            </section>
+                            <div class="single-image-container"><img src="images/commandfreak/5.png" alt="Keyboard shortcut insights"></div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><div class="section-subtitle">Research</div><h2>Target users</h2></div>
+                                    <div class="text-section-content"><p>Designers, developers, and power users who rely on shortcuts but find them hard to learn or remember.</p></div>
+                                </div>
+                            </section>
+                            <div class="single-image-container"><img src="images/commandfreak/6.png" alt="Target users"></div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><h2>Branding</h2></div>
+                                    <div class="text-section-content"><p>Inspired by FL Studio&rsquo;s keyboard, the color palette uses soft pastels to highlight each key intuitively. The logo is designed for flexibility, making it easy to adapt and collaborate with other brands through logo swaps in campaigns and partnerships.</p></div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/commandfreak/7.png" alt="CommandFreak"></div>
+                                <div class="grid-item"><img src="images/commandfreak/8.png" alt="CommandFreak"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/commandfreak/9.png" alt="CommandFreak"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><div class="section-subtitle">Phase one</div><h2>AR Prototype</h2></div>
+                                    <div class="text-section-content">
+                                        <p>In the first phase, I developed an AR filter prototype for CommandFreak using TikTok Effect House to make it more accessible for users.</p>
+                                        <div class="tech-specs-container">
+                                            <div class="tech-spec-item"><div class="tech-spec-label">Hardware</div><div class="tech-spec-value">Mobile</div></div>
+                                            <div class="tech-spec-item"><div class="tech-spec-label">Software</div><div class="tech-spec-value">TikTok App</div></div>
+                                            <div class="tech-spec-item"><div class="tech-spec-label">Platform</div><div class="tech-spec-value">Effect House</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/commandfreak/10.png" alt="CommandFreak"></div>
+                                <div class="grid-item"><img src="images/commandfreak/11.png" alt="CommandFreak"></div>
+                            </div>
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/commandfreak/12.png" alt="CommandFreak"></div>
+                                <div class="grid-item"><img src="images/commandfreak/13.png" alt="CommandFreak"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="video-container">
+                                    <iframe src="https://www.youtube.com/embed/6R1VNFiKH4E" title="CommandFreak AR prototype" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><div class="section-subtitle">Phase two</div><h2>XR Prototype</h2></div>
+                                    <div class="text-section-content">
+                                        <p>In the second phase, I developed CommandFreak in Unity for the Meta Quest headset, testing its functionalities with passthrough mode and gesture interactions. This helped explore how MR could be integrated into everyday life.</p>
+                                        <div class="tech-specs-container">
+                                            <div class="tech-spec-item"><div class="tech-spec-label">Hardware</div><div class="tech-spec-value">Meta Quest 3</div></div>
+                                            <div class="tech-spec-item"><div class="tech-spec-label">Software</div><div class="tech-spec-value">Unity</div></div>
+                                            <div class="tech-spec-item"><div class="tech-spec-label">Platform</div><div class="tech-spec-value">Application</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/commandfreak/14.png" alt="CommandFreak"></div>
+                                <div class="grid-item"><img src="images/commandfreak/15.png" alt="CommandFreak"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="video-container">
+                                    <iframe src="https://www.youtube.com/embed/S_CKPUHyOAM" title="CommandFreak XR prototype" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </section>
+                    </article>
+
+                    <!-- ---------- SQLITE CLOUD ---------- -->
+                    <article class="project-panel" data-slug="sqlite" hidden>
+                        <div class="panel-head">
+                            <h1>SQLite Cloud</h1>
+                            <div class="panel-actions">
+                                <span class="action-button"><img src="images/location.svg" alt="" class="button-icon">San Francisco</span>
+                                <a class="action-button" href="https://sqlitecloud.io/" target="_blank" rel="noopener"><img src="images/external.svg" alt="" class="button-icon">Visit site</a>
+                            </div>
+                            <p class="project-description">SQLite Cloud is a service that enables remote storage, synchronization, and management of SQLite databases across devices.</p>
+                            <p class="project-description">At Babco, I worked on its brand development, as well as designing the marketing site, design system and main application interface.</p>
+                            <div class="stats-divider"></div>
+                            <div class="project-stats">
+                                <div class="stat-item"><span class="stat-label">Agency</span><span class="stat-value">BABCO</span></div>
+                                <div class="stat-item"><span class="stat-label">Role</span><span class="stat-value">Brand designer,<br>Product Designer</span></div>
+                                <div class="stat-item"><span class="stat-label">Year</span><span class="stat-value">2024</span></div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/sqlite/1.png" alt="SQLite Cloud"></div>
+                                <div class="grid-item"><img src="images/sqlite/2.png" alt="SQLite Cloud"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/sqlite/gif1.gif" alt="SQLite Cloud"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><h2>Brand Identity</h2></div>
+                                    <div class="text-section-content"><p>For SQLite Cloud, we developed a brand that feels as lightweight and effortless as the service itself. Moving away from the heavy, dark themes common in developer tools, we focused on a softer, more approachable aesthetic. Feathers and cloud motifs, paired with a light blue palette and subtle highlights, create a sense of ease and fluidity&mdash;mirroring the seamless workflow SQLite Cloud enables.</p></div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/sqlite/3.png" alt="SQLite Cloud"></div>
+                                <div class="grid-item"><img src="images/sqlite/4.png" alt="SQLite Cloud"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/sqlite/5.png" alt="SQLite Cloud"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><h2>Interface</h2></div>
+                                    <div class="text-section-content"><p>The interface makes database management intuitive, allowing users to access, review, and modify entries without writing complex queries. Every design choice reinforces the idea of simplicity&mdash;keeping interactions lightweight and reducing friction for both experienced developers and those less familiar with SQL.</p></div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/sqlite/6.png" alt="SQLite Cloud"></div>
+                                <div class="grid-item"><img src="images/sqlite/7.png" alt="SQLite Cloud"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/sqlite/8.png" alt="SQLite Cloud"></div>
+                            </div>
+
+                            <section class="text-section">
+                                <div class="text-section-container">
+                                    <div class="text-section-title"><h2>Marketing site</h2></div>
+                                    <div class="text-section-content"><p>Designed with SQL developers in mind, the marketing site sets SQLite Cloud apart from traditional platforms. Instead of the usual technical, heavy feel, we aimed for something calm, clear, and inviting. The result is a site that makes implementation feel effortless while still speaking to the power of the platform.</p></div>
+                                </div>
+                            </section>
+
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/sqlite/9.png" alt="SQLite Cloud"></div>
+                                <div class="grid-item"><img src="images/sqlite/10.png" alt="SQLite Cloud"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/sqlite/11.png" alt="SQLite Cloud"></div>
+                            </div>
+                        </section>
+                    </article>
+
+                    <!-- ---------- BRANDMARCH ---------- -->
+                    <article class="project-panel" data-slug="brandmarch" hidden>
+                        <div class="panel-head">
+                            <h1>Brandmarch</h1>
+                            <div class="panel-actions">
+                                <span class="action-button"><img src="images/location.svg" alt="" class="button-icon">Texas</span>
+                                <a class="action-button" href="https://www.brandmarch.com/" target="_blank" rel="noopener"><img src="images/external.svg" alt="" class="button-icon">Visit site</a>
+                            </div>
+                            <p class="project-description">Brandmarch is a platform connecting high-growth brands, brokers, and shopping center owners with the right retail opportunities.</p>
+                            <p class="project-description">At Babco, I worked on the website alongside the team, adding new features and ensuring consistency within the existing design system.</p>
+                            <div class="stats-divider"></div>
+                            <div class="project-stats">
+                                <div class="stat-item"><span class="stat-label">Agency</span><span class="stat-value">BABCO</span></div>
+                                <div class="stat-item"><span class="stat-label">Role</span><span class="stat-value">Product Designer</span></div>
+                                <div class="stat-item"><span class="stat-label">Year</span><span class="stat-value">2024</span></div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/bm/1.png" alt="Brandmarch"></div>
+                                <div class="grid-item"><img src="images/bm/2.png" alt="Brandmarch"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/bm/3.png" alt="Brandmarch"></div>
+                            </div>
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/bm/4.png" alt="Brandmarch"></div>
+                                <div class="grid-item"><img src="images/bm/5.png" alt="Brandmarch"></div>
+                            </div>
+                        </section>
+                    </article>
+
+                    <!-- ---------- DESCRIPT ---------- -->
+                    <article class="project-panel" data-slug="descript" hidden>
+                        <div class="panel-head">
+                            <h1>Descript</h1>
+                            <div class="panel-actions">
+                                <span class="action-button"><img src="images/location.svg" alt="" class="button-icon">California</span>
+                                <a class="action-button" href="https://www.descript.com/" target="_blank" rel="noopener"><img src="images/external.svg" alt="" class="button-icon">Visit site</a>
+                            </div>
+                            <p class="project-description">Descript is an AI-powered video editor that makes editing as easy as working with a document, helping to produce content effortlessly.</p>
+                            <p class="project-description">At Babco, I developed a scalable abstraction system for their UI, creating principles and guidelines to ensure clarity and consistency across marketing visuals.</p>
+                            <p class="project-description">I also contributed to a growing library of abstracted UI assets, covering key features and allowing Descript to maintain a cohesive visual identity across landing pages, videos, and social media.</p>
+                            <div class="stats-divider"></div>
+                            <div class="project-stats">
+                                <div class="stat-item"><span class="stat-label">Agency</span><span class="stat-value">BABCO</span></div>
+                                <div class="stat-item"><span class="stat-label">Role</span><span class="stat-value">System Designer</span></div>
+                                <div class="stat-item"><span class="stat-label">Year</span><span class="stat-value">2024</span></div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/descript/1.png" alt="Descript"></div>
+                                <div class="grid-item"><img src="images/descript/2.png" alt="Descript"></div>
+                            </div>
+                            <div class="grid-row pattern-1">
+                                <div class="grid-item"><img src="images/descript/3.png" alt="Descript"></div>
+                            </div>
+                            <div class="grid-row pattern-2">
+                                <div class="grid-item"><img src="images/descript/4.png" alt="Descript"></div>
+                                <div class="grid-item"><img src="images/descript/5.png" alt="Descript"></div>
+                            </div>
+                        </section>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.17/interact.min.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/projects.js"></script>
+</body>
+</html>

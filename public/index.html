@@ -1,414 +1,189 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mashup Design</title>
+    <title>Mahshid Mahmoudian</title>
 
     <link rel="icon" href="images/favicon.png" type="image/png">
-<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-
-    <!-- External CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- CSS -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/sections.css">
-
     <link rel="stylesheet" href="css/projects.css">
-
+    <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/pages/home.css">
+    <link rel="stylesheet" href="css/theme.css">
 </head>
-  
-<body class="homepage">
-    <!-- Custom cursor element -->
+
+<body class="about-page">
     <div class="cursor"></div>
 
     <!-- Navigation -->
-    <header>
-        <div class="top-nav">
-            <a href="index.html" class="nav-logo">
-                <img src="images/logo.svg" alt="Logo">
-            </a>
-            <a href="#contact" class="lets-chat-button">
-                <div class="circle-overlay"></div>
-                <span>Let's chat</span>
-            </a>
+    <nav class="site-nav" data-reveal>
+        <a href="index.html" class="nav-logo">
+            <img src="images/logo-w.svg" alt="Mahshid Mahmoudian">
+        </a>
+        <div class="nav-info">
+            <div class="nav-info__brand">
+                <span class="nav-info__brand-mark"></span>
+                Mahshid Mahmoudian
+            </div>
+            <div class="nav-info__links">
+                <a href="index.html" aria-current="page">About</a>
+                <a href="projects.html">Projects</a>
+                <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
+            </div>
+            <p class="nav-info__bio">With a strong foundation in software and tool design, I blend precision and creativity to craft simple, efficient experiences full of character. Here&rsquo;s a glimpse of selected work &mdash; reach out for full details.</p>
+            <div class="nav-contact-panel">
+                <div class="nav-contact-panel__inner">
+                    <span class="nav-contact-panel__loc">Currently in Toronto, Canada (GMT-4)</span>
+                    <button type="button" class="nav-contact-row" id="nav-copy-email">
+                        <img src="images/social/email.svg" alt="">
+                        <span class="nav-contact-row__label">Copy email</span>
+                    </button>
+                    <a class="nav-contact-row" href="https://calendly.com/mahshidmdnn/30min" target="_blank" rel="noopener">
+                        <img src="images/social/call.svg" alt="">
+                        <span class="nav-contact-row__label">Book call</span>
+                    </a>
+                    <a class="nav-contact-row" href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">
+                        <img src="images/social/linkedin.svg" alt="">
+                        <span class="nav-contact-row__label">LinkedIn</span>
+                    </a>
+                    <a class="nav-contact-row" href="https://dribbble.com/MahshidDesign" target="_blank" rel="noopener">
+                        <img src="images/social/dribbble.svg" alt="">
+                        <span class="nav-contact-row__label">Dribbble</span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- Draggable Container -->
-    <div class="draggable-container">
-        <div class="background-title">
-            <img src="images/icons/mashup.svg" alt="Mashup Studio" class="site-title-svg">
-        </div>
-
-        
-        <div class="centered-intro">
+    <main>
+        <!-- Intro hero (background intentionally empty for now) -->
+        <section class="home-hero" data-reveal>
             <div class="intro-text">
-                <h1>Hey! I'm Mahshid.</h1>
-                <h1>I’m an interaction designer and artist exploring new ways to experience technology through design, interaction, sound, and visual art.</h1>
+                <h1>Hey! I'm Mahshid. I&rsquo;m an interaction designer and artist exploring new ways to experience technology through design, interaction, sound, and visual art.</h1>
                 <div class="intro-icons">
                     <a href="mailto:mahshidmdnn@gmail.com" class="intro-icon">
-                        <img src="images/social/email.svg" alt="Email" width="14" height="14">
+                        <img src="images/social/email.svg" alt="Email">
                     </a>
-                    <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="intro-icon">
-                        <img src="images/social/linkedin.svg" alt="LinkedIn" width="14" height="14">
+                    <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener" class="intro-icon">
+                        <img src="images/social/linkedin.svg" alt="LinkedIn">
                     </a>
                 </div>
             </div>
-        </div>
-        
+        </section>
 
-        <div class="draggable-window" id="overlay-window">
-    <div class="window-header">
-        <div class="window-dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
-        <div class="window-title">very.serious</div>
-    </div>
-    <div class="window-content">
-        <div class="overlay-image-container">
-            <!-- Use the same image as your background but with a different filter/effect -->
-            <img src="images/bg-mask.png" alt="Overlay Image">
-        </div>
-
-        <div class="fixed-png-layer">
-            <img src="images/fixed1.png" alt="Fixed Overlay">
-        </div>
-
-
-    </div>
-</div>
-
-        <!-- overlay 2 -->
-<div class="draggable-window" id="overlay-window-2">
-    <div class="window-header">
-        <div class="window-dots">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
-        </div>
-        <div class="window-title">take.a.break</div>
-    </div>
-    <div class="window-content">
-        <div class="overlay-image-container">
-            <img src="images/mask2.png" alt="Overlay Image 2">
-        </div>
-
-        <div class="fixed-png-layer">
-            <img src="images/fixed2.png" alt="Fixed Overlay">
-        </div>
-
-
-    </div>
-</div>
-
-
-        
-        <!-- Draggable Icons -->
-        <div class="draggable-icon" id="work-icon">
-            <div class="icon-img">
-                <img src="images/social/work.png" alt="Work">
-            </div>
-            <span class="icon-label">Work</span>
-        </div>
-        
-
-        <div class="draggable-icon" id="about-icon">
-            <div class="icon-img">
-                <img src="images/social/me.png" alt="About me">
-            </div>
-            <span class="icon-label">About me</span>
-        </div>
-        
-        <div class="draggable-icon" id="chat-icon">
-            <div class="icon-img">
-                <img src="images/social/chat.png" alt="Let's chat">
-            </div>
-            <span class="icon-label">Let's chat</span>
-        </div>
-    </div>
-    
-    <!-- Projects Container -->
-    <div class="site-container">
-        <!-- Section title before projects -->
-        <div id="work" class="projects-title-section">
-            <h2 class="section-title">Featured work</h2>
-        </div>
-
-        <div class="project-cards">
-            <!-- Project Card 1: Arch -->
-            <a href="arch.html" style="text-decoration: none; color: inherit;">
-                <div class="project-card">
-                    <div class="project-card-image-container gif-container">
-                        <img src="images/arch/card.png" alt="Arch Product Design" class="project-card-image static-image">
-                        <img src="images/arch/card.gif" alt="Arch Product Design" class="project-card-image animated-gif">
+        <div class="site-container">
+            <!-- About intro -->
+            <section class="about-intro" data-reveal>
+                <div class="two-column-container">
+                    <div class="left-column">
+                        <h1>I'm Mahshid</h1>
+                        <p class="subtitle">A multidisciplinary designer</p>
+                        <div class="about-text">
+                            <p>Working in different fields of design taught me the core <strong>principles</strong> that apply everywhere, how to solve <strong>problems, communicate</strong> clearly, and create <strong>experiences</strong> that make sense.</p>
+                            <p>I believe that while art <strong>asks questions</strong>, design offers <strong>practical answers</strong>. In my work, I try to combine the two to blend curiosity and functionality in order to create more <strong>powerful and engaging</strong> experiences.</p>
+                        </div>
                     </div>
-                    <div class="project-card-content">
-                        <div class="project-title-with-icon">
-                            <div class="icon-container">
-                                <div class="icon-default">
-                                    <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
-                                </div>
-                                <div class="icon-hover">
-                                    <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
-                                </div>
-                            </div>
-                            <div class="project-card-title-container">
-                                <h3 class="default-title">ARCH</h3>
-                                <span class="hover-title">Product Design</span>
-                            </div>
+                    <div class="right-column">
+                        <div class="about-image">
+                            <img src="images/about/me.png" alt="Portrait of Mahshid">
                         </div>
                     </div>
                 </div>
-            </a>
-            
-            <!-- Project Card 2: Tembo -->
-            <a href="tembo.html" style="text-decoration: none; color: inherit;">
-                <div class="project-card">
-                    <div class="project-card-image-container gif-container">
-                        <img src="images/tembo/card.png" alt="Tembo Product Design" class="project-card-image static-image">
-                        <img src="images/tembo/card.gif" alt="Tembo Product Design" class="project-card-image animated-gif">
+            </section>
+
+            <!-- Skills & experiences -->
+            <section class="about-skills" data-reveal>
+                <div class="skills-title">
+                    <h2 class="section-title">Skills &amp; experiences</h2>
+                </div>
+                <div class="skills-content">
+                    <div class="skills-row-1">
+                        <img src="images/soft.svg" alt="Soft skills" class="skill-svg">
+                        <img src="images/hard.svg" alt="Hard skills" class="skill-svg">
                     </div>
-                    <div class="project-card-content">
-                        <div class="project-title-with-icon">
-                            <div class="icon-container">
-                                <div class="icon-default">
-                                    <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
-                                </div>
-                                <div class="icon-hover">
-                                    <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
-                                </div>
-                            </div>
-                            <div class="project-card-title-container">
-                                <h3 class="default-title">Tembo</h3>
-                                <span class="hover-title">Product Design</span>
-                            </div>
+                    <div class="skills-row-2">
+                        <img src="images/exp.svg" alt="Experience" class="skill-svg">
+                        <a href="images/cv.pdf" download>
+                            <button class="skills-cta-button">
+                                <img src="images/social/download.svg" alt="" class="button-icon">
+                                Download CV
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Current goal -->
+            <section class="about-goals" data-reveal>
+                <div class="two-column-container">
+                    <div class="left-column mobile-order-2">
+                        <div class="about-secondary-image">
+                            <img src="images/about/goal.png" alt="Current goal illustration">
+                        </div>
+                    </div>
+                    <div class="right-column mobile-order-1">
+                        <h2>Current goal</h2>
+                        <div class="about-text">
+                            <p>Lately, I've been diving deeper into <strong>development</strong> to bring more of my <strong>spatial design</strong> ideas to life. I've been experimenting with <strong>node-based programming</strong>, <strong>Python</strong>, and <strong>JavaScript</strong>, and even built this site from scratch! I'm interested in how interactive environments, installations, and interfaces can create more engaging, spatial experiences.</p>
+                            <p>I've also been exploring the world of <strong>Artificial Intelligence</strong>, learning how to incorporate it into my projects. My goal is to gain a <strong>deeper understanding</strong> of all the tools needed to create meaningful products and experiences.</p>
                         </div>
                     </div>
                 </div>
-            </a>
+            </section>
 
-              <!-- Project Card 6: CommandFreak -->
-              <a href="command.html" style="text-decoration: none; color: inherit;">
-                <div class="project-card">
-                    <div class="project-card-image-container gif-container">
-                        <img src="images/commandfreak/card.png" alt="CommandFreak Product Design" class="project-card-image static-image">
-                        <img src="images/commandfreak/card.png" alt="CommandFreak Product Design" class="project-card-image animated-gif">
+            <!-- How I use AI -->
+            <section class="about-intro" data-reveal>
+                <div class="two-column-container">
+                    <div class="left-column">
+                        <h1>How I use AI</h1>
+                        <div class="about-text">
+                            <p>AI tools like <strong>MidJourney</strong>, <strong>Kling</strong>, and <strong>Claude</strong> help me speed up my creative process. Whether it's generating mockups, refining visuals, or brainstorming ideas. This lets me focus on the bigger picture, delivering high-quality work while saving time on repetitive tasks.</p>
+                        </div>
                     </div>
-                    <div class="project-card-content">
-                        <div class="project-title-with-icon">
-                            <div class="icon-container">
-                                <div class="icon-default">
-                                    <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
-                                </div>
-                                <div class="icon-hover">
-                                    <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
-                                </div>
-                            </div>
-                            <div class="project-card-title-container">
-                                <h3 class="default-title">CommandFreak</h3>
-                                <span class="hover-title">XR application</span>
-                            </div>
+                    <div class="right-column">
+                        <div class="about-image">
+                            <img src="images/about/ai.png" alt="How I use AI illustration">
                         </div>
                     </div>
                 </div>
-            </a>
+            </section>
 
-            <!-- Project Card 4: SQLite -->
-            <a href="sqlite.html" style="text-decoration: none; color: inherit;">
-                <div class="project-card">
-                    <div class="project-card-image-container gif-container">
-                        <img src="images/sqlite/card1.png" alt="SQLite Product Design" class="project-card-image static-image">
-                        <img src="images/sqlite/card.gif" alt="SQLite Product Design" class="project-card-image animated-gif">
-                    </div>
-                    <div class="project-card-content">
-                        <div class="project-title-with-icon">
-                            <div class="icon-container">
-                                <div class="icon-default">
-                                    <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
-                                </div>
-                                <div class="icon-hover">
-                                    <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
-                                </div>
-                            </div>
-                            <div class="project-card-title-container">
-                                <h3 class="default-title">SQLite</h3>
-                                <span class="hover-title">Product Design</span>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Design reflections -->
+            <section class="reflection-section" data-reveal>
+                <div class="projects-title-section">
+                    <h2 class="section-title">Design reflections</h2>
                 </div>
-            </a>
-
-                      <!-- Project Card 3: Brandmarch -->
-                      <a href="brandmarch.html" style="text-decoration: none; color: inherit;">
-                        <div class="project-card">
-                            <div class="project-card-image-container gif-container">
-                                <img src="images/bm/card1.png" alt="Brandmarch Product Design" class="project-card-image static-image">
-                                <img src="images/bm/card1.png" alt="Brandmarch Product Design" class="project-card-image animated-gif">
-                            </div>
-                            <div class="project-card-content">
-                                <div class="project-title-with-icon">
-                                    <div class="icon-container">
-                                        <div class="icon-default">
-                                            <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
-                                        </div>
-                                        <div class="icon-hover">
-                                            <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
-                                        </div>
-                                    </div>
-                                    <div class="project-card-title-container">
-                                        <h3 class="default-title">Brandmarch</h3>
-                                        <span class="hover-title">Product Design</span>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="reflection-card-container">
+                    <a href="AI.html" class="reflection-card">
+                        <div class="reflection-card-image">
+                            <img src="images/ai/header.png" alt="Designing for AI">
+                        </div>
+                        <div class="reflection-card-content">
+                            <h3 class="reflection-card-title">Designing for AI</h3>
+                            <p class="reflection-card-description">A designer's perspective on how UI is changing and what it means for design</p>
+                            <div class="reflection-card-date">Feb 02, 2025</div>
                         </div>
                     </a>
-
-            <!-- Project Card 5: Descript -->
-            <a href="descript.html" style="text-decoration: none; color: inherit;">
-                <div class="project-card">
-                    <div class="project-card-image-container gif-container">
-                        <img src="images/descript/card.png" alt="Descript Product Design" class="project-card-image static-image">
-                        <img src="images/descript/card.png" alt="Descript Product Design" class="project-card-image animated-gif">
-                    </div>
-                    <div class="project-card-content">
-                        <div class="project-title-with-icon">
-                            <div class="icon-container">
-                                <div class="icon-default">
-                                    <img src="images/icon-b.svg" alt="Arrow" class="title-icon">
-                                </div>
-                                <div class="icon-hover">
-                                    <img src="images/icon-w.svg" alt="Arrow" class="title-icon">
-                                </div>
-                            </div>
-                            <div class="project-card-title-container">
-                                <h3 class="default-title">Descript</h3>
-                                <span class="hover-title">Product Design</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </a>
-
-
+            </section>
         </div>
-    </div>
-        
-    <!-- Design Reflections Section -->
-    <div class="site-container">
-        <div id="design-reflections" class="projects-title-section">
-            <h2 class="section-title">Design reflections</h2>
-        </div>
-    
-        <div class="reflection-card-container">
-            <a href="AI.html" class="reflection-card">
-                <div class="reflection-card-image">
-                    <img src="images/ai/header.png" alt="Design Reflections">
-                </div>
-                <div class="reflection-card-content">
-                    <h3 class="reflection-card-title">Designing for Al</h3>
-                    <p class="reflection-card-description">A Designer's perspective on how UI is changing and what it means for design</p>
-                    <div class="reflection-card-date">Feb 02, 2025</div>
-                </div>
-            </a>
-        </div>
-    </div>
 
-<!-- Contact Section - Window Style -->
-<div class="site-container" id="contact">
-    <div class="contact-window">
-        <!-- Window Header -->
-        <div class="window-header">
-            <div class="window-dots">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-            <div class="window-title">contact.txt</div>
-        </div>
-        
-        <!-- Window Content -->
-        <div class="window-content">
-            <div class="contact-header">
-                <!-- Left side: Icon and Title -->
-                <div class="contact-left">
-                    <div class="contact-title-container">
-                        <img src="images/social/title.svg" alt="Chat" class="contact-title-icon">
-                        <h3 class="contact-title">Let's chat!</h3>
-                    </div>
-                </div>
-                
-                <!-- Right side: Location text -->
-                <div class="contact-right">
-                    <div class="contact-location">
-                        <span>Currently in Toronto, Canada (GMT-4)</span>
-                    </div>
-                </div>
-            </div>
-            
+        <div class="bottom-spacer"></div>
+    </main>
 
-            <div class="contact-buttons-container">
-                <a href="mahshidmdnn@gmail.com" class="contact-button" id="copy-email-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/email.svg" alt="Email" class="icon" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">Copy email</span>
-                </a>
-                
-                <a href="https://calendly.com/mahshidmdnn/30min" class="contact-button" id="book-call-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/call.svg" alt="Call" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">Book call</span>
-                </a>
-                
-                <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="contact-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/linkedin.svg" alt="LinkedIn" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">LinkedIn</span>
-                </a>
-                
-                <a href="https://dribbble.com/MahshidDesign" target="_blank" class="contact-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/dribbble.svg" alt="Dribbble" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">Dribbble</span>
-                </a>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-  <div class="bottom-spacer"></div>
-
-
-<!-- External Scripts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.17/interact.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-
-
-<script src="js/home.js"></script>
-<script src="js/project-pages.js"></script>
-
-
-
-
+    <script src="js/site.js"></script>
 </body>
 </html>

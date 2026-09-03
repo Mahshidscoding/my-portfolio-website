@@ -1,0 +1,238 @@
+/* ==========================================================================
+   nav.css — persistent top navigation + hover Contact panel + page reveal
+   The info box is a light card on the dark site (matches the Figma).
+   ========================================================================== */
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 24px;
+  pointer-events: none;
+}
+
+.site-nav a,
+.site-nav button,
+.site-nav .nav-info {
+  pointer-events: auto;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.nav-logo img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Info box (top-right)
+   -------------------------------------------------------------------------- */
+.nav-info {
+  width: 320px;
+  max-width: calc(100vw - 48px);
+  background: #ffffff;
+  border: 1px solid #000;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: var(--font-primary);
+  color: #000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* brand row */
+.nav-info__brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.nav-info__brand-mark {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: #e5352b;
+  flex-shrink: 0;
+}
+
+/* links / tabs row */
+.nav-info__links {
+  display: flex;
+  align-items: stretch;
+  padding: 8px;
+  gap: 6px;
+}
+
+.nav-info__links a,
+.nav-info__links .nav-info__contact {
+  flex: 1;
+  text-align: center;
+  padding: 8px 4px;
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  color: #000;
+  text-decoration: none;
+  background: #f1f1f1;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 400;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-info__links a:hover {
+  background: #e4e4e4;
+}
+
+.nav-info__links a[aria-current="page"] {
+  background: #000;
+  color: #fff;
+}
+
+/* Contact is a label, not a link — it only reveals the panel below */
+.nav-info__contact {
+  cursor: default;
+  user-select: none;
+}
+
+.nav-info.show-contact .nav-info__contact {
+  background: #000;
+  color: #fff;
+}
+
+/* short bio blurb — collapses on scroll (see .is-condensed) */
+.nav-info__bio {
+  padding: 4px 12px 12px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  font-weight: 300;
+  color: #333;
+  overflow: hidden;
+  max-height: 160px;
+  opacity: 1;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.28s ease,
+              padding 0.4s ease;
+}
+
+.nav-info.is-condensed .nav-info__bio {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Contact panel — collapsed until the Contact label is hovered / focused
+   -------------------------------------------------------------------------- */
+.nav-contact-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.34s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.22s ease;
+}
+
+.nav-info.show-contact .nav-contact-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.nav-contact-panel__inner {
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.nav-contact-panel__loc {
+  display: block;
+  padding: 9px 12px 6px;
+  font-size: 11px;
+  font-weight: 300;
+  color: #555;
+}
+
+.nav-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.nav-contact-row:hover { background: rgba(0, 0, 0, 0.06); }
+
+.nav-contact-row img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.nav-contact-row.is-copied {
+  background: #c4d3e3;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .site-nav { padding: 14px 16px; }
+  .nav-logo img { height: 28px; }
+  .nav-info { width: 236px; }
+  .nav-info__bio { display: none; }
+  .nav-info__links { padding: 6px; gap: 4px; }
+  .nav-info__links a,
+  .nav-info__links .nav-info__contact { padding: 7px 2px; font-size: 11px; }
+}
+
+/* --------------------------------------------------------------------------
+   Page-load reveal (pure CSS so content survives a JS failure)
+   -------------------------------------------------------------------------- */
+[data-reveal] {
+  animation: reveal-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--reveal-i, 0) * 90ms);
+}
+
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@view-transition { navigation: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .nav-info__bio,
+  .nav-contact-panel { transition: none !important; }
+}

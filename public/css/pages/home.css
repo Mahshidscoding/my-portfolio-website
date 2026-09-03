@@ -1,98 +1,381 @@
-/* --- moved out of index.html inline <style> --- */
-/* Custom cursor styles */
-        body, html {
-            cursor: none; /* Hide the default cursor */
-            background-color: var(--color-homebg) !important;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10+ */
-            user-select: none; /* Standard syntax */
-        }
-        
-        .cursor {
-            position: fixed;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            background-color: white;
-            transform: translate(-50%, -50%);
-            transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
-            will-change: transform, width, height;
-        }
-        
-        /* Make all interactive elements use the custom cursor */
-        a, button, .project-card, .contact-button, input, 
-        select, textarea, [role="button"], .lets-chat-button,
-        .nav-button, .title-icon, .icon-container,
-        .draggable-window, .draggable-icon, .window-header,
-        .window-content, .window-buttons {
-            cursor: none !important;
-        }
-        
-        /* Ensure content inside draggable elements also uses custom cursor */
-        .draggable-window *,
-        .draggable-icon * {
-            cursor: none !important;
-        }
-        
-        /* Prevent cursor from changing during drag operations */
-        .dragging {
-            cursor: none !important;
-        }
-        
-        /* Adjusted window content padding */
-        .draggable-window .window-content {
-            padding: 16px; /* Reduced padding */
-        }
-        
-        /* Animation keyframes for navigation */
-        @keyframes navPopIn {
-            0% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            70% {
-                transform: translateY(10px);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes navPopOut {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-        }
+/* ==========================================================================
+   home.css — Home page (= About). Empty background for now.
+   Folds in the former about.css rules (blue page background removed).
+   ========================================================================== */
 
-        body.homepage .lets-chat-button {
-    /* Increase background opacity for better visibility on homepage */
-    background-color: rgba(255, 255, 255, 0.25) !important;
-    
-    /* Stronger blur effect specifically for homepage */
-    background-color: rgba(255, 255, 255, 0.01) !important; /* 1% opacity white */
-    backdrop-filter: blur(5px) !important; /* Background blur */
-    -webkit-backdrop-filter: blur(5px) !important; /* For Safari */
-    
-    /* Ensure proper layering */
-    z-index: 1001 !important; /* Higher than other elements in the navigation */
-    
-    /* Add a subtle gradient background as fallback */
-    background-image: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.3),
-      rgba(255, 255, 255, 0.2)
-    ) !important;
+/* --- custom cursor (single definition) --- */
+body,
+html {
+  cursor: none;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
-    /* Ensure the button is actually in front of other elements */
-    position: relative !important;
+.cursor {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  background-color: #fff;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s ease-out, height 0.15s ease-out, border-radius 0.15s ease-out;
+  will-change: transform, width, height;
+}
+
+a, button, .skills-cta-button, .contact-button, input,
+select, textarea, [role="button"], .title-icon, .icon-container,
+.nav-info, .nav-contact-row {
+  cursor: none !important;
+}
+
+@media (pointer: coarse) {
+  body, html, a, button { cursor: auto !important; }
+  .cursor { display: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   Home hero — intro line + social icons on an empty background
+   -------------------------------------------------------------------------- */
+.home-hero {
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 24px 60px;
+}
+
+.home-hero .intro-text {
+  max-width: 480px;
+}
+
+.home-hero .intro-text h1 {
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.5;
+  margin: 0 0 20px;
+  color: var(--color-primary);
+}
+
+.home-hero .intro-icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.home-hero .intro-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+}
+
+.home-hero .intro-icon:hover { transform: translateY(-2px); }
+.home-hero .intro-icon img { width: 18px; height: 18px; }
+
+/* --------------------------------------------------------------------------
+   About intro — text left, image right
+   -------------------------------------------------------------------------- */
+.about-intro {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 24px;
+  position: relative;
+}
+
+.about-intro .two-column-container,
+.about-goals .two-column-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  gap: 64px 80px;
+  max-width: 100%;
+}
+
+.about-intro .left-column {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--color-primary);
+  gap: 16px;
+}
+
+.about-intro .left-column h1 {
+  font-size: 45px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-primary);
+  margin-bottom: 0;
+}
+
+.left-column .subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-primary);
+}
+
+.about-text p {
+  font-size: 18px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.about-text p:last-child { margin-bottom: 0; }
+
+.about-intro .right-column {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-image {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-image img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   Current goal — image left, text right
+   -------------------------------------------------------------------------- */
+.about-goals {
+  width: 100%;
+  max-width: 1200px;
+  margin: 80px auto 0;
+  padding: 0 24px;
+  position: relative;
+}
+
+.about-goals .two-column-container {
+  gap: 48px 60px;
+  align-items: center;
+}
+
+.about-goals .left-column {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.about-goals .right-column {
+  flex: 1 1 360px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.about-goals h2 {
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.about-secondary-image {
+  width: 100%;
+  max-width: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.about-secondary-image img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   Skills & experiences
+   -------------------------------------------------------------------------- */
+.about-skills {
+  margin: 80px auto 100px;
+  position: relative;
+  background-image: url('../../images/about/section-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+  padding: 100px 24px 10px;
+}
+
+.skills-title {
+  margin-bottom: var(--spacing-2xl);
+  text-align: center;
+}
+
+.skills-title .section-title {
+  font-family: var(--font-primary);
+  font-size: 45px;
+  font-weight: 450;
+  color: #ffffff !important;
+  letter-spacing: -0.02em;
+}
+
+.skills-content {
+  margin-top: 60px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.skills-row-1 {
+  min-height: 420px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 40px clamp(24px, 12vw, 190px);
+  perspective: 1000px;
+}
+
+.skills-row-1 img { max-width: 42%; height: auto; }
+.skills-row-1 img:first-child { transform: rotate(-8deg); }
+.skills-row-1 img:last-child { transform: rotate(8deg); }
+
+.skills-row-2 {
+  min-height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  position: relative;
+}
+
+.skills-row-2 img { max-width: 100%; height: auto; }
+
+.skills-cta-button {
+  position: absolute;
+  background-color: transparent !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  bottom: 28px;
+  left: 58%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.skills-cta-button .button-icon { width: 20px; height: 20px; }
+.skills-cta-button:hover { background-color: #000db3 !important; color: #fff !important; }
+.skills-cta-button:hover .button-icon { filter: brightness(0) invert(1); }
+
+/* --------------------------------------------------------------------------
+   Design reflections (kept from the old homepage)
+   -------------------------------------------------------------------------- */
+.reflection-section { margin: 40px auto 0; }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .about-intro,
+  .about-goals { padding: 0 60px; }
+  .about-intro .left-column { width: 400px; }
+  .about-intro .right-column { width: 550px; }
+  .about-goals h2 { font-size: 36px; }
+}
+
+@media (max-width: 992px) {
+  .about-intro .two-column-container,
+  .about-goals .two-column-container { gap: 60px; }
+}
+
+@media (max-width: 768px) {
+  .home-hero { min-height: 70vh; padding: 120px 20px 40px; }
+  .home-hero .intro-text h1 { font-size: 15px; }
+
+  .about-intro,
+  .about-goals {
+    padding: 40px 20px;
+    margin-top: 40px;
   }
+
+  .about-intro .two-column-container,
+  .about-goals .two-column-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .about-intro .left-column,
+  .about-intro .right-column,
+  .about-goals .left-column,
+  .about-goals .right-column,
+  .about-secondary-image,
+  .about-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .about-intro .left-column h1 { font-size: 34px; }
+  .about-goals h2 { font-size: 30px; }
+  .about-text p { font-size: 16px; }
+
+  /* photo / text ordering on the goal section */
+  .mobile-order-1 { order: 1; }
+  .mobile-order-2 { order: 2; }
+
+  .about-skills { padding: 80px 16px 120px; }
+  .skills-title .section-title { font-size: 32px; }
+  .skills-row-1 { flex-direction: column; height: auto; gap: 40px; }
+  .skills-row-1 img,
+  .skills-row-2 img { max-width: 78%; height: auto; }
+  .skills-row-2 { min-height: auto; margin-top: 40px; flex-direction: column; }
+  .skills-cta-button {
+    position: static;
+    transform: none;
+    margin: 28px auto 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-intro .left-column h1 { font-size: 30px; }
+  .skills-row-1 img,
+  .skills-row-2 img { max-width: 70%; }
+}

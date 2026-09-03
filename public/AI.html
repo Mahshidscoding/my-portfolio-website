@@ -11,37 +11,58 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/nav.css">
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/pages/ai.css">
+    <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
 
 <!-- Custom cursor element -->
 <div class="cursor"></div>
 
-<!-- Top Navigation Bar -->
-<div class="top-nav">
+<!-- Navigation -->
+<nav class="site-nav" data-reveal>
     <a href="index.html" class="nav-logo">
-      <img src="images/logo.svg" alt="Logo">
+        <img src="images/logo-w.svg" alt="Mahshid Mahmoudian">
     </a>
-    <a href="#contact" class="lets-chat-button">
-      <div class="circle-overlay"></div>
-      <span>Let's chat</span>
-   </a>
-  </div>
-  
-<!-- Floating Navigation Bar -->
-<div class="floating-nav">
-    <a href="javascript:void(0);" class="back-button" onclick="history.back()">
-    <img src="images/back.svg" alt="Back">
-    Back
-  </a>
-    <div class="project-name">Designing for AI</div>
-    <a href="#contact" class="start-project-button">Start project</a>
-  </div>
+    <div class="nav-info">
+        <div class="nav-info__brand">
+            <span class="nav-info__brand-mark"></span>
+            Mahshid Mahmoudian
+        </div>
+        <div class="nav-info__links">
+            <a href="index.html">About</a>
+            <a href="projects.html">Projects</a>
+            <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
+        </div>
+        <p class="nav-info__bio">With a strong foundation in software and tool design, I blend precision and creativity to craft simple, efficient experiences full of character. Here&rsquo;s a glimpse of selected work &mdash; reach out for full details.</p>
+        <div class="nav-contact-panel">
+            <div class="nav-contact-panel__inner">
+                <span class="nav-contact-panel__loc">Currently in Toronto, Canada (GMT-4)</span>
+                <button type="button" class="nav-contact-row" id="nav-copy-email">
+                    <img src="images/social/email.svg" alt="">
+                    <span class="nav-contact-row__label">Copy email</span>
+                </button>
+                <a class="nav-contact-row" href="https://calendly.com/mahshidmdnn/30min" target="_blank" rel="noopener">
+                    <img src="images/social/call.svg" alt="">
+                    <span class="nav-contact-row__label">Book call</span>
+                </a>
+                <a class="nav-contact-row" href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">
+                    <img src="images/social/linkedin.svg" alt="">
+                    <span class="nav-contact-row__label">LinkedIn</span>
+                </a>
+                <a class="nav-contact-row" href="https://dribbble.com/MahshidDesign" target="_blank" rel="noopener">
+                    <img src="images/social/dribbble.svg" alt="">
+                    <span class="nav-contact-row__label">Dribbble</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
 
   <div class="parallax-container">
 
@@ -152,145 +173,11 @@
 
 
 
-<!-- Contact Section - Window Style -->
-<div class="site-container" id="contact">
-    <div class="contact-window">
-        <!-- Window Header -->
-        <div class="window-header">
-            <div class="window-dots">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-            <div class="window-title">contact.txt</div>
-        </div>
-        
-        <!-- Window Content -->
-        <div class="window-content">
-            <div class="contact-header">
-                <!-- Left side: Icon and Title -->
-                <div class="contact-left">
-                    <div class="contact-title-container">
-                        <img src="images/icons/title.svg" alt="Chat" class="contact-title-icon">
-                        <h3 class="contact-title">Let's chat!</h3>
-                    </div>
-                </div>
-                
-                <!-- Right side: Location text -->
-                <div class="contact-right">
-                    <div class="contact-location">
-                        <span>Currently in Toronto, Canada (GMT-4)</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="contact-buttons-container">
-                <a href="mahshidmdnn@gmail.com" class="contact-button" id="copy-email-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/email.svg" alt="Email" class="icon" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">Copy email</span>
-                </a>
-                
-                <a href="https://calendly.com/mahshidmdnn/30min" class="contact-button" id="book-call-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/call.svg" alt="Call" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">Book call</span>
-                </a>
-                
-                <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" class="contact-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/linkedin.svg" alt="LinkedIn" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">LinkedIn</span>
-                </a>
-                
-                <a href="https://dribbble.com/MahshidDesign" target="_blank" class="contact-button">
-                    <div class="contact-button-icon">
-                        <img src="images/social/dribbble.svg" alt="Dribbble" width="24" height="24">
-                    </div>
-                    <span class="contact-button-text">Dribbble</span>
-                </a>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 <div class="bottom-spacer"></div>
 
 
+<script src="js/site.js"></script>
 <script>
-    // Custom cursor functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const cursor = document.querySelector('.cursor');
-        
-        // Follow the mouse with requestAnimationFrame for smoother movement
-        let mouseX = 0;
-        let mouseY = 0;
-        
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        
-        // Use requestAnimationFrame for smoother cursor movement
-        function updateCursor() {
-            cursor.style.left = `${mouseX}px`;
-            cursor.style.top = `${mouseY}px`;
-            requestAnimationFrame(updateCursor);
-        }
-        requestAnimationFrame(updateCursor);
-        
-        // Make cursor transform when hovering over interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .contact-button, .lets-chat-button, .nav-button, .title-icon, .icon-container');
-        
-        interactiveElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                cursor.style.width = '60px';
-                cursor.style.height = '24px';
-                cursor.style.borderRadius = '12px';
-            });
-            
-            element.addEventListener('mouseleave', () => {
-                cursor.style.width = '24px';
-                cursor.style.height = '24px';
-                cursor.style.borderRadius = '50%';
-            });
-        });
-    });
-
-    // Smooth scrolling for internal links
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get all links that have a hash (like #contact)
-        const internalLinks = document.querySelectorAll('a[href^="#"]');
-        
-        internalLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Prevent the default jump-to-anchor behavior
-                e.preventDefault();
-                
-                // Get the target element ID from the href
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    // Calculate position to scroll to (with offset for header if needed)
-                    const headerOffset = 24; // Adjust based on your header height or desired offset
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
-                    // Smooth scroll to the target element
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    });
-
     // Parallax effect
     document.addEventListener('DOMContentLoaded', function() {
         // Elements
@@ -387,92 +274,6 @@
         // Ensure the page loads at the top
         window.scrollTo(0, 0);
     });
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Get all contact buttons
-    const contactButtons = document.querySelectorAll('.contact-button');
-    
-    // Add click handlers for regular buttons (excluding copy-email-btn)
-    contactButtons.forEach(button => {
-        if (button.id !== 'copy-email-btn') {
-            // Regular contact buttons
-            button.addEventListener('click', function(e) {
-                // If it's a link, we only want the visual effect
-                // but still allow navigation
-                if (this.tagName === 'A') {
-                    // Don't prevent default - allow navigation
-                    
-                    // Add selected class to this button
-                    this.classList.add('selected');
-                    
-                    // Remove selected class after a delay
-                    setTimeout(() => {
-                        this.classList.remove('selected');
-                    }, 300);
-                }
-            });
-        }
-    });
-    
-    // Get the Copy Email button specifically
-    const copyEmailButton = document.getElementById('copy-email-btn');
-    
-    if (copyEmailButton) {
-        copyEmailButton.addEventListener('click', function() {
-            // The email to copy
-            const email = 'mahshidmdnn@gmail.com';
-            
-            // Use the modern Clipboard API
-            navigator.clipboard.writeText(email).then(() => {
-                // Visual feedback - change button appearance
-                const span = this.querySelector('span');
-                const originalText = span.textContent;
-                
-                // Add the copied class
-                this.classList.add('copied');
-                
-                // Change text
-                span.textContent = 'Copied!';
-                
-                // Reset the button after 2 seconds
-                setTimeout(() => {
-                    span.textContent = originalText;
-                    this.classList.remove('copied');
-                }, 1000);
-            }).catch(err => {
-                // Fallback for older browsers if the Clipboard API fails
-                const tempInput = document.createElement('input');
-                tempInput.value = email;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                
-                // Visual feedback
-                const span = this.querySelector('span');
-                const originalText = span.textContent;
-                
-                // Add the copied class
-                this.classList.add('copied');
-                
-                // Change text
-                span.textContent = 'Copied!';
-                
-                // Reset button
-                setTimeout(() => {
-                    span.textContent = originalText;
-                    this.classList.remove('copied');
-                }, 2000);
-            });
-        });
-    }
-});
-
-
-
-
 </script>
 
 </body>
