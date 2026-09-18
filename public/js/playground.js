@@ -31,6 +31,8 @@
   var SLUGS = floats.map(function (f) { return f.dataset.slug; });
   var current = null;
   var drifts = {};
+  var dragMoved = {}; // slug -> cumulative px moved this pointer-down, to tell a drag from a tap
+  var DRAG_THRESHOLD = 6;
 
   /* ====================================================================
    * Build the rail
@@ -143,10 +145,13 @@
         listeners: {
           start: function (e) {
             stopDrift(e.target.dataset.slug);
+            dragMoved[e.target.dataset.slug] = 0;
             e.target.classList.add('is-dragging');
             e.target.style.zIndex = 500;
           },
           move: function (e) {
+            var slug = e.target.dataset.slug;
+            dragMoved[slug] = (dragMoved[slug] || 0) + Math.abs(e.dx) + Math.abs(e.dy);
             var x = (parseFloat(e.target.dataset.x) || 0) + e.dx;
             var y = (parseFloat(e.target.dataset.y) || 0) + e.dy;
             setTransform(e.target, x, y);
@@ -188,8 +193,11 @@
 
   floats.forEach(function (el) {
     el.addEventListener('click', function () {
-      if (el.classList.contains('is-dragging')) return;
-      openProject(el.dataset.slug);
+      var slug = el.dataset.slug;
+      var moved = dragMoved[slug] || 0;
+      dragMoved[slug] = 0;
+      if (moved > DRAG_THRESHOLD) return; // was a drag, not a tap — don't open
+      openProject(slug);
     });
     el.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {

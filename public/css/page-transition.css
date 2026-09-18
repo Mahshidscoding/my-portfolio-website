@@ -1,0 +1,136 @@
+/* page-transition.css — cinematic black-overlay page transition.
+ *
+ * Structural/timing values are pushed onto these custom properties at
+ * runtime by js/page-transition.js's CONFIG object — that's the single
+ * place to retune durations/easing. Colours not tied to the canvas
+ * drawing (stroke colour, cursor size) are mirrored here the same way.
+ */
+
+/* A real cross-document navigation (this site has no client-side router)
+ * has a gap our own overlay can't cover by itself: between the old
+ * document unloading and the new one's first bytes arriving, the browser
+ * has nothing of ours on screen at all. Opting into the native
+ * cross-document view transition fills that gap with a frozen frame of
+ * the old page (which, by the time we navigate, is our fully-risen black
+ * overlay + title) instead of its own blank flash, cross-fading to the
+ * new page's first paint — which, thanks to the inline script at the top
+ * of <body>, is already the same black overlay + title. Both ends of the
+ * cross-fade look the same, so the fade itself is invisible; it's here
+ * purely to remove the flash. No view-transition-name pinning below this
+ * — the whole page rides as one default root transition.
+ */
+@view-transition {
+  navigation: auto;
+}
+
+#pt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--pt-z, 100000);
+  background: #000;
+  transform: translateY(100%);
+  transition: transform var(--pt-enter-ms, 500ms) var(--pt-enter-ease, ease-out);
+  pointer-events: none;
+  will-change: transform;
+}
+
+#pt-overlay.is-entering {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Same specificity as .is-entering — declared after it, so it wins
+   whenever both classes are present (the exit always starts from the
+   fully-risen state). Continues the same upward motion off the top. */
+#pt-overlay.is-exiting {
+  transform: translateY(-100%);
+  transition: transform var(--pt-exit-ms, 650ms) var(--pt-exit-ease, ease-in-out);
+}
+
+.pt-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-primary, 'Space Grotesk', sans-serif);
+  font-weight: 400;
+  font-size: clamp(22px, 3vw, 34px);
+  letter-spacing: 0.06em;
+  color: var(--color-primary, #f4f4f4);
+  opacity: 0;
+  transition: opacity var(--pt-title-fade-ms, 550ms) ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.pt-title.is-visible {
+  opacity: 1;
+}
+
+#pt-overlay.is-exiting .pt-title {
+  transition-duration: var(--pt-exit-title-fade-ms, 200ms);
+}
+
+.pt-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pt-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--pt-cursor-size, 16px);
+  height: var(--pt-cursor-size, 16px);
+  margin: calc(var(--pt-cursor-size, 16px) / -2);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center,
+      #fff 0%,
+      color-mix(in srgb, var(--pt-stroke-color, #5b6dff) 70%, #fff 30%) 35%,
+      var(--pt-stroke-color, #5b6dff) 70%,
+      transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity 0.15s ease;
+}
+
+.pt-cursor.is-visible {
+  opacity: 1;
+}
+
+html.pt-active,
+html.pt-active * {
+  cursor: none !important;
+}
+
+html.pt-active .cursor {
+  opacity: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pt-overlay,
+  #pt-overlay.is-exiting {
+    transition-duration: 140ms !important;
+  }
+  .pt-title {
+    transition-duration: 80ms !important;
+  }
+  .pt-canvas,
+  .pt-cursor {
+    display: none !important;
+  }
+}
+
+/* js/page-transition.js already skips setting up the draw engine on
+   touch/narrow viewports (matching this site's own 768px breakpoint), so
+   these never receive any pixels there — hidden here too as a backstop. */
+@media (pointer: coarse), (max-width: 768px) {
+  .pt-canvas,
+  .pt-cursor {
+    display: none !important;
+  }
+}

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   projects.css — Projects SPA: floating cards view + reading view
+   projects.css — Projects SPA: cards (list) view + reading view
    Reuses the shared .grid-row / .text-section / .gif-container rules
    from projects.css (root) & sections.css; only overrides sizing here.
    ========================================================================== */
@@ -28,7 +28,7 @@ html {
 }
 
 a, button, [role="button"],
-.project-float, .rail-item, .rail-section, .to-cards, .jump-link,
+.project-tile, .rail-item, .rail-section, .to-cards, .jump-link,
 .nav-info, .nav-contact-row {
   cursor: none !important;
 }
@@ -45,113 +45,110 @@ a, button, [role="button"],
 }
 
 /* --------------------------------------------------------------------------
-   1. Cards view — floating, draggable project cards
+   1. Cards view — a static, categorized project list. Uses the EXACT same
+   grid (165px rail + fluid content, 24px column-gap, centered) as the
+   reading view below, so switching between the two never shifts anything
+   horizontally.
    -------------------------------------------------------------------------- */
 .cards-view {
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  padding: 120px 24px 60px;
+  padding: 190px 0 120px;
   box-sizing: border-box;
-  overflow-x: clip;
 }
 
 .projects-app[data-view="reading"] .cards-view {
   display: none;
 }
 
-.cards-stage {
-  position: relative;
-  width: 100%;
-  max-width: 1440px;
-  height: 1720px;
-  margin: 0 auto;
+.cards-list {
+  display: grid;
+  /* content column grows with the viewport (1146px was sized for a ~1440px
+     reference screen) up to a comfortable cap, instead of staying pinned
+     at 1146px and turning into a small island on a big monitor. The image
+     grids inside are already 1fr/1fr so they scale up automatically; only
+     the fixed-width text columns (paragraphs, stats) stay put — same as
+     any readable-width design. */
+  grid-template-columns: 165px minmax(0, 1600px);
+  column-gap: 24px;
+  /* a category's label + its group of cards share the same grid row (auto
+     placement: 2 columns, label then group), so row-gap here only ever
+     falls between one category's row and the next — safe to increase
+     without pushing the label out of alignment with its own cards */
+  row-gap: 48px;
+  justify-content: center;
 }
 
-.project-float {
-  position: absolute;
-  left: var(--x, 0);
-  top: var(--y, 0);
-  width: min(680px, 52vw);
+.cards-list__label {
+  align-self: start;
+  padding-left: 20px;
+}
+
+.cards-list__label p {
+  font-family: 'Chivo Mono', var(--font-primary);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-primary);
+  opacity: 0.6;
+  padding-bottom: 13px;
+  border-bottom: 1px dotted var(--color-hairline);
+  margin: 0;
+}
+
+.cards-list__group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 22px;
+  row-gap: 32px;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+.project-tile {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 0;
+  gap: 14px;
   background: transparent;
   border: 0;
+  padding: 0;
   text-align: left;
-  touch-action: none;
-  will-change: transform;
-  transition: box-shadow 0.25s ease;
+  cursor: pointer;
 }
 
-/* name (left) + description (right), sitting above the card */
-.project-float__label {
+.project-tile__label {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 14px;
-  letter-spacing: 0.01em;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Chivo Mono', var(--font-primary);
+  font-size: 16px;
   color: var(--color-primary);
+  white-space: nowrap;
 }
 
-.project-float__desc { color: var(--color-gray); font-weight: 400; }
+.project-tile__sep { opacity: 0.4; }
+.project-tile__kind { opacity: 0.4; font-weight: 400; overflow: hidden; text-overflow: ellipsis; }
 
-.project-float__media {
-  position: relative;
-  display: block;
+.project-tile__media {
   width: 100%;
-  height: min(400px, 30vw);
-  border: 1px solid var(--color-hairline);
-  border-radius: 10px;
+  /* a bit taller than a strict 16:9-ish crop so the cover animations
+     (Arch/Tembo/SQLite) aren't clipped top/bottom */
+  aspect-ratio: 1.6;
+  border-radius: 8px;
   overflow: hidden;
   background: var(--color-surface);
 }
 
-.project-float__media img {
+.project-tile__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   -webkit-user-drag: none;
   user-select: none;
+  transition: transform 0.4s ease;
 }
 
-.project-float .animated-gif {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.project-float:hover .animated-gif { opacity: 1; }
-
-.project-float:hover .project-float__media {
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
-
-.project-float.is-dragging { transition: none; }
-.project-float.is-launching { opacity: 0; transition: opacity 0.2s ease; }
-
-/* clone that flies into the rail */
-.flip-clone {
-  position: fixed;
-  z-index: 1200;
-  border: 1px solid var(--color-hairline);
-  border-radius: 10px;
-  overflow: hidden;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.flip-clone img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+.project-tile:hover .project-tile__media img { transform: scale(1.03); }
 
 /* --------------------------------------------------------------------------
    2. Reading view — left rail + scrolling reading pane
@@ -163,96 +160,102 @@ a, button, [role="button"],
 
 .projects-app[data-view="reading"] .reading-view {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  height: 100vh;
-  overflow: hidden;
+  /* content column grows with the viewport instead of staying pinned at a
+     fixed 1146px (which read as a small island on a big monitor) — same
+     fluid cap as .cards-list, so the two views never jump against each other. */
+  grid-template-columns: 165px minmax(0, 1600px);
+  column-gap: 24px;
+  justify-content: center;
+  /* the page scrolls; no fixed-height inner panes */
 }
 
 .projects-rail {
-  height: 100%;
-  min-height: 0;
+  position: sticky;
+  top: 60px;
+  align-self: start;
+  max-height: calc(100vh - 84px);
   overflow-y: auto;
-  padding: 96px 16px 32px;
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 78px 8px 24px 20px;
   box-sizing: border-box;
+  /* no divider line */
 }
 
+/* "all projects" — icon only */
 .to-cards {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-  padding: 8px 12px;
-  font-family: var(--font-primary);
-  font-size: 13px;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin-bottom: 16px;
+  font-size: 0;
   color: #000;
-  background: #f4f4f4;
+  background: #f2f2f2;
   border: 1px solid #000;
-  border-radius: 4px;
+  border-radius: 6px;
 }
+.to-cards svg { width: 14px; height: 14px; fill: currentColor; display: block; }
+.to-cards:hover { background: #e6e6e6; }
+.to-cards__label { display: none; }
 
-.to-cards:hover { background: #e9e9e9; }
+.rail-list { display: flex; flex-direction: column; gap: 6px; }
 
-.rail-list { display: flex; flex-direction: column; gap: 2px; }
-
+/* Project navigation only — no per-section jump list. Inactive projects sit
+   at low opacity (matches the Figma rail) instead of a dimmer gray tone. */
 .rail-item__name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   width: 100%;
   text-align: left;
-  padding: 8px 8px;
-  font-family: var(--font-primary);
-  font-size: 14px;
+  padding: 8px;
+  font-family: 'Chivo Mono', var(--font-primary);
+  font-size: 12px;
   font-weight: 400;
-  color: var(--color-gray);
+  line-height: 1.3;
+  color: var(--color-primary);
+  opacity: 0.3;
   background: transparent;
   border: 0;
   border-radius: 4px;
-  transition: color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
 }
 
-.rail-item__name:hover { color: var(--color-primary); background: rgba(255, 255, 255, 0.06); }
+.rail-item__name::before {
+  content: "";
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  background: var(--dot, var(--color-gray));
+  flex-shrink: 0;
+}
+
+.rail-item__name:hover { opacity: 0.7; }
 
 .rail-item.is-active > .rail-item__name {
-  color: var(--color-primary);
+  opacity: 1;
   font-weight: 500;
 }
 
-.rail-item__sections {
-  display: none;
-  flex-direction: column;
-  gap: 1px;
-  margin: 2px 0 10px 10px;
-  padding-left: 10px;
-  border-left: 1px solid var(--color-hairline);
-}
-
-.rail-item.is-active .rail-item__sections { display: flex; }
-
-.rail-section {
-  text-align: left;
-  padding: 6px 8px;
-  font-family: var(--font-primary);
-  font-size: 12.5px;
-  font-weight: 300;
-  color: var(--color-gray);
-  background: transparent;
-  border: 0;
-  border-radius: 3px;
-}
-
-.rail-section:hover { color: var(--color-primary); background: rgba(255, 255, 255, 0.06); }
-.rail-section.is-current { color: var(--color-primary); font-weight: 400; }
+/* section jump-list was removed from this view — keep the selector defensive
+   in case any leftover markup exists, but never show it */
+.rail-item__sections { display: none !important; }
 
 /* --- reading pane --- */
 .reading-scroll {
-  height: 100%;
-  min-height: 0;
-  overflow-y: auto;
-  scroll-padding-top: 96px;
-  scroll-behavior: smooth;
+  scroll-padding-top: 92px;
 }
 
 .project-panel {
-  padding: 104px 0 80px;
+  /* enough top clearance that the overview row (title/stats now sit close
+     to the top) never sits under the fixed nav box while its bio is open.
+     Horizontal padding lives here ONCE — panel-head/projects-container/
+     next-project all just fill this box, instead of each re-implementing
+     their own width cap + left gutter (that duplication is what caused
+     the alignment/double-margin bugs). */
+  padding: 190px 32px 72px;
   animation: panel-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -261,191 +264,492 @@ a, button, [role="button"],
   to   { opacity: 1; transform: none; }
 }
 
-/* compact header */
+/* ==========================================================================
+   Password-protected projects (Loblaws, Sun Life) — modal over current view
+   ========================================================================== */
+.project-password-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay, 1001);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2.1px);
+  -webkit-backdrop-filter: blur(2.1px);
+  cursor: default;
+}
+
+.project-password-modal[hidden] { display: none; }
+
+.project-lock__card {
+  width: 100%;
+  max-width: 288px;
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.project-lock__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.project-lock__icon {
+  width: 16px;
+  height: 16px;
+  color: #6b6b6b;
+  flex-shrink: 0;
+}
+
+.project-lock__title {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.project-lock__subtitle {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 400;
+  color: #6b6b6b;
+  margin: 0 0 14px;
+}
+
+.project-lock__field {
+  position: relative;
+}
+
+.project-lock__input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-primary);
+  /* iOS Safari auto-zooms the page on focus for any input under 16px —
+     that's the "page gets zoomed in after entering the password" bug */
+  font-size: 16px;
+  color: #1a1a1a;
+  background: var(--color-white);
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  padding: 10px 44px 10px 12px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.project-lock__input::placeholder { color: #9a9a9a; }
+.project-lock__input:focus { border-color: rgba(0, 0, 0, 0.4); }
+
+.project-lock__submit {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: #f2f2f2;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.project-lock__submit:hover { background: #e6e6e6; }
+.project-lock__submit img { width: 18px; height: 18px; display: block; }
+
+.project-lock__error {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: #d64545;
+  margin: 8px 0 0;
+}
+
+@keyframes lock-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+.project-password-modal.is-shake .project-lock__card {
+  animation: lock-shake 0.4s ease;
+}
+
+/* Fills the already-correctly-sized column (.project-panel provides the
+   width cap + side padding) — no width math duplicated here. */
 .panel-head {
-  max-width: 760px;
-  margin: 0 auto 40px;
-  padding: 0 32px;
+  margin: 0 0 59px;
 }
 
 .panel-head h1 {
-  font-size: 56px;
-  font-weight: 400;
-  line-height: 1.1;
-  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
   color: var(--color-primary);
 }
 
+/* title + a small external-link icon (only present when the project has
+   a real site to link to) instead of a separate "Visit site" row */
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.panel-title__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.panel-title__link img {
+  width: 18px;
+  height: 18px;
+  filter: invert(1);
+  opacity: 1;
+  transition: transform 0.2s ease;
+}
+
+.panel-title__link:hover img { transform: scale(1.12); }
+
+/* projects with no site link skip the .panel-title wrapper entirely —
+   the bare h1 needs the same bottom margin .panel-title provides */
+.panel-overview__intro > h1 { margin-bottom: 12px; }
+
+/* Overview row: title+description sits in column 1, stats+location sits
+   in column 2 — using the EXACT same 2-column grid (1fr 1fr, 24px gap) as
+   the image rows below, so column 2 starts at the same x as the second
+   grid image. Neither column stretches to fill itself; content just hugs
+   the left of whichever column it's in. */
+.panel-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  align-items: flex-end;
+}
+
+.panel-overview__intro {
+  max-width: 565px;
+}
+
+.panel-overview__desc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-head .project-description {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 454px;
+}
+
+/* Fills column 2 of .panel-overview; internally just two sub-columns —
+   stats, then location/visit-site — sitting close together, hugging the
+   left edge of column 2 rather than stretching across it. */
+.panel-overview__meta {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.panel-head .project-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  min-width: 185px;
+}
+
+/* Grid, not flex, for the fixed-label-column + free-width-value layout —
+   flex's stretch/min-size interactions made every value column clamp to
+   the same narrow width regardless of content, wrapping "Product Designer"
+   one word per line. Grid's 1fr just takes what the content needs. */
+.panel-head .stat-item {
+  display: grid;
+  /* explicit floor — both 1fr and auto resolved via min-content here
+     (this grid sits inside a shrink-to-fit flex chain), which wrapped
+     multi-line values like "Product Designer" one word per line */
+  grid-template-columns: 100px minmax(140px, max-content);
+  column-gap: 8px;
+  align-items: baseline;
+}
+
+/* Fixed width so every label in the block is identical — the values then
+   all start at the same x, left-aligned, regardless of whether the label
+   above it is "Year" or "Project type". */
+.panel-head .stat-label { white-space: nowrap; text-transform: none; font-size: 14px; font-weight: 300; color: var(--color-gray); }
+.panel-head .stat-value { font-size: 14px; font-weight: 300; color: var(--color-primary); line-height: 1.4; }
+
+/* location + visit-site: its own column, plain text rows (no pill background) */
 .panel-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 28px;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  min-width: 185px;
 }
 
 .panel-actions .action-button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--color-lightGrey);
-  padding: 12px 14px;
-  border-radius: 8px;
+  background: none;
+  padding: 0;
+  border-radius: 0;
   border: none;
   font-size: 14px;
+  font-weight: 300;
   font-family: var(--font-primary);
   color: var(--color-primary);
   text-decoration: none;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
-.panel-actions .button-icon { width: 20px; height: 20px; }
+.panel-actions .button-icon { width: 16px; height: 16px; filter: invert(1); }
 
-.panel-head .project-description {
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 1.55;
-  margin-bottom: 18px;
-}
+.panel-head .stats-divider { display: none; }
 
-.panel-head .stats-divider {
-  width: 100%;
-  height: 1px;
-  background-image: linear-gradient(to right, var(--color-gray) 10px, transparent 10px);
-  background-size: 20px 1px;
-  background-repeat: repeat-x;
-  margin: 32px 0;
-}
-
-.panel-head .project-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 56px;
-}
-
-.panel-head .stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.panel-head .stat-label { font-size: 13px; color: var(--color-gray); }
-.panel-head .stat-value { font-size: 15px; font-weight: 500; color: var(--color-primary); }
-
-/* --- image grid / text sections: shrink for the reading pane --- */
+/* --- image grid / text sections: bigger, more immersive canvas ---
+   Fills .project-panel's already-correctly-sized box — see the comment
+   there for why the width cap + gutter live in exactly one place now. */
 .reading-view .projects-container {
-  max-width: 1040px;
-  padding: 0 32px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
-.reading-view .grid-row { height: 400px; }
+/* Uniform vertical rhythm between every block in the reading column
+   (image rows, text sections, ...) — matches the horizontal gap between
+   the two images within a row, so vertical and horizontal spacing feel
+   the same throughout the grid. */
+.reading-view .projects-container > *:not(.single-image-container) {
+  margin-bottom: 24px;
+}
+.reading-view .projects-container > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Rows size to the images' own natural aspect ratio instead of a fixed
+   pixel height — a fixed height forces object-fit:cover to crop whatever
+   doesn't match it, which is most images since ratios vary per project
+   (see the old mashup.design build: it never fixed row height either,
+   each row was exactly as tall as its images at their exported size). */
+.reading-view .grid-row {
+  height: auto;
+  align-items: flex-start;
+}
+
+.reading-view .grid-item { height: auto; }
+
+.reading-view .grid-item img,
+.reading-view .grid-item video,
+.reading-view .video-content {
+  height: auto;
+  object-fit: initial;
+}
+
+.reading-view .video-container {
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reading-view .video-container iframe { height: 100%; }
 
 .reading-view .text-section {
-  padding: 28px 0;
-  margin: 12px 0;
+  padding: 0;
 }
 
+/* .text-section-container lives INSIDE .projects-container, which already
+   applies the left-edge shift that lines the grid up with the rail — so
+   this must NOT re-apply margin/max-width, or the shift doubles up. */
 .reading-view .text-section-container {
-  max-width: 1040px;
-  gap: 72px !important;
-  padding: 0 32px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  gap: 64px !important;
 }
-
-.reading-view .text-section-title {
-  flex: 0 0 210px;
-  padding-left: 0;
-}
-
-.reading-view .text-section-title h2 { white-space: normal; }
 
 .reading-view .text-section-content {
   flex: 1 1 auto;
-  max-width: 460px;
-  margin-right: 0;
+  max-width: 392px;
+  margin: 0;
 }
 
-.reading-view .single-image-container { max-width: 760px; margin: 28px auto; }
-.reading-view .video-container { max-width: 1040px; height: 440px; padding: 0 32px; }
+/* Section titles live inline now (bold lead-in inside the paragraph, e.g.
+   "Brand Identity - For Arch's rebrand...") instead of a separate heading. */
+.reading-view .text-section-content p strong {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* Alternate paragraph alignment: odd text sections sit against the left
+   edge (default, matching the image grid's left edge), even ones flip to
+   the right edge (matching the image grid's right edge) — handled purely
+   by the content block's own margin, since the container fills the
+   already-correct width from its parent. */
+.reading-view .text-section:nth-of-type(even) .text-section-content {
+  margin-left: auto;
+  margin-right: 0;
+  text-align: right;
+}
+
+.reading-view .single-image-container { max-width: 900px; margin: 24px auto; }
 .reading-view .section-divider { display: none; }
+
+/* --- "Next project" — small, right-aligned link + arrow at the panel end --- */
+.next-project {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+  margin: 16px 0 0;
+  padding: 20px 0 0;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--color-hairline);
+  cursor: pointer;
+}
+
+.next-project__label {
+  font-family: 'Azeret Mono', var(--font-primary);
+  font-size: 16px;
+  font-weight: 200;
+  color: rgba(221, 221, 221, 0.73);
+}
+
+.next-project__name {
+  font-family: 'Azeret Mono', var(--font-primary);
+  font-size: 16px;
+  font-weight: 500;
+  color: #ddd;
+}
+
+.next-project__arrow {
+  width: 19px;
+  height: 19px;
+  transition: transform 0.2s ease;
+}
+
+.next-project:hover .next-project__arrow { transform: translateX(4px); }
 
 /* --------------------------------------------------------------------------
    3. Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 1024px) {
-  .cards-stage {
-    height: auto;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    max-width: 520px;
+  .cards-list {
+    grid-template-columns: 1fr;
+    row-gap: 40px;
   }
-  .project-float {
-    position: static;
-    width: 100%;
-    max-width: 100%;
-    transform: none !important;
-  }
-  .project-float__media { height: 220px; }
+  .cards-list__label { padding-left: 20px; }
+  .cards-list__group { padding: 0 20px; row-gap: 16px; }
+  .cards-list__group + .cards-list__label { margin-top: 16px; }
 
   .projects-app[data-view="reading"] .reading-view {
     grid-template-columns: 1fr;
-    height: auto;
-    overflow: visible;
+    column-gap: 0;
   }
+  /* Mobile: no per-project rail list — just a single "All Projects" link
+     back to the cards view, sitting in normal flow under the top nav
+     (not a sticky bar; nothing to scroll horizontally anymore). */
   .projects-rail {
-    position: sticky;
-    top: 0;
-    height: auto;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    overflow-x: auto;
-    padding: 74px 16px 12px;
-    border-right: 0;
-    border-bottom: 1px solid var(--color-hairline);
-    background: rgba(14, 14, 14, 0.92);
-    backdrop-filter: blur(8px);
-    z-index: 900;
+    position: static;
+    max-height: none;
+    display: block;
+    padding: 90px 20px 16px;
   }
-  .to-cards { margin-bottom: 0; flex-shrink: 0; }
-  .rail-list { flex-direction: row; gap: 4px; }
-  .rail-item__name { white-space: nowrap; }
-  .rail-item__sections { display: none !important; }
+  .rail-list { display: none; }
+  .to-cards {
+    width: auto;
+    height: auto;
+    margin-bottom: 0;
+    padding: 8px;
+    gap: 10px;
+    font-size: 0;
+    color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.08);
+    border: 0;
+    border-radius: 24px;
+  }
+  .to-cards svg { width: 18px; height: 18px; }
+  .to-cards__label {
+    display: inline-block;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
   .reading-scroll { height: auto; }
   .project-panel { padding-top: 24px; }
-  .panel-head h1 { font-size: 40px; }
+  /* stacked single-column layout needs its own row-gap — the desktop rule
+     only sets column-gap, so the link (end of intro) and stats (start of
+     meta) had zero space between them once stacked */
+  .panel-overview { grid-template-columns: 1fr; row-gap: 24px; align-items: flex-start; }
+  .panel-overview__intro { max-width: none; }
+  .panel-overview__meta { flex-wrap: wrap; }
+}
+
+@media (max-width: 640px) {
+  .cards-view { padding: 96px 0 60px; }
+  .cards-list__group { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
-  .cards-view { padding: 96px 16px 40px; }
   .reading-view .grid-row {
     height: auto;
     flex-direction: column;
   }
   .reading-view .grid-row.pattern-2,
+  .reading-view .grid-row.pattern-2a,
+  .reading-view .grid-row.pattern-2b,
   .reading-view .grid-row.pattern-3 { display: flex; }
-  .reading-view .grid-item {
-    height: 0;
-    padding-bottom: 66%;
-    position: relative;
-  }
+  .reading-view .grid-item { height: auto; }
   .reading-view .grid-item img,
   .reading-view .grid-item video {
-    position: absolute;
-    inset: 0;
+    position: static;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: initial;
     border-radius: 8px;
   }
-  .reading-view .text-section-container {
+  .reading-view .text-section-container,
+  .reading-view .text-section:nth-of-type(even) .text-section-container {
     flex-direction: column;
     gap: 12px !important;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .panel-head { padding: 0 20px; }
+  .reading-view .text-section:nth-of-type(even) .text-section-content {
+    text-align: left;
+    margin-left: 0;
+  }
+  .project-panel { padding-left: 20px; padding-right: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .project-panel { animation: none; }
   .reading-scroll { scroll-behavior: auto; }
 }
+
+/* the reading view scrolls with the page now, so the footer just sits at
+   the very bottom in normal flow (not pinned) */

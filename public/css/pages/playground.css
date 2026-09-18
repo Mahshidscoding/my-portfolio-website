@@ -13,10 +13,10 @@
   position: relative;
   width: 100%;
   max-width: 1440px;
-  /* enough room for one card to sit + gently drift. Bump this as more
-     .project-float cards are added so their --x/--y spots don't collide
-     or get clipped — roughly +480px of height per extra "row". */
-  min-height: 1040px;
+  /* enough room for the cards' scattered --x/--y resting spots (diagonal,
+     not stacked) plus their gentle idle drift. Recheck this as cards are
+     added/repositioned so nothing clips at the bottom. */
+  min-height: 900px;
   margin: 0 auto;
 }
 

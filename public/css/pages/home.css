@@ -1,23 +1,48 @@
 /* ==========================================================================
-   home.css — Home page (= About). Empty background for now.
-   Folds in the former about.css rules (blue page background removed).
+   home.css — Home page (= About).
    ========================================================================== */
+
+/* --- PP NeueBit (headline). Drop the files in public/fonts/ — until then the
+   headline falls back to Space Grotesk. --- */
+@font-face {
+  font-family: 'PP NeueBit';
+  src: url('../../fonts/PPNeueBit-Bold.woff2') format('woff2'),
+       url('../../fonts/PPNeueBit-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* --- custom cursor (single definition) --- */
 body,
 html {
   cursor: none;
-  background-color: var(--color-background);
+  /* main.css sets height:100% on both (=100% of the viewport) — with a
+     page this much taller than one viewport, that left each element's own
+     background painting area only one viewport tall, so the gradient (its
+     default background-repeat: repeat) tiled itself every ~900px instead of
+     running once top-to-bottom, which is exactly the hard seams. height:auto
+     lets each box grow to the page's real content height so the gradient
+     is one continuous pass; no-repeat is belt-and-suspenders. */
+  height: auto;
+  min-height: 100%;
+  background: linear-gradient(180deg, #0f0f0f 0%, #2e2442 100%) no-repeat;
   color: var(--color-text);
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
+/* the flower bed bleeds past the hero edges — keep that from adding a
+   horizontal scrollbar. Only ONE of html/body may set overflow-x here:
+   setting it on both at once makes some engines turn body into its own
+   internal scroll container and strands window scrolling entirely. */
+html { overflow-x: hidden; }
+
 .cursor {
   position: fixed;
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -34,16 +59,41 @@ select, textarea, [role="button"], .title-icon, .icon-container,
   cursor: none !important;
 }
 
+/* the watering-can cursor only shows directly over a flower — everywhere
+   else in the hero (background, headline, empty ground) keeps the custom
+   dot, same as the rest of the page */
+.garden-plant,
+.garden-plant * {
+  cursor: url('../../images/wateringCan-cursor.svg') 6 30, auto !important;
+}
+.home-hero .intro-cta,
+.home-hero .intro-cta * {
+  cursor: pointer !important;
+}
+
 @media (pointer: coarse) {
   body, html, a, button { cursor: auto !important; }
   .cursor { display: none !important; }
 }
 
 /* --------------------------------------------------------------------------
-   Home hero — intro line + social icons on an empty background
+   Home hero — headline + interactive flower garden over the page gradient
    -------------------------------------------------------------------------- */
+/* main.css gives <main> its own opaque background + z-index:2 (for pages
+   with no gradient of their own) — on this page that paints solid over the
+   body gradient set above and blacks it out, so make main transparent here
+   to let it show through. Every section below is transparent too, on
+   purpose: one continuous gradient, not a stack of separately-tinted boxes. */
+.about-page main {
+  background: transparent;
+}
+
 .home-hero {
-  min-height: 78vh;
+  position: relative;
+  /* side vines can still climb past the edge; html/body overflow-x:hidden
+     catches any sideways spill (the bed itself no longer spills downward) */
+  overflow: visible;
+  min-height: clamp(680px, 100vh, 1040px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,36 +103,343 @@ select, textarea, [role="button"], .title-icon, .icon-container,
 }
 
 .home-hero .intro-text {
-  max-width: 480px;
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  /* nudged up from dead-center within the hero */
+  margin-top: -36px;
+  /* let watering drags pass through the copy to the garden behind it */
+  pointer-events: none;
 }
 
+.home-hero .intro-text .intro-cta { pointer-events: auto; }
+
+/* --------------------------------------------------------------------------
+   Hero headline + "Projects →" link
+   -------------------------------------------------------------------------- */
 .home-hero .intro-text h1 {
+  font-family: 'PP NeueBit', 'Space Grotesk', var(--font-primary) !important;
+  font-weight: 700 !important;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.12 !important;
+  letter-spacing: 0.005em;
+  margin: 0 0 22px !important;
+  /* !important defeats a stale mobile override in sections.css (.intro-text h1) */
+  color: #fff !important;
+  text-align: center;
+}
+
+.intro-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 400;
+  color: #fff;
+  text-decoration: none;
+  transition: gap 0.2s ease, opacity 0.2s ease;
+}
+
+.intro-cta:hover { gap: 12px; }
+.intro-cta__arrow {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease;
+}
+.intro-cta:hover .intro-cta__arrow { transform: translateX(3px); }
+
+/* --------------------------------------------------------------------------
+   Introduction section (below the hero) — text with inline images.
+   Every inline image is sized in `em`, so it tracks the type at every
+   breakpoint and wraps with the words; no per-image media queries needed.
+   -------------------------------------------------------------------------- */
+.intro-section {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  /* pushed down further so it clears the flower bed above it */
+  padding: 190px 24px 110px;
+  /* no background of its own — the page's own gradient shows through */
+}
+
+/* one centred block (avatar+lede+body share the same box, so they read as
+   a single centred unit on the page instead of hugging the left edge) */
+.intro-copy {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* avatar sits beside the lede as its own block — not inline in the text */
+.intro-lede-row {
+  display: grid;
+  grid-template-columns: 117px 1fr;
+  column-gap: 29px;
+  row-gap: 26px;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.intro-avatar {
+  grid-column: 1;
+  grid-row: 1;
+  width: 117px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* bold opening line, matched to Figma: Space Grotesk Medium 27/31 */
+.intro-lede {
+  grid-column: 2;
+  grid-row: 1;
+  max-width: 600px;
+  margin: 0;
+  text-align: left;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 31px;
+  color: #fff;
+}
+
+/* softer follow-up paragraph: Space Grotesk Regular, ~4px smaller than
+   before, at 70% opacity. Shares intro-copy's own box (no extra indent) so
+   it lines up with the avatar+lede row above it as one centred block. */
+.intro-body {
+  margin: 0;
+  text-align: left;
   font-family: var(--font-primary);
   font-weight: 400;
-  font-size: 19px;
-  line-height: 1.5;
-  margin: 0 0 20px;
-  color: var(--color-primary);
+  font-size: 20px;
+  line-height: 28px;
+  color: #fff;
+  opacity: 0.7;
 }
 
-.home-hero .intro-icons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
+.intro-body + .intro-body {
+  margin-top: 20px;
 }
 
-.home-hero .intro-icon {
-  width: 26px;
-  height: 26px;
+@media (max-width: 768px) {
+  .intro-section { padding: 72px 20px; }
+  .intro-lede-row {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+  .intro-lede { grid-column: 1; grid-row: 2; font-size: 22px; line-height: 1.4; margin-top: 16px; }
+  .intro-body { font-size: 16px; line-height: 1.6; }
+}
+
+/* --------------------------------------------------------------------------
+   "Click and drag around" hint
+   -------------------------------------------------------------------------- */
+.drag-hint {
+  /* a block-level flex box (not inline-flex) so margin:auto centers it AND
+     it forces its own line below .intro-cta instead of sharing one with it —
+     an inline-flex box here was sitting on the same line as "Projects →"
+     and a leftover translate(-50%) was shoving it sideways on top of it */
+  margin: 28px auto 0;
+  z-index: 4;
   display: flex;
+  width: fit-content;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: transform 0.25s ease;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.home-hero .intro-icon:hover { transform: translateY(-2px); }
-.home-hero .intro-icon img { width: 18px; height: 18px; }
+.drag-hint__icon { width: 15px; height: 15px; opacity: 0.85; }
+
+.drag-hint.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: drag-hint-bob 2.6s ease-in-out 0.7s infinite;
+}
+
+.drag-hint.is-gone {
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: none;
+}
+
+@keyframes drag-hint-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drag-hint.is-visible { animation: none; }
+}
+
+/* --------------------------------------------------------------------------
+   ASCII garden — interactive drag-to-water layer behind the intro copy
+   Placement mirrors the Figma frame (1440 x 1117); art + colours from spec.
+   -------------------------------------------------------------------------- */
+.ascii-garden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* flush with the hero — the bed no longer trails into the next section */
+  height: 100%;
+  /* matches garden.js's own FRAME_W cap (2200px) — beyond that the field
+     centers with real margins either side instead of stretching thinner
+     and thinner on an ultra-wide/multi-monitor window */
+  max-width: 2200px;
+  margin: 0 auto;
+  z-index: 1;
+  overflow: visible;
+  touch-action: none;
+}
+
+.garden-decor,
+.garden-plant .pl {
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  line-height: 1.1;
+  white-space: pre;
+  display: block;
+  /* the hero is centre-aligned; ASCII art must stay left-aligned or the
+     leading spaces stop lining the stems up */
+  text-align: left;
+}
+
+.garden-decor {
+  position: absolute;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* grass decoration is now Mahshid's own SVGs (grass-1/2.svg), already white */
+.garden-decor--sprig,
+.garden-decor--tuft {
+  display: block;
+  height: auto;
+}
+.garden-decor--sprig { width: 26px; }
+
+.garden-plant {
+  position: absolute;
+  width: 56px;
+  height: 62px;
+  /* the box bottom-anchors its art; lift it so the placement y ≈ art top */
+  margin-top: -50px;
+  pointer-events: auto;
+}
+
+.garden-plant .plant-art {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform-origin: 50% 100%;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.garden-plant .plant-dry {
+  color: #8a6a48;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* bloom is one of Mahshid's flower SVGs (images/icons/garden/f*.svg) — each
+   is a plain white silhouette, used here as a CSS mask over a solid colour
+   (set by the .pl-* class garden.js adds) so the flower actually tints
+   instead of rendering flat white. width/height/left are set inline
+   per-plant in garden.js so it anchors on the same column-3 point as the
+   dry stem. */
+.garden-plant .plant-bloom {
+  opacity: 0;
+  transform: scale(0.8);
+  display: block;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+}
+
+.garden-plant.is-bloomed .plant-dry {
+  opacity: 0;
+  transform: scale(0.85);
+}
+
+.garden-plant.is-bloomed .plant-bloom {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* per-line colour classes (shared by decor + plants) */
+.pl-green  { color: #6fae82; }
+.pl-pink   { color: #e389ac; }
+.pl-yellow { color: #e8c15a; }
+.pl-purple { color: #b096d1; }
+.pl-orange { color: #f0a868; }
+.pl-blue   { color: #86bcd8; }
+.pl-grey   { color: #a9a49a; }
+.pl-brown  { color: #8a6a48; }
+
+/* same palette as background-color, for the masked (bloom) flowers */
+.plant-bloom.pl-green  { background-color: #6fae82; }
+.plant-bloom.pl-pink   { background-color: #e389ac; }
+.plant-bloom.pl-yellow { background-color: #e8c15a; }
+.plant-bloom.pl-purple { background-color: #b096d1; }
+.plant-bloom.pl-orange { background-color: #f0a868; }
+.plant-bloom.pl-blue   { background-color: #86bcd8; }
+
+/* dry state is monochrome brown regardless of line class */
+.garden-plant .plant-dry .pl { color: inherit; }
+.garden-plant .plant-dry .pl-grey { color: #a9a49a; }
+
+.water-drop {
+  position: fixed;
+  z-index: 3;
+  font-family: 'Space Mono', ui-monospace, monospace;
+  font-size: 15px;
+  color: #8fc6e8;
+  pointer-events: none;
+  opacity: 1;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .garden-plant .plant-art { transition: opacity 0.45s ease; }
+  .garden-plant .plant-dry,
+  .garden-plant.is-bloomed .plant-dry,
+  .garden-plant .plant-bloom,
+  .garden-plant.is-bloomed .plant-bloom { transform: none; }
+}
+
+@media (max-width: 1100px) {
+  .garden-decor,
+  .garden-plant .pl { font-size: 9px; }
+}
+
+/* The garden is a 1440-wide composition built for pointer dragging; below
+   this width it can't lay out without crowding the copy, so the hero falls
+   back to its plain centred intro. */
+@media (max-width: 820px) {
+  .ascii-garden { display: none; }
+  .home-hero .intro-text { pointer-events: auto; }
+}
 
 /* --------------------------------------------------------------------------
    About intro — text left, image right
@@ -109,6 +466,7 @@ select, textarea, [role="button"], .title-icon, .icon-container,
 .about-intro .left-column {
   flex: 1 1 360px;
   min-width: 0;
+  max-width: 680px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -226,17 +584,16 @@ select, textarea, [role="button"], .title-icon, .icon-container,
    Skills & experiences
    -------------------------------------------------------------------------- */
 .about-skills {
-  margin: 80px auto 100px;
+  margin: 0 auto;
   position: relative;
-  background-image: url('../../images/about/section-bg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 8px;
   width: 100%;
   max-width: 100%;
-  padding: 100px 24px 10px;
+  padding: 90px 24px 140px;
+  /* no background of its own — the page's own gradient shows through */
 }
+
+.skills-title,
+.skills-content { position: relative; z-index: 1; }
 
 .skills-title {
   margin-bottom: var(--spacing-2xl);
@@ -244,11 +601,11 @@ select, textarea, [role="button"], .title-icon, .icon-container,
 }
 
 .skills-title .section-title {
-  font-family: var(--font-primary);
-  font-size: 45px;
-  font-weight: 450;
-  color: #ffffff !important;
-  letter-spacing: -0.02em;
+  font-family: 'PP NeueBit', 'Space Grotesk', var(--font-primary);
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 700;
+  color: var(--color-primary) !important;
+  letter-spacing: 0.01em;
 }
 
 .skills-content {
@@ -257,53 +614,97 @@ select, textarea, [role="button"], .title-icon, .icon-container,
   position: relative;
 }
 
-.skills-row-1 {
-  min-height: 420px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 40px clamp(24px, 12vw, 190px);
-  perspective: 1000px;
-}
+/* the footer now sits in normal flow — no need for the big fixed-footer gap */
+.about-page .bottom-spacer { height: 40px !important; }
 
-.skills-row-1 img { max-width: 42%; height: auto; }
-.skills-row-1 img:first-child { transform: rotate(-8deg); }
-.skills-row-1 img:last-child { transform: rotate(8deg); }
-
-.skills-row-2 {
-  min-height: 500px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  margin-top: 60px;
+/* --------------------------------------------------------------------------
+   Skills stage — a fixed-aspect "desk" the receipt cards are scattered on.
+   Every card is positioned/rotated to match the Figma layout exactly: each
+   card's box is sized to its own SVG's native px size (so width%/height% —
+   taken against the stage's own width/height — reproduce the unrotated
+   aspect ratio), centred on its Figma anchor point, then rotated in place.
+   -------------------------------------------------------------------------- */
+.skills-stage {
   position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  aspect-ratio: 1440 / 1188.806;
 }
 
-.skills-row-2 img { max-width: 100%; height: auto; }
+/* the receipts image is taller than the stage's own aspect ratio (it has
+   more breathing room around its 4 cards than the stage box does) — sizing
+   it to the stage with object-fit:cover cropped the two lower cards off.
+   Instead give it its own natural aspect ratio at full stage width and let
+   it overflow below the stage (nothing clips it), so every card shows. */
+.skills-bg-receipts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2160 / 2080;
+  pointer-events: none;
+}
+
+.skills-card {
+  position: absolute;
+  display: flex;
+}
+
+.skills-card .skill-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.skills-card--soft {
+  left: 30.775%;
+  top: 28.182%;
+  width: 26.242%;
+  height: 49.833%;
+  transform: translate(-50%, -50%) rotate(-15deg);
+}
+
+.skills-card--hard {
+  left: 68.649%;
+  top: 30.741%;
+  width: 24.097%;
+  height: 46.769%;
+  transform: translate(-50%, -50%) rotate(15deg);
+}
+
+.skills-card--exp {
+  left: 51.007%;
+  top: 87.694%;
+  width: 44.977%;
+  height: 56.278%;
+  transform: translate(-50%, -50%);
+}
 
 .skills-cta-button {
   position: absolute;
-  background-color: transparent !important;
-  color: #000 !important;
-  border: 1px solid #000 !important;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 14px;
+  left: 70.67%;
+  top: 11.5%;
+  width: 23.24%;
+  height: 8.1%;
+  transform: none;
+  background-color: #1512d9 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px;
+  font-size: clamp(11px, 1.3vw, 15px);
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  bottom: 28px;
-  left: 58%;
-  transform: translateX(-50%);
+  transition: background-color 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 10px;
   text-decoration: none;
 }
 
-.skills-cta-button .button-icon { width: 20px; height: 20px; }
-.skills-cta-button:hover { background-color: #000db3 !important; color: #fff !important; }
+.skills-cta-button .button-icon { width: 18px; height: 18px; }
+.skills-cta-button:hover { background-color: #0d0ab0 !important; }
 .skills-cta-button:hover .button-icon { filter: brightness(0) invert(1); }
 
 /* --------------------------------------------------------------------------
@@ -328,8 +729,10 @@ select, textarea, [role="button"], .title-icon, .icon-container,
 }
 
 @media (max-width: 768px) {
-  .home-hero { min-height: 70vh; padding: 120px 20px 40px; }
-  .home-hero .intro-text h1 { font-size: 15px; }
+  /* fills the whole first screen so the intro section below it doesn't
+     peek into view until the visitor actually scrolls */
+  .home-hero { min-height: 100vh; min-height: 100svh; padding: 120px 20px 40px; }
+  .home-hero .intro-text h1 { font-size: clamp(18px, 4.6vw, 26px) !important; }
 
   .about-intro,
   .about-goals {
@@ -361,21 +764,98 @@ select, textarea, [role="button"], .title-icon, .icon-container,
   .mobile-order-1 { order: 1; }
   .mobile-order-2 { order: 2; }
 
-  .about-skills { padding: 80px 16px 120px; }
-  .skills-title .section-title { font-size: 32px; }
-  .skills-row-1 { flex-direction: column; height: auto; gap: 40px; }
-  .skills-row-1 img,
-  .skills-row-2 img { max-width: 78%; height: auto; }
-  .skills-row-2 { min-height: auto; margin-top: 40px; flex-direction: column; }
-  .skills-cta-button {
+  .about-skills { padding: 64px 16px 90px; }
+  .skills-title .section-title { font-size: 26px; }
+
+  /* the stage's precise fan layout only reads at desktop width — stack the
+     three real cards instead, and drop the receipts backdrop (its text is
+     baked into the image and goes illegible this small; it's decorative). */
+  .skills-stage {
+    aspect-ratio: unset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+  .skills-bg-receipts { display: none; }
+  .skills-card {
     position: static;
-    transform: none;
-    margin: 28px auto 0;
+    width: 78%;
+    max-width: 320px;
+    height: auto;
+    transform: none !important;
+  }
+  /* soft (WHAT I DO) and hard (WHAT I USE) read before Experience on mobile
+     — DOM order has exp first (it needs to paint on top on desktop), so
+     this reorders the stack visually without touching that markup */
+  .skills-card--soft { order: 1; }
+  .skills-card--hard { order: 2; }
+  .skills-card--exp { order: 3; }
+  /* the Download CV button stays absolutely positioned over exp.svg's own
+     baked-in button graphic — it's a percentage of the card box, so it keeps
+     lining up with the artwork at any size. The card just needs to stay a
+     positioned containing block instead of the generic static override above. */
+  .skills-card--exp {
+    position: relative;
+    /* cancel the desktop left/top — as offsets on a *relatively* positioned
+       box (rather than anchor points on an absolute one) they'd otherwise
+       shove the card off to the side */
+    left: auto;
+    top: auto;
+    width: 92%;
+    max-width: 420px;
+    /* a definite height (via the card's own aspect ratio) is required for
+       the button's percentage top/height to resolve against — without it,
+       an absolutely positioned child's percentage insets compute to auto */
+    height: auto;
+    aspect-ratio: 647.66 / 669;
   }
 }
 
 @media (max-width: 480px) {
   .about-intro .left-column h1 { font-size: 30px; }
-  .skills-row-1 img,
-  .skills-row-2 img { max-width: 70%; }
+  .skills-card { width: 88%; }
+  .skills-card--exp { width: 96%; }
+}
+
+/* --------------------------------------------------------------------------
+   Footer — "Let's Connect!" + links, replacing the shared plain-copyright
+   footer on this page only (nav.css's .site-footer still serves every
+   other page as-is)
+   -------------------------------------------------------------------------- */
+.site-footer--connect {
+  background: transparent;
+  border-top: none;
+  padding: 48px 24px 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 42px;
+  flex-wrap: wrap;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  line-height: 31px;
+  color: #fff;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+.site-footer--connect .site-footer__cta {
+  font-weight: 300;
+}
+
+.site-footer--connect .site-footer__links {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+}
+
+.site-footer--connect .site-footer__links a {
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.site-footer--connect .site-footer__links a:hover {
+  text-decoration: underline;
 }

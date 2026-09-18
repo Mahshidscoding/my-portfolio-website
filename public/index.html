@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- CSS -->
@@ -22,22 +22,56 @@
     <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/pages/home.css">
+    <link rel="stylesheet" href="css/page-transition.css">
     <link rel="stylesheet" href="css/theme.css">
 </head>
 
 <body class="about-page">
+    <script>
+    (function () {
+      // Mirrors js/page-transition.js's handoff check (CONFIG.storageKey /
+      // maxHandoffAgeMs) but runs synchronously before any real page
+      // content parses, so an in-progress transition's black overlay
+      // covers the screen from the very first frame instead of appearing
+      // after a flash of the real page underneath. See page-transition.js
+      // for the full explanation and the matching literal values.
+      try {
+        var raw = sessionStorage.getItem('pt:handoff');
+        if (!raw) return;
+        var data = JSON.parse(raw);
+        if (!data || (Date.now() - data.ts) > 4000) return;
+        document.documentElement.classList.add('pt-active');
+        var el = document.createElement('div');
+        el.id = 'pt-overlay';
+        el.className = 'is-entering is-arrived';
+        el.setAttribute('aria-hidden', 'true');
+        var canvas = document.createElement('canvas');
+        canvas.className = 'pt-canvas';
+        var h1 = document.createElement('h1');
+        h1.className = 'pt-title is-visible';
+        h1.textContent = data.title || '';
+        var cursor = document.createElement('div');
+        cursor.className = 'pt-cursor';
+        el.appendChild(canvas);
+        el.appendChild(h1);
+        el.appendChild(cursor);
+        document.body.appendChild(el);
+      } catch (e) { /* sessionStorage unavailable — normal load proceeds */ }
+    })();
+    </script>
     <div class="cursor"></div>
 
     <!-- Navigation -->
     <nav class="site-nav">
-        <a href="index.html" class="nav-logo"><span class="nav-logo__mark"></span>Mahshid Mahmoudian</a>
+        <a href="/about" class="nav-logo"><span class="nav-logo__mark"></span>Mahshid Mahmoudian</a>
         <div class="nav-info">
             <div class="nav-info__links">
-                <a href="index.html" aria-current="page">About</a>
-                <a href="projects.html">Projects</a>
+                <a href="/about" aria-current="page">About</a>
+                <a href="/projects">Projects</a>
+                <a href="/playground">Playground</a>
                 <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
             </div>
-            <p class="nav-info__bio">With a strong foundation in software and tool design, I blend precision and creativity to craft simple, efficient experiences full of character. Here&rsquo;s a glimpse of selected work &mdash; reach out for full details.</p>
+            <p class="nav-info__bio">Product design by day, visual experiments, music, and other rabbit holes whenever I get the chance.</p>
             <div class="nav-contact-panel">
                 <div class="nav-contact-panel__inner">
                     <span class="nav-contact-panel__loc">Currently in Toronto, Canada (GMT-4)</span>
@@ -63,114 +97,60 @@
     </nav>
 
     <main>
-        <!-- Intro hero (background intentionally empty for now) -->
+        <!-- Intro hero — interactive ASCII garden behind the intro copy -->
         <section class="home-hero" data-reveal>
+            <div class="ascii-garden" data-garden aria-hidden="true"></div>
             <div class="intro-text">
-                <h1>Hey! I'm Mahshid. I&rsquo;m an interaction designer and artist exploring new ways to experience technology through design, interaction, sound, and visual art.</h1>
-                <div class="intro-icons">
-                    <a href="mailto:mahshidmdnn@gmail.com" class="intro-icon">
-                        <img src="images/social/email.svg" alt="Email">
-                    </a>
-                    <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener" class="intro-icon">
-                        <img src="images/social/linkedin.svg" alt="LinkedIn">
-                    </a>
+                <h1>Hey I&rsquo;m Mahshid,<br>A Product Designer<br>Who Builds things.</h1>
+                <a href="/projects" class="intro-cta">Projects <img class="intro-cta__arrow" src="images/icons/arrow-right-square-contained.svg" alt="" aria-hidden="true"></a>
+            </div>
+        </section>
+
+        <!-- Introduction — portrait sits beside the lede as its own block,
+             not inline inside the sentence. -->
+        <section class="intro-section" data-reveal>
+            <div class="intro-copy">
+                <div class="intro-lede-row">
+                    <img class="intro-avatar" src="images/Mahshid.png" alt="Mahshid Mahmoudian">
+                    <p class="intro-lede">
+                        Hey there :) I&rsquo;m a designer working across product, visual art, and sound. I&rsquo;m interested in the unexpected details that make something feel intuitive, intentional, and distinctly human.
+                    </p>
                 </div>
+                <p class="intro-body">
+                    I like figuring out how things work, but I&rsquo;m equally interested in how they feel. My background in software, visual art, and music means I tend to approach a problem somewhere between systems and sensibilities.
+                </p>
+                <p class="intro-body">
+                    Outside of work, I&rsquo;m playing around with music, putting together zines, or getting lost somewhere new.
+                </p>
             </div>
         </section>
 
         <div class="site-container">
-            <!-- About intro -->
-            <section class="about-intro" data-reveal>
-                <div class="two-column-container">
-                    <div class="left-column">
-                        <h1>I'm Mahshid</h1>
-                        <p class="subtitle">A multidisciplinary designer</p>
-                        <div class="about-text">
-                            <p>Working in different fields of design taught me the core <strong>principles</strong> that apply everywhere, how to solve <strong>problems, communicate</strong> clearly, and create <strong>experiences</strong> that make sense.</p>
-                            <p>I believe that while art <strong>asks questions</strong>, design offers <strong>practical answers</strong>. In my work, I try to combine the two to blend curiosity and functionality in order to create more <strong>powerful and engaging</strong> experiences.</p>
-                        </div>
-                    </div>
-                    <div class="right-column">
-                        <div class="about-image">
-                            <img src="images/about/me.png" alt="Portrait of Mahshid">
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Skills & experiences -->
             <section class="about-skills" data-reveal>
                 <div class="skills-title">
                     <h2 class="section-title">Skills &amp; experiences</h2>
                 </div>
                 <div class="skills-content">
-                    <div class="skills-row-1">
-                        <img src="images/soft.svg" alt="Soft skills" class="skill-svg">
-                        <img src="images/hard.svg" alt="Hard skills" class="skill-svg">
-                    </div>
-                    <div class="skills-row-2">
-                        <img src="images/exp.svg" alt="Experience" class="skill-svg">
-                        <a href="images/cv.pdf" download>
-                            <button class="skills-cta-button">
+                    <div class="skills-stage">
+                        <!-- Rabbit holes / Field notes / Unfinished / Collectables — scattered
+                             receipt notes, all baked into one background image; drop a new
+                             receipts-bg.png in here to update the notes themselves. -->
+                        <img src="images/receipts-bg.png" alt="" aria-hidden="true" class="skills-bg-receipts">
+                        <div class="skills-card skills-card--exp">
+                            <img src="images/exp.svg" alt="Experience" class="skill-svg">
+                            <a href="images/cv.pdf" download class="skills-cta-button">
                                 <img src="images/social/download.svg" alt="" class="button-icon">
                                 Download CV
-                            </button>
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Current goal -->
-            <section class="about-goals" data-reveal>
-                <div class="two-column-container">
-                    <div class="left-column mobile-order-2">
-                        <div class="about-secondary-image">
-                            <img src="images/about/goal.png" alt="Current goal illustration">
+                            </a>
+                        </div>
+                        <div class="skills-card skills-card--hard">
+                            <img src="images/hard.svg" alt="Hard skills" class="skill-svg">
+                        </div>
+                        <div class="skills-card skills-card--soft">
+                            <img src="images/soft.svg" alt="Soft skills" class="skill-svg">
                         </div>
                     </div>
-                    <div class="right-column mobile-order-1">
-                        <h2>Current goal</h2>
-                        <div class="about-text">
-                            <p>Lately, I've been diving deeper into <strong>development</strong> to bring more of my <strong>spatial design</strong> ideas to life. I've been experimenting with <strong>node-based programming</strong>, <strong>Python</strong>, and <strong>JavaScript</strong>, and even built this site from scratch! I'm interested in how interactive environments, installations, and interfaces can create more engaging, spatial experiences.</p>
-                            <p>I've also been exploring the world of <strong>Artificial Intelligence</strong>, learning how to incorporate it into my projects. My goal is to gain a <strong>deeper understanding</strong> of all the tools needed to create meaningful products and experiences.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- How I use AI -->
-            <section class="about-intro" data-reveal>
-                <div class="two-column-container">
-                    <div class="left-column">
-                        <h1>How I use AI</h1>
-                        <div class="about-text">
-                            <p>AI tools like <strong>MidJourney</strong>, <strong>Kling</strong>, and <strong>Claude</strong> help me speed up my creative process. Whether it's generating mockups, refining visuals, or brainstorming ideas. This lets me focus on the bigger picture, delivering high-quality work while saving time on repetitive tasks.</p>
-                        </div>
-                    </div>
-                    <div class="right-column">
-                        <div class="about-image">
-                            <img src="images/about/ai.png" alt="How I use AI illustration">
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Design reflections -->
-            <section class="reflection-section" data-reveal>
-                <div class="projects-title-section">
-                    <h2 class="section-title">Design reflections</h2>
-                </div>
-                <div class="reflection-card-container">
-                    <a href="AI.html" class="reflection-card">
-                        <div class="reflection-card-image">
-                            <img src="images/ai/header.png" alt="Designing for AI">
-                        </div>
-                        <div class="reflection-card-content">
-                            <h3 class="reflection-card-title">Designing for AI</h3>
-                            <p class="reflection-card-description">A designer's perspective on how UI is changing and what it means for design</p>
-                            <div class="reflection-card-date">Feb 02, 2025</div>
-                        </div>
-                    </a>
                 </div>
             </section>
         </div>
@@ -178,6 +158,17 @@
         <div class="bottom-spacer"></div>
     </main>
 
+    <footer class="site-footer site-footer--connect" data-reveal>
+        <span class="site-footer__cta">Let&rsquo;s Connect!</span>
+        <div class="site-footer__links">
+            <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="mailto:mahshidmdnn@gmail.com">Email</a>
+        </div>
+    </footer>
+
     <script src="js/site.js"></script>
+    <script src="js/page-transition.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script defer src="js/garden.js"></script>
 </body>
 </html>

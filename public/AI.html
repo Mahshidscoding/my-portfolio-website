@@ -17,20 +17,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/pages/ai.css">
+    <link rel="stylesheet" href="css/page-transition.css">
     <link rel="stylesheet" href="css/theme.css">
 </head>
 <body>
+<script>
+(function () {
+  // Mirrors js/page-transition.js's handoff check (CONFIG.storageKey /
+  // maxHandoffAgeMs) but runs synchronously before any real page content
+  // parses, so an in-progress transition's black overlay covers the
+  // screen from the very first frame instead of appearing after a flash
+  // of the real page underneath. See page-transition.js for the full
+  // explanation and the matching literal values.
+  try {
+    var raw = sessionStorage.getItem('pt:handoff');
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (!data || (Date.now() - data.ts) > 4000) return;
+    document.documentElement.classList.add('pt-active');
+    var el = document.createElement('div');
+    el.id = 'pt-overlay';
+    el.className = 'is-entering is-arrived';
+    el.setAttribute('aria-hidden', 'true');
+    var canvas = document.createElement('canvas');
+    canvas.className = 'pt-canvas';
+    var h1 = document.createElement('h1');
+    h1.className = 'pt-title is-visible';
+    h1.textContent = data.title || '';
+    var cursor = document.createElement('div');
+    cursor.className = 'pt-cursor';
+    el.appendChild(canvas);
+    el.appendChild(h1);
+    el.appendChild(cursor);
+    document.body.appendChild(el);
+  } catch (e) { /* sessionStorage unavailable — normal load proceeds */ }
+})();
+</script>
 
 <!-- Custom cursor element -->
 <div class="cursor"></div>
 
 <!-- Navigation -->
 <nav class="site-nav">
-    <a href="index.html" class="nav-logo"><span class="nav-logo__mark"></span>Mahshid Mahmoudian</a>
+    <a href="/about" class="nav-logo"><span class="nav-logo__mark"></span>Mahshid Mahmoudian</a>
     <div class="nav-info">
         <div class="nav-info__links">
-            <a href="index.html">About</a>
-            <a href="projects.html">Projects</a>
+            <a href="/about">About</a>
+            <a href="/projects">Projects</a>
+            <a href="/playground">Playground</a>
             <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
         </div>
         <p class="nav-info__bio">With a strong foundation in software and tool design, I blend precision and creativity to craft simple, efficient experiences full of character. Here&rsquo;s a glimpse of selected work &mdash; reach out for full details.</p>
@@ -171,6 +205,7 @@
 
 
 <script src="js/site.js"></script>
+<script src="js/page-transition.js"></script>
 <script>
     // Parallax effect
     document.addEventListener('DOMContentLoaded', function() {
@@ -269,6 +304,8 @@
         window.scrollTo(0, 0);
     });
 </script>
+
+<footer class="site-footer">&copy; 2026 Mahshid Mahmoudian</footer>
 
 </body>
 </html>

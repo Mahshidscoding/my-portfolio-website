@@ -14,6 +14,19 @@
   justify-content: space-between;
   padding: 20px 24px;
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+/* Scrolling down fades the name badge + tabs down to a near-invisible
+   trace; scrolling back up (or hovering while dimmed) restores them. */
+.site-nav.nav-dimmed {
+  opacity: 0.08;
+}
+
+.site-nav.nav-dimmed:hover,
+.site-nav.nav-dimmed:focus-within {
+  opacity: 1;
 }
 
 .site-nav a,
@@ -26,10 +39,14 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 6px 2px;
+  padding: 9px 14px;
+  background: #ffffff;
+  border: 1px solid #000;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 14px;
-  color: var(--color-primary);
+  color: #000;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -214,11 +231,11 @@
 @media (max-width: 768px) {
   .site-nav { padding: 14px 16px; }
   .nav-logo { display: none; }         /* the info box already carries the name */
-  .nav-info { width: min(260px, calc(100vw - 32px)); margin-left: auto; }
+  .nav-info { width: min(300px, calc(100vw - 32px)); margin-left: auto; }
   .nav-info__bio { display: none; }
   .nav-info__links { padding: 6px; gap: 4px; }
   .nav-info__links a,
-  .nav-info__links .nav-info__contact { padding: 7px 2px; font-size: 11px; }
+  .nav-info__links .nav-info__contact { padding: 7px 8px; font-size: 11px; }
 }
 
 /* --------------------------------------------------------------------------
@@ -234,16 +251,6 @@
   to   { opacity: 1; transform: none; }
 }
 
-@view-transition { navigation: auto; }
-
-/* The top nav is the same on every page — keep it visually static across
-   navigations instead of letting it fade in and out. */
-.site-nav { view-transition-name: site-nav; }
-::view-transition-group(site-nav),
-::view-transition-old(site-nav),
-::view-transition-new(site-nav) { animation: none !important; }
-::view-transition-old(site-nav) { display: none; }
-
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     animation: none !important;
@@ -251,5 +258,25 @@
     transform: none !important;
   }
   .nav-info__bio,
-  .nav-contact-panel { transition: none !important; }
+  .nav-contact-panel,
+  .site-nav { transition: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   Footer — hairline + tiny copyright at the very bottom of the page
+   (normal flow: you scroll to it, it is not pinned to the viewport)
+   -------------------------------------------------------------------------- */
+.site-footer {
+  padding: 12px 24px;
+  border-top: 1px solid var(--color-hairline);
+  background: var(--color-background);
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: var(--color-gray);
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .site-footer { padding: 10px 16px; }
 }

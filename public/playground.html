@@ -105,24 +105,24 @@
         <section class="cards-view" data-reveal>
             <div class="cards-stage">
 
-                <button type="button" class="project-float" data-slug="depicklefy" style="--x:8%;--y:80px">
-                    <span class="project-float__inner">
-                        <span class="project-float__label">
-                            <span class="project-float__name">DePicklefy</span>
-                        </span>
-                        <span class="project-float__media">
-                            <img src="images/Playground/depicklefy/Depicklefy.png" alt="DePicklefy">
-                        </span>
-                    </span>
-                </button>
-
-                <button type="button" class="project-float" data-slug="cuelab" style="--x:8%;--y:560px">
+                <button type="button" class="project-float" data-slug="cuelab" style="--x:4%;--y:20px">
                     <span class="project-float__inner">
                         <span class="project-float__label">
                             <span class="project-float__name">Cuelab</span>
                         </span>
                         <span class="project-float__media">
                             <img src="images/Playground/Cluelab.png" alt="Cuelab">
+                        </span>
+                    </span>
+                </button>
+
+                <button type="button" class="project-float" data-slug="depicklefy" style="--x:48%;--y:360px">
+                    <span class="project-float__inner">
+                        <span class="project-float__label">
+                            <span class="project-float__name">DePicklefy</span>
+                        </span>
+                        <span class="project-float__media">
+                            <img src="images/Playground/depicklefy/Depicklefy.png" alt="DePicklefy">
                         </span>
                     </span>
                 </button>
@@ -153,6 +153,32 @@
 
             <div class="reading-scroll">
                 <div class="reading-panels">
+
+                    <!-- ---------- CUELAB ---------- -->
+                    <article class="project-panel" data-slug="cuelab" hidden>
+                        <div class="panel-head">
+                            <div class="panel-overview playground-overview">
+                                <div class="panel-overview__intro">
+                                    <h1>Cuelab</h1>
+                                    <div class="panel-overview__desc">
+                                        <p class="project-description">Cuelab is a lightweight synthesizer for designing interaction sounds. Shape sounds live using pitch, tone, attack, decay, and volume, then export a small, dependency-free JavaScript snippet ready to use in a digital product.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="cuelab-embed">
+                                <iframe src="playground/cuelab.html" title="Cuelab &mdash; interactive sound cue designer" loading="lazy"></iframe>
+                            </div>
+                        </section>
+
+                        <button type="button" class="next-project" data-next-project>
+                            <span class="next-project__label">Next</span>
+                            <span class="next-project__name"></span>
+                            <img class="next-project__arrow" src="images/arrow-right-square.svg" alt="" aria-hidden="true">
+                        </button>
+                    </article>
 
                     <!-- ---------- DEPICKLEFY ---------- -->
                     <article class="project-panel" data-slug="depicklefy" hidden>
@@ -189,32 +215,6 @@
                                 <p>The challenge was to create something that could transform the character of an instrument in real time, without relying on pre-trained models or heavy processing.</p>
                                 <p>I led the <strong>design</strong> and <strong>creative direction</strong>, working closely with my teammate, who engineered the audio system. I also played <strong>violin</strong> as part of the final demonstration, using the instrument to show how the experience could transform familiar sounds into something unexpected.</p>
                                 <p>The result was intentionally experimental and a little weird: a playful tool for exploring how small changes in sound can completely alter the character of an instrument.</p>
-                            </div>
-                        </section>
-
-                        <button type="button" class="next-project" data-next-project>
-                            <span class="next-project__label">Next</span>
-                            <span class="next-project__name"></span>
-                            <img class="next-project__arrow" src="images/arrow-right-square.svg" alt="" aria-hidden="true">
-                        </button>
-                    </article>
-
-                    <!-- ---------- CUELAB ---------- -->
-                    <article class="project-panel" data-slug="cuelab" hidden>
-                        <div class="panel-head">
-                            <div class="panel-overview playground-overview">
-                                <div class="panel-overview__intro">
-                                    <h1>Cuelab</h1>
-                                    <div class="panel-overview__desc">
-                                        <p class="project-description">Cuelab is a lightweight synthesizer for designing interaction sounds. Shape sounds live using pitch, tone, attack, decay, and volume, then export a small, dependency-free JavaScript snippet ready to use in a digital product.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <section class="projects-container">
-                            <div class="cuelab-embed">
-                                <iframe src="playground/cuelab.html" title="Cuelab &mdash; interactive sound cue designer" loading="lazy"></iframe>
                             </div>
                         </section>
 

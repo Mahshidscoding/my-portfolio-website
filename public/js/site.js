@@ -18,10 +18,18 @@
 
     var x = window.innerWidth / 2;
     var y = window.innerHeight / 2;
+    var hidden = false;
 
     document.addEventListener('mousemove', function (e) {
       x = e.clientX;
       y = e.clientY;
+      // only a flower itself swaps in the real OS watering-can cursor —
+      // hide the custom dot there; everywhere else in the hero keeps it
+      var overPlant = !!(e.target && e.target.closest && e.target.closest('.garden-plant'));
+      if (overPlant !== hidden) {
+        hidden = overPlant;
+        cursor.style.opacity = hidden ? '0' : '1';
+      }
     });
 
     (function frame() {
@@ -30,7 +38,7 @@
       requestAnimationFrame(frame);
     })();
 
-    var grow = 'a, button, .project-card, .nav-contact-row, .nav-info__links a,' +
+    var grow = 'a, button, .project-tile, .nav-contact-row, .nav-info__links a,' +
       ' .project-float, .rail-item, .rail-section, .to-cards, .jump-link';
     document.addEventListener('mouseover', function (e) {
       if (e.target.closest(grow)) {
@@ -41,8 +49,8 @@
     });
     document.addEventListener('mouseout', function (e) {
       if (e.target.closest(grow)) {
-        cursor.style.width = '24px';
-        cursor.style.height = '24px';
+        cursor.style.width = '16px';
+        cursor.style.height = '16px';
         cursor.style.borderRadius = '50%';
       }
     });
@@ -131,6 +139,40 @@
   }
 
   /* ----------------------------------------------------------------------
+   * 2b. Nav auto-dim on scroll
+   *     Scrolling down fades the logo badge + tabs box to near-zero
+   *     opacity; scrolling up restores them; hovering while dimmed also
+   *     restores them (handled purely in CSS via :hover).
+   * -------------------------------------------------------------------- */
+  function initNavAutoDim() {
+    var nav = document.querySelector('.site-nav');
+    if (!nav) return;
+
+    var DOWN_THRESHOLD = 60;   // ignore the first bit of scroll near the top
+    var DELTA = 4;             // ignore sub-pixel jitter
+
+    function track(getY) {
+      var lastY = getY();
+      return function () {
+        var y = getY();
+        var dy = y - lastY;
+        if (y <= DOWN_THRESHOLD || dy < -DELTA) {
+          nav.classList.remove('nav-dimmed');
+        } else if (dy > DELTA) {
+          nav.classList.add('nav-dimmed');
+        }
+        lastY = y;
+      };
+    }
+
+    window.addEventListener('scroll', track(function () { return window.scrollY || 0; }), { passive: true });
+    // projects.html scrolls inside .reading-scroll, not the window
+    document.querySelectorAll('.reading-scroll').forEach(function (sc) {
+      sc.addEventListener('scroll', track(function () { return sc.scrollTop; }), { passive: true });
+    });
+  }
+
+  /* ----------------------------------------------------------------------
    * 3. Page-load reveal
    * -------------------------------------------------------------------- */
   function initReveal() {
@@ -159,10 +201,83 @@
     });
   }
 
+  /* ----------------------------------------------------------------------
+   * 5. Click sound — a tiny synthesized "tick" for primary buttons + tabs.
+   *    No audio file/library: Web Audio API generates it on the fly, so
+   *    the sound is just the numbers below, not an asset to re-record.
+   * -------------------------------------------------------------------- */
+  function initClickSound() {
+    var SOUND_SELECTOR = '.intro-cta, .skills-cta-button, .nav-info__links a, .project-tile';
+
+    // --- tweak these to change the sound ---------------------------------
+    var TONE_FREQ = 1500;     // Hz — starting pitch of the blip
+    var TONE_DECAY_TO = 700;  // Hz — pitch it slides down to
+    var TONE_DURATION = 0.05; // seconds
+    var TONE_VOLUME = 0.09;   // 0–1
+    var TICK_DURATION = 0.02; // seconds — short noise "tick" layered under the blip
+    var TICK_VOLUME = 0.06;   // 0–1
+    // ----------------------------------------------------------------------
+
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    var ctx = null;
+    var noiseBuffer = null;
+
+    function ensureCtx() {
+      if (!ctx) ctx = new Ctx();
+      if (ctx.state === 'suspended') ctx.resume();
+      return ctx;
+    }
+
+    function getNoiseBuffer(c) {
+      if (noiseBuffer) return noiseBuffer;
+      var len = Math.ceil(c.sampleRate * TICK_DURATION);
+      noiseBuffer = c.createBuffer(1, len, c.sampleRate);
+      var data = noiseBuffer.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+      return noiseBuffer;
+    }
+
+    function playClick() {
+      var c = ensureCtx();
+      var now = c.currentTime;
+
+      // tonal blip — gives the click a pitch
+      var osc = c.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(TONE_FREQ, now);
+      osc.frequency.exponentialRampToValueAtTime(TONE_DECAY_TO, now + TONE_DURATION);
+      var toneGain = c.createGain();
+      toneGain.gain.setValueAtTime(TONE_VOLUME, now);
+      toneGain.gain.exponentialRampToValueAtTime(0.0001, now + TONE_DURATION);
+      osc.connect(toneGain).connect(c.destination);
+      osc.start(now);
+      osc.stop(now + TONE_DURATION + 0.01);
+
+      // noise tick — gives it a tactile, mechanical edge
+      var noise = c.createBufferSource();
+      noise.buffer = getNoiseBuffer(c);
+      var filter = c.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 2000;
+      var tickGain = c.createGain();
+      tickGain.gain.setValueAtTime(TICK_VOLUME, now);
+      tickGain.gain.exponentialRampToValueAtTime(0.0001, now + TICK_DURATION);
+      noise.connect(filter).connect(tickGain).connect(c.destination);
+      noise.start(now);
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.target.closest(SOUND_SELECTOR)) playClick();
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initCursor();
     initNavContact();
+    initNavAutoDim();
     initReveal();
     initSmoothHash();
+    initClickSound();
   });
 })();

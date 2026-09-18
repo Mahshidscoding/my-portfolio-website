@@ -495,6 +495,18 @@ body {
     grid-template-columns: 1fr 1fr;
 }
 
+/* asymmetric two-up: wide item first, narrow second (2b swaps the order) —
+   the ratio stays the same throughout a gallery, only the side swaps */
+.grid-row.pattern-2a {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+}
+
+.grid-row.pattern-2b {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+}
+
 .grid-row.pattern-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -517,39 +529,11 @@ body {
     border-radius: 8px;
 }
 
-/* Mobile image grid fixes */
-@media (max-width: 768px) {
-    .grid-item {
-        height: auto !important;
-        padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
-        position: relative;
-      }
-      
-      .grid-item img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover !important; /* Changed from cover to contain */
-        object-position: center !important; /* Center everything */
-      }
-
-    .grid-item video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top; /* Focus on top part of images */
-    }
-    
-    /* Use different aspect ratio for full-width items */
-    .grid-row.pattern-1 .grid-item {
-        padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
-    }
-}
+/* Mobile image grid: the old fixed 16:9 padding-bottom + object-fit:cover
+   crop trick was removed — .reading-view .grid-item now sizes to the
+   image's own natural aspect ratio (see css/pages/projects.css), same
+   reasoning as the desktop fix: a fixed ratio crops whatever doesn't
+   match it, which is most images since ratios vary per project. */
 
 
 /* Single centered image container */
@@ -681,18 +665,16 @@ body {
     }
     
     .grid-row.pattern-2,
+    .grid-row.pattern-2a,
+    .grid-row.pattern-2b,
     .grid-row.pattern-3 {
         display: flex;
         flex-direction: column;
     }
     
-    /* Make grid items taller/more square-like on mobile */
-    .grid-item {
-        height: 0;
-        padding-bottom: 100%; /* Makes items square (1:1 aspect ratio) */
-        position: relative;
-        margin-bottom: 0;
-    }
+    /* .grid-item sizing on mobile now comes from .reading-view .grid-item
+       (natural image aspect ratio) in css/pages/projects.css — this old
+       forced-square padding-bottom hack is removed. */
 
     .project-hero {
         height: 70vh; /* Slightly smaller on mobile devices */
@@ -705,23 +687,6 @@ body {
         right: 16px;
         bottom: 16px;
     }
-    .grid-item img, 
-    .grid-item video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-    
-    /* Specific adjustment for full-width items in pattern-1 */
-    .grid-row.pattern-1 .grid-item {
-        padding-bottom: 75%; /* 4:3 aspect ratio for full-width items */
-    }
-
-
 }
 
 @media (max-width: 768px) {
@@ -785,14 +750,6 @@ button.action-button {
         padding: 16px;
     }
 
-    .grid-item {
-        padding-bottom: 100%; /* Maintain square aspect ratio */
-    }
-    
-    .grid-row.pattern-1 .grid-item {
-        padding-bottom: 100%; /* Make even full-width items square on very small screens */
-    }
-    
     .grid-row {
         gap: 16px; /* Slightly reduce gap on very small screens */
     }
