@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playground — Mahshid Mahmoudian</title>
+
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Azeret+Mono:wght@200;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/pages/projects.css">
+    <link rel="stylesheet" href="css/pages/playground.css">
+    <link rel="stylesheet" href="css/page-transition.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+
+<body class="projects-page playground-page">
+    <script>
+    (function () {
+      // See projects.html for why this inline copy exists — it mirrors
+      // page-transition.js's handoff check so the transition overlay
+      // covers the screen from the very first frame on arrival.
+      try {
+        var raw = sessionStorage.getItem('pt:handoff');
+        if (!raw) return;
+        var data = JSON.parse(raw);
+        if (!data || (Date.now() - data.ts) > 4000) return;
+        document.documentElement.classList.add('pt-active');
+        var el = document.createElement('div');
+        el.id = 'pt-overlay';
+        el.className = 'is-entering is-arrived';
+        el.setAttribute('aria-hidden', 'true');
+        var canvas = document.createElement('canvas');
+        canvas.className = 'pt-canvas';
+        var h1 = document.createElement('h1');
+        h1.className = 'pt-title is-visible';
+        h1.textContent = data.title || '';
+        var cursor = document.createElement('div');
+        cursor.className = 'pt-cursor';
+        el.appendChild(canvas);
+        el.appendChild(h1);
+        el.appendChild(cursor);
+        document.body.appendChild(el);
+      } catch (e) { /* sessionStorage unavailable — normal load proceeds */ }
+    })();
+    </script>
+    <div class="cursor"></div>
+
+    <nav class="site-nav">
+        <a href="/about" class="nav-logo"><span class="nav-logo__mark"></span>Mahshid Mahmoudian</a>
+        <div class="nav-info">
+            <div class="nav-info__links">
+                <a href="/about">About</a>
+                <a href="/projects">Projects</a>
+                <a href="/playground" aria-current="page">Playground</a>
+                <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
+            </div>
+            <p class="nav-info__bio">A looser space for side projects, experiments, and things I build just to build them &mdash; less polished than the work above, more fun.</p>
+            <div class="nav-contact-panel">
+                <div class="nav-contact-panel__inner">
+                    <span class="nav-contact-panel__loc">Currently in Toronto, Canada (GMT-4)</span>
+                    <button type="button" class="nav-contact-row" id="nav-copy-email">
+                        <img src="images/social/email.svg" alt="">
+                        <span class="nav-contact-row__label">Copy email</span>
+                    </button>
+                    <a class="nav-contact-row" href="https://calendly.com/mahshidmdnn/30min" target="_blank" rel="noopener">
+                        <img src="images/social/call.svg" alt="">
+                        <span class="nav-contact-row__label">Book call</span>
+                    </a>
+                    <a class="nav-contact-row" href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">
+                        <img src="images/social/linkedin.svg" alt="">
+                        <span class="nav-contact-row__label">LinkedIn</span>
+                    </a>
+                    <a class="nav-contact-row" href="https://dribbble.com/MahshidDesign" target="_blank" rel="noopener">
+                        <img src="images/social/dribbble.svg" alt="">
+                        <span class="nav-contact-row__label">Dribbble</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="projects-app playground-app" data-view="cards">
+
+        <!-- ===================== CARDS VIEW =====================
+             Floating, draggable cards (like the very first Projects SPA
+             build) — a deliberately different feel from the Projects page's
+             static tile grid. Add one .project-float per playground
+             project: copy the card, give it a unique data-slug, set --x/--y
+             (its resting position, in px/%, relative to .cards-stage) and
+             swap the name + media. Drop the "--empty" placeholder markup
+             once a real cover image exists at the path noted in the
+             comment. Bump .cards-stage's min-height in playground.css as
+             more cards are added so they have room to drift/spread out. -->
+        <section class="cards-view" data-reveal>
+            <div class="cards-stage">
+
+                <button type="button" class="project-float" data-slug="depicklefy" style="--x:8%;--y:80px">
+                    <span class="project-float__inner">
+                        <span class="project-float__label">
+                            <span class="project-float__name">DePicklefy</span>
+                        </span>
+                        <span class="project-float__media">
+                            <img src="images/Playground/depicklefy/Depicklefy.png" alt="DePicklefy">
+                        </span>
+                    </span>
+                </button>
+
+                <button type="button" class="project-float" data-slug="cuelab" style="--x:8%;--y:560px">
+                    <span class="project-float__inner">
+                        <span class="project-float__label">
+                            <span class="project-float__name">Cuelab</span>
+                        </span>
+                        <span class="project-float__media">
+                            <img src="images/Playground/Cluelab.png" alt="Cuelab">
+                        </span>
+                    </span>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- Fixed, persistent note — stays put regardless of scroll or
+             which view (cards/reading) is active. -->
+        <div class="playground-note">
+            <span class="playground-note__icon" aria-hidden="true">&#10038;</span>
+            More experiments are making their way here
+        </div>
+
+        <!-- ===================== READING VIEW =====================
+             Each panel is just a title, a short description, and one
+             image — pair each panel's data-slug with its floating card
+             above. Copy a panel + the "Next" button wiring is automatic
+             (js/playground.js chains panels in card order). -->
+        <div class="reading-view">
+            <aside class="projects-rail">
+                <button type="button" class="to-cards" aria-label="All playground projects" title="All playground projects">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    <span class="to-cards__label">All Playground</span>
+                </button>
+                <nav class="rail-list"></nav>
+            </aside>
+
+            <div class="reading-scroll">
+                <div class="reading-panels">
+
+                    <!-- ---------- DEPICKLEFY ---------- -->
+                    <article class="project-panel" data-slug="depicklefy" hidden>
+                        <div class="panel-head">
+                            <div class="panel-overview playground-overview">
+                                <div class="panel-overview__intro">
+                                    <h1>DePicklefy</h1>
+                                    <div class="panel-overview__desc">
+                                        <p class="project-description">A playful experiment in reshaping sound in real time.</p>
+                                        <p class="project-description">DePicklefy was created during a music hackathon, where our team had two days to explore new ways of interacting with sound.</p>
+                                        <div class="panel-actions">
+                                            <a class="action-button" href="https://musichackspace.org/events/hackathon-montreal-august-2026/projects/331" target="_blank" rel="noopener">
+                                                <img class="button-icon" src="images/external.svg" alt="" aria-hidden="true">
+                                                <span>Link to the project</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-overview__meta">
+                                    <div class="project-stats">
+                                        <div class="stat-item"><span class="stat-label">Span</span><span class="stat-value">2 Days</span></div>
+                                        <div class="stat-item"><span class="stat-label">Role</span><span class="stat-value">Designer, Instrumentalist</span></div>
+                                        <div class="stat-item"><span class="stat-label">Year</span><span class="stat-value">2025</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="single-image-container">
+                                <img src="images/Playground/depicklefy/Depicklefy.png" alt="DePicklefy interface">
+                            </div>
+                            <div class="playground-body">
+                                <p>The challenge was to create something that could transform the character of an instrument in real time, without relying on pre-trained models or heavy processing.</p>
+                                <p>I led the <strong>design</strong> and <strong>creative direction</strong>, working closely with my teammate, who engineered the audio system. I also played <strong>violin</strong> as part of the final demonstration, using the instrument to show how the experience could transform familiar sounds into something unexpected.</p>
+                                <p>The result was intentionally experimental and a little weird: a playful tool for exploring how small changes in sound can completely alter the character of an instrument.</p>
+                            </div>
+                        </section>
+
+                        <button type="button" class="next-project" data-next-project>
+                            <span class="next-project__label">Next</span>
+                            <span class="next-project__name"></span>
+                            <img class="next-project__arrow" src="images/arrow-right-square.svg" alt="" aria-hidden="true">
+                        </button>
+                    </article>
+
+                    <!-- ---------- CUELAB ---------- -->
+                    <article class="project-panel" data-slug="cuelab" hidden>
+                        <div class="panel-head">
+                            <div class="panel-overview playground-overview">
+                                <div class="panel-overview__intro">
+                                    <h1>Cuelab</h1>
+                                    <div class="panel-overview__desc">
+                                        <p class="project-description">Cuelab is a lightweight synthesizer for designing interaction sounds. Shape sounds live using pitch, tone, attack, decay, and volume, then export a small, dependency-free JavaScript snippet ready to use in a digital product.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section class="projects-container">
+                            <div class="cuelab-embed">
+                                <iframe src="playground/cuelab.html" title="Cuelab &mdash; interactive sound cue designer" loading="lazy"></iframe>
+                            </div>
+                        </section>
+
+                        <button type="button" class="next-project" data-next-project>
+                            <span class="next-project__label">Next</span>
+                            <span class="next-project__name"></span>
+                            <img class="next-project__arrow" src="images/arrow-right-square.svg" alt="" aria-hidden="true">
+                        </button>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">&copy; 2026 Mahshid Mahmoudian</footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.17/interact.min.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/page-transition.js"></script>
+    <script src="js/playground.js"></script>
+</body>
+</html>

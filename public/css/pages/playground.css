@@ -1,0 +1,288 @@
+/* ==========================================================================
+   playground.css — Playground SPA overrides on top of pages/projects.css.
+   Cards view: floating, draggable cards (own look, distinct from the
+   Projects page's static tile grid). Reading view: same rail/panel shell
+   as Projects (title + description + optional stats, then one image) —
+   lighter-weight, since these are quick write-ups, not full case studies.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Cards view — floating, draggable project cards
+   -------------------------------------------------------------------------- */
+.cards-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  /* enough room for one card to sit + gently drift. Bump this as more
+     .project-float cards are added so their --x/--y spots don't collide
+     or get clipped — roughly +480px of height per extra "row". */
+  min-height: 1040px;
+  margin: 0 auto;
+}
+
+/* Outer button owns position + drag/idle-drift transform (interact.js /
+   GSAP write to this element's inline style directly). The continuous
+   "floating" bob below lives on .project-float__inner instead, so the two
+   motions — drift position and bob — animate independently instead of
+   fighting over the same transform. */
+.project-float {
+  position: absolute;
+  left: var(--x, 0);
+  top: var(--y, 0);
+  width: min(680px, 52vw);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  touch-action: none;
+  will-change: transform;
+}
+
+.project-float__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: project-float-bob 4.5s ease-in-out infinite;
+}
+
+.project-float.is-dragging .project-float__inner {
+  animation-play-state: paused;
+}
+
+@keyframes project-float-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-float__inner { animation: none; }
+}
+
+.project-float__label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: 'Chivo Mono', var(--font-primary);
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.project-float__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: min(400px, 30vw);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-surface);
+  transition: box-shadow 0.25s ease;
+}
+
+.project-float__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.project-float:hover .project-float__media {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.project-float.is-dragging .project-float__media { transition: none; }
+
+.project-float__media--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--color-hairline);
+}
+
+.project-float__media--empty span {
+  font-family: 'Chivo Mono', var(--font-primary);
+  font-size: 12px;
+  color: var(--color-gray);
+  text-align: center;
+  padding: 0 16px;
+}
+
+/* Fixed "more coming" note — same pill/glass treatment as the home page's
+   .drag-hint (home.css), but position:fixed and always visible instead of
+   inline + auto-dismissing once the visitor interacts with the garden. */
+.playground-note {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.playground-note__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 11px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .playground-note {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    transform: none;
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Reading view — reuses .panel-overview's default two-column grid
+   (intro left, stats right) from pages/projects.css as-is. For a project
+   with no stats to show, just omit .panel-overview__meta entirely — the
+   intro column still reads fine on its own.
+   -------------------------------------------------------------------------- */
+
+/* Project image — left-aligned (Projects page centers this same
+   .single-image-container class, so scope the override to Playground). */
+.playground-page .reading-view .single-image-container {
+  margin: 24px 0;
+}
+
+/* Interactive project embed (Cuelab) — sized like .single-image-container
+   but with an explicit height, since an iframe (unlike an <img>) doesn't
+   size itself to its content. The embedded page is a self-contained
+   height:100vh app, so whatever height is set here becomes its "viewport". */
+.cuelab-embed {
+  width: 100%;
+  max-width: 1028px;
+  height: min(760px, 82vh);
+  margin: 24px 0;
+  border: 1px solid var(--color-hairline);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.cuelab-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .cuelab-embed {
+    height: 820px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+}
+
+/* Closing body copy below the project image — plain paragraphs, no
+   alternating-side .text-section treatment (that's built for a running
+   case study; these are just a few closing paragraphs). */
+.playground-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 581px;
+}
+
+.playground-body p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.playground-body strong {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Placeholder media — shown in place of the reading-view project image
+   until real content is uploaded. Swap per the inline HTML comment once an
+   image exists; this rule can stay (harmless if unused).
+   -------------------------------------------------------------------------- */
+.placeholder-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1.6;
+  border: 1px dashed var(--color-hairline);
+  background: var(--color-surface);
+  border-radius: 8px;
+}
+
+.placeholder-media span {
+  font-family: 'Chivo Mono', var(--font-primary);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-gray);
+  text-align: center;
+}
+
+.placeholder-media em {
+  font-style: normal;
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   3. Responsive — dragging/drift is desktop-only; cards stack in flow below
+   the interact.js/GSAP breakpoint (matches js/playground.js's isCompact()).
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  /* Below the drag/drift breakpoint, the card becomes fully static — same
+     spacing, sizing, and behavior as a Projects page tile (.project-tile),
+     not just a stationary version of the floating card. */
+  .cards-stage {
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* matches .cards-list__group's mobile row-gap */
+    max-width: 520px;
+    padding: 0 20px; /* matches .cards-list__group's mobile side padding */
+    box-sizing: border-box;
+  }
+  .project-float {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    transform: none !important;
+    touch-action: auto; /* plain tap-to-open list here, not the drag surface */
+  }
+  .project-float__inner {
+    gap: 14px; /* matches .project-tile's gap */
+    animation: none; /* no bob on mobile — the drift JS is already off here */
+  }
+  .project-float__media {
+    height: auto;
+    aspect-ratio: 1.6; /* matches .project-tile__media instead of a fixed height */
+  }
+}
