@@ -207,15 +207,16 @@
    *    the sound is just the numbers below, not an asset to re-record.
    * -------------------------------------------------------------------- */
   function initClickSound() {
-    var SOUND_SELECTOR = '.intro-cta, .skills-cta-button, .nav-info__links a, .project-tile';
+    var SOUND_SELECTOR = '.intro-cta, .skills-cta-button, .nav-info__links a, .project-tile, .globe-list__item';
 
     // --- tweak these to change the sound ---------------------------------
-    var TONE_FREQ = 1500;     // Hz — starting pitch of the blip
-    var TONE_DECAY_TO = 700;  // Hz — pitch it slides down to
-    var TONE_DURATION = 0.05; // seconds
-    var TONE_VOLUME = 0.09;   // 0–1
-    var TICK_DURATION = 0.02; // seconds — short noise "tick" layered under the blip
-    var TICK_VOLUME = 0.06;   // 0–1
+    var TONE_FREQ = 280;      // Hz — starting pitch of the thump
+    var TONE_DECAY_TO = 90;   // Hz — pitch it drops to (lower = deeper; below ~80 laptop speakers can't play it)
+    var TONE_DURATION = 0.11; // seconds
+    var TONE_VOLUME = 0.35;   // 0–1 (bass needs more gain to feel as loud)
+    var TICK_DURATION = 0.02; // seconds — short noise "tick" layered under the thump
+    var TICK_VOLUME = 0.05;   // 0–1
+    var TICK_CUTOFF = 900;    // Hz — lowpass on the tick; raise for a crisper click, lower for a duller one
     // ----------------------------------------------------------------------
 
     var Ctx = window.AudioContext || window.webkitAudioContext;
@@ -258,8 +259,8 @@
       var noise = c.createBufferSource();
       noise.buffer = getNoiseBuffer(c);
       var filter = c.createBiquadFilter();
-      filter.type = 'highpass';
-      filter.frequency.value = 2000;
+      filter.type = 'lowpass';
+      filter.frequency.value = TICK_CUTOFF;
       var tickGain = c.createGain();
       tickGain.gain.setValueAtTime(TICK_VOLUME, now);
       tickGain.gain.exponentialRampToValueAtTime(0.0001, now + TICK_DURATION);
