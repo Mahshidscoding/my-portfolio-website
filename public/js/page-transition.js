@@ -71,6 +71,11 @@
     // (e.g. a bfcache restore or a much later back/forward) and ignored.
     maxHandoffAgeMs: 4000,
 
+    // If we've asked the browser to navigate and this page is still alive
+    // after this long, assume the navigation never happened and lift the
+    // overlay (see navigate()). Generous so a slow network doesn't trip it.
+    navigationTimeoutMs: 6000,
+
     // Chrome brush. The stroke is accumulated as a plain shape and then
     // run through the #chrome SVG filter (see CHROME_FILTER below), which
     // only reads its alpha — the lighting, grain and shadow all come from
@@ -479,6 +484,18 @@
       }));
     } catch (e) { /* storage unavailable — navigation still proceeds */ }
     window.location.href = href;
+
+    // If the page is still here a few seconds later, the navigation never
+    // actually left it (a hash-only change to the same document, a
+    // download, a failed/blocked request) and nothing else would ever
+    // lift the overlay. A real navigation unloads this page and takes the
+    // timer with it, so this only ever fires in the stuck case.
+    setTimeout(function () {
+      if (active) {
+        try { sessionStorage.removeItem(CONFIG.storageKey); } catch (e) { /* noop */ }
+        resetOverlay();
+      }
+    }, CONFIG.navigationTimeoutMs);
   }
 
   // The page's own [data-reveal] fade/slide-up (nav.css) is meant for a
@@ -566,22 +583,40 @@
     overlay.classList.add('is-exiting');
 
     var exitMs = reduceMotion ? 150 : CONFIG.exitMs;
-    setTimeout(function () {
-      // Dropping is-exiting here would otherwise let the overlay's base
-      // rule (transform: translateY(100%)) transition back in using the
-      // *enter* duration/easing, sliding back down through the fully
-      // visible center of the screen on top of the page we just revealed.
-      // Disable the transition for this one synchronous state change.
-      overlay.style.transition = 'none';
-      root.classList.remove('pt-active');
-      overlay.classList.remove('is-entering', 'is-exiting', 'is-arrived');
-      // eslint-disable-next-line no-unused-expressions
-      overlay.offsetHeight;
-      overlay.style.transition = '';
-      draw.stop();
-      active = false;
-    }, exitMs);
+    setTimeout(resetOverlay, exitMs);
   }
+
+  // Puts the overlay back to its idle, off-screen state. Used when the
+  // exit finishes and by the recovery paths below (back/forward restore,
+  // navigation that never left the page).
+  function resetOverlay() {
+    // Dropping is-exiting here would otherwise let the overlay's base
+    // rule (transform: translateY(100%)) transition back in using the
+    // *enter* duration/easing, sliding back down through the fully
+    // visible center of the screen on top of the page we just revealed.
+    // Disable the transition for this one synchronous state change.
+    overlay.style.transition = 'none';
+    root.classList.remove('pt-active');
+    overlay.classList.remove('is-entering', 'is-exiting', 'is-arrived');
+    titleEl.classList.remove('is-visible');
+    // eslint-disable-next-line no-unused-expressions
+    overlay.offsetHeight;
+    overlay.style.transition = '';
+    draw.stop();
+    active = false;
+  }
+
+  // Back/forward restore. Leaving a page freezes it with the overlay fully
+  // risen; browsers that keep pages in the back/forward cache restore that
+  // frozen page as-is when you press Back — no script re-runs, so the
+  // black screen would sit there forever. pageshow still fires with
+  // persisted=true, which is the one chance to lift it.
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      try { sessionStorage.removeItem(CONFIG.storageKey); } catch (err) { /* noop */ }
+      resetOverlay();
+    }
+  });
 
   /* ----------------------------------------------------------------------
    * Click interception
