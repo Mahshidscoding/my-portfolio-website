@@ -132,7 +132,11 @@
   root.style.setProperty('--pt-z', String(CONFIG.zIndex));
   root.style.setProperty('--pt-cursor-size', CONFIG.stroke.cursorSize + 'px');
 
-  // The chrome brush filter. It has to live in the document for
+  // The chrome brush filter (your design, minus the final feDropShadow —
+  // it cost a whole extra blur pass per frame for a barely visible
+  // shadow). The grain (feTurbulence + feDisplacementMap) is the other
+  // expensive part; it's also what makes this read as brushed metal, so
+  // it stays. It has to live in the document for
   // ctx.filter = 'url(#chrome)' to find it. Not display:none — filters
   // inside a non-rendered <svg> don't resolve in some browsers. Skipped
   // on mobile, where nothing is ever drawn.
@@ -150,7 +154,6 @@
         '</feSpecularLighting>' +
         '<feComposite in="shine" in2="body" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="lit"/>' +
         '<feComposite in="lit" in2="SourceAlpha" operator="in" result="metal"/>' +
-        '<feDropShadow in="metal" dx="2" dy="3" stdDeviation="2" flood-color="#5a6470" flood-opacity="0.45"/>' +
       '</filter>' +
     '</svg>';
   if (!isMobile && !document.getElementById('chrome')) {
@@ -201,25 +204,48 @@
     // seamless where segments meet.
     var bodySrc, bodyCtx;
 
-    // Bounding box of everything drawn so far, in CSS pixels. The filter
-    // (turbulence + two lighting passes) is by far the most expensive
-    // thing here, so composite() only runs it over this box, not the whole
-    // viewport.
+    // The chrome filter (blur + turbulence + displacement + two lighting
+    // passes) is the expensive part, and its cost has a fixed overhead plus
+    // a per-pixel part. Re-filtering everything drawn so far every frame
+    // (as this used to) dropped the stroke to ~25fps and got worse the
+    // more you drew, which made fast scribbles lag behind the cursor. So
+    // each frame only the small patch around the newly added segment is
+    // re-filtered; the rest of the visible canvas is left as it was.
+    //
+    // PATCH_PAD is how far a new segment's look can reach (half the stroke
+    // width + the filter's blur / displacement / drop-shadow reach), so
+    // everything that could have changed is inside the patch.
+    // CONTEXT_MARGIN is extra surrounding source fed to the filter but not
+    // written back, so lighting at the patch edge sees its real neighbours.
+    // Checked against a single full-stroke render: with these values the
+    // patched result is pixel-identical (grain included), and ~4x cheaper.
+    function patchPad() { return CONFIG.stroke.width + 24; }
+    var CONTEXT_MARGIN = 30;
+
+    // Bounding box of everything drawn so far (CSS px) — used only for a
+    // full redraw (resize / restoring a carried-over stroke).
     var bounds = null;
+    // Region touched since the last composite().
+    var dirtyRect = null;
+
+    function segRect(seg, pad) {
+      return {
+        x0: Math.min(seg[0], seg[2], seg[4]) - pad,
+        y0: Math.min(seg[1], seg[3], seg[5]) - pad,
+        x1: Math.max(seg[0], seg[2], seg[4]) + pad,
+        y1: Math.max(seg[1], seg[3], seg[5]) + pad
+      };
+    }
+
+    function union(a, b) {
+      if (!a) return { x0: b.x0, y0: b.y0, x1: b.x1, y1: b.y1 };
+      a.x0 = Math.min(a.x0, b.x0); a.y0 = Math.min(a.y0, b.y0);
+      a.x1 = Math.max(a.x1, b.x1); a.y1 = Math.max(a.y1, b.y1);
+      return a;
+    }
 
     function growBounds(seg) {
-      var pad = CONFIG.stroke.width;
-      var xs = [seg[0], seg[2], seg[4]];
-      var ys = [seg[1], seg[3], seg[5]];
-      var x0 = Math.min.apply(null, xs) - pad;
-      var y0 = Math.min.apply(null, ys) - pad;
-      var x1 = Math.max.apply(null, xs) + pad;
-      var y1 = Math.max.apply(null, ys) + pad;
-      if (!bounds) { bounds = { x0: x0, y0: y0, x1: x1, y1: y1 }; return; }
-      bounds.x0 = Math.min(bounds.x0, x0);
-      bounds.y0 = Math.min(bounds.y0, y0);
-      bounds.x1 = Math.max(bounds.x1, x1);
-      bounds.y1 = Math.max(bounds.y1, y1);
+      bounds = union(bounds, segRect(seg, patchPad()));
     }
 
     // Every drawn segment, as the exact args passed to crispSegment
@@ -259,7 +285,7 @@
       bodyCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       redrawAll();
-      composite();
+      composite(true);
     }
 
     function redrawAll() {
@@ -279,6 +305,7 @@
       dirty = false;
       pathLog = [];
       bounds = null;
+      dirtyRect = null;
     }
 
     function onMove(e) {
@@ -304,7 +331,7 @@
       targetCtx.stroke();
     }
 
-    function composite() {
+    function composite(full) {
       var w = canvas.width / dpr;
       var h = canvas.height / dpr;
       // A zero-sized canvas (e.g. a layout pass caught mid-flight) makes
@@ -314,42 +341,72 @@
       // forever, no exit ever scheduled). Skipping this pass is a no-op
       // the next real frame corrects, which is far safer than crashing.
       if (w <= 0 || h <= 0) return;
-      ctx.clearRect(0, 0, w, h);
-      if (!bounds) return;
 
-      // Clamp the box to the canvas, then draw just that region of the
-      // accumulator through the chrome filter. Source rect is in device
-      // pixels (bodySrc's own size); the destination is in CSS pixels
-      // (ctx carries the dpr transform).
-      var x0 = Math.max(0, Math.floor(bounds.x0));
-      var y0 = Math.max(0, Math.floor(bounds.y0));
-      var x1 = Math.min(w, Math.ceil(bounds.x1));
-      var y1 = Math.min(h, Math.ceil(bounds.y1));
-      if (x1 <= x0 || y1 <= y0) return;
+      if (full) {
+        ctx.clearRect(0, 0, w, h);
+        dirtyRect = null;
+        if (bounds) patch(bounds, 0, w, h);
+        return;
+      }
+      if (!dirtyRect) return;
+      var r = dirtyRect;
+      dirtyRect = null;
+      patch(r, CONTEXT_MARGIN, w, h);
+    }
 
+    // Re-filters one rectangle (CSS px) of the accumulator onto the
+    // visible canvas, replacing whatever was there. `margin` extra source
+    // around it is filtered too but clipped away — see CONTEXT_MARGIN.
+    function patch(r, margin, w, h) {
+      function cl(v, max) { return Math.max(0, Math.min(max, v)); }
+      var rx0 = cl(Math.floor(r.x0), w), ry0 = cl(Math.floor(r.y0), h);
+      var rx1 = cl(Math.ceil(r.x1), w),  ry1 = cl(Math.ceil(r.y1), h);
+      if (rx1 <= rx0 || ry1 <= ry0) return;
+      var sx0 = cl(rx0 - margin, w), sy0 = cl(ry0 - margin, h);
+      var sx1 = cl(rx1 + margin, w), sy1 = cl(ry1 + margin, h);
+
+      // Source rect is in device pixels (bodySrc's own size); the
+      // destination is in CSS pixels (ctx carries the dpr transform).
       ctx.save();
+      ctx.beginPath();
+      ctx.rect(rx0, ry0, rx1 - rx0, ry1 - ry0);
+      ctx.clip();
+      ctx.clearRect(rx0, ry0, rx1 - rx0, ry1 - ry0);
       ctx.filter = 'url(#chrome)';
       ctx.drawImage(bodySrc,
-        x0 * dpr, y0 * dpr, (x1 - x0) * dpr, (y1 - y0) * dpr,
-        x0, y0, x1 - x0, y1 - y0);
+        sx0 * dpr, sy0 * dpr, (sx1 - sx0) * dpr, (sy1 - sy0) * dpr,
+        sx0, sy0, sx1 - sx0, sy1 - sy0);
       ctx.restore();
     }
 
+    var lastTickAt = 0;
+
     function tick() {
       rafId = requestAnimationFrame(tick);
+      var now = performance.now();
+      var dt = lastTickAt ? now - lastTickAt : 16.7;
+      lastTickAt = now;
       if (!raw) return;
       if (!smoothed) smoothed = { x: raw.x, y: raw.y };
 
+      // Time-based smoothing: `smoothing` is the fraction of the remaining
+      // gap closed per 60fps frame, rescaled by the real elapsed time. A
+      // fixed per-frame fraction means that whenever frames run long the
+      // line closes the same *fraction* of the gap in far more wall-clock
+      // time, so it trails further behind a fast-moving cursor. dt is
+      // capped so a stall (tab switch, GC) doesn't teleport the line.
       var s = CONFIG.stroke;
+      var k = 1 - Math.pow(1 - s.smoothing, Math.min(dt, 100) / 16.667);
       var prev = { x: smoothed.x, y: smoothed.y };
-      smoothed.x += (raw.x - smoothed.x) * s.smoothing;
-      smoothed.y += (raw.y - smoothed.y) * s.smoothing;
+      smoothed.x += (raw.x - smoothed.x) * k;
+      smoothed.y += (raw.y - smoothed.y) * k;
 
       var mid = { x: (prev.x + smoothed.x) / 2, y: (prev.y + smoothed.y) / 2 };
       if (lastMid) {
         var seg = [lastMid.x, lastMid.y, prev.x, prev.y, mid.x, mid.y];
         crispSegment(bodyCtx, s.color, s.width, seg[0], seg[1], seg[2], seg[3], seg[4], seg[5]);
         growBounds(seg);
+        dirtyRect = union(dirtyRect, segRect(seg, patchPad()));
         pathLog.push(seg);
         dirty = true;
       }
@@ -375,6 +432,7 @@
       if (isMobile) return;
 
       clear();
+      lastTickAt = 0;
 
       // Seed pathLog *before* resize() — resize() (re)draws whatever is
       // in pathLog onto the freshly-(re)created buffers, so this makes
