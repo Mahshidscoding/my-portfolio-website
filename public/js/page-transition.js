@@ -1,5 +1,5 @@
 /**
- * page-transition.js — cinematic black-overlay page transition + glowing
+ * page-transition.js — cinematic black-overlay page transition + chrome
  * marker-cursor drawing layer.
  *
  * Runs on every page that shares the top nav (index.html, projects.html,
@@ -71,24 +71,18 @@
     // (e.g. a bfcache restore or a much later back/forward) and ignored.
     maxHandoffAgeMs: 4000,
 
-    // Glowing marker stroke. The visible glow/body/core layers are all
-    // the same crisp accumulated stroke, composited at different blur
-    // radii/alphas (see the `draw` engine below) — `width` is that crisp
-    // stroke's own thickness, not the glow's visual spread; the glow
-    // layer's spread comes from `glowBlur` alone.
+    // Chrome brush. The stroke is accumulated as a plain shape and then
+    // run through the #chrome SVG filter (see CHROME_FILTER below), which
+    // only reads its alpha — the lighting, grain and shadow all come from
+    // the filter, so `color` is just the fallback a browser without
+    // canvas-filter support (Safari) draws instead.
     stroke: {
-      color: '#5b6dff',       // cobalt accent, matches --color-cobaltblue
-      coreColor: '#ffffff',
-      width: 13,              // crisp body stroke width (px, CSS pixels)
-      coreWidthRatio: 0.34,   // white-hot core stroke, relative to width
-      glowBlur: 28,
-      bodyBlur: 3,
-      coreBlur: 1,
-      glowAlpha: 0.65,
-      bodyAlpha: 0.95,
-      coreAlpha: 0.9,
+      color: '#c9d3dc',
+      width: 22,              // stroke thickness (px, CSS pixels) — needs
+                              // to be wide enough for the filter's bump
+                              // blur (stdDeviation 5.5) to read as a tube
       smoothing: 0.3,         // 0..1, lower = more lag/smoothing
-      cursorSize: 16
+      cursorSize: 18
     },
 
     zIndex: 100000,
@@ -131,8 +125,34 @@
   root.style.setProperty('--pt-title-fade-ms', CONFIG.titleFadeMs + 'ms');
   root.style.setProperty('--pt-exit-title-fade-ms', CONFIG.exitTitleFadeMs + 'ms');
   root.style.setProperty('--pt-z', String(CONFIG.zIndex));
-  root.style.setProperty('--pt-stroke-color', CONFIG.stroke.color);
   root.style.setProperty('--pt-cursor-size', CONFIG.stroke.cursorSize + 'px');
+
+  // The chrome brush filter. It has to live in the document for
+  // ctx.filter = 'url(#chrome)' to find it. Not display:none — filters
+  // inside a non-rendered <svg> don't resolve in some browsers. Skipped
+  // on mobile, where nothing is ever drawn.
+  var CHROME_FILTER =
+    '<svg width="0" height="0" style="position:absolute" aria-hidden="true">' +
+      '<filter id="chrome" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">' +
+        '<feGaussianBlur in="SourceAlpha" stdDeviation="5.5" result="bump"/>' +
+        '<feTurbulence type="fractalNoise" baseFrequency="0.02 0.9" numOctaves="2" seed="4" result="grain"/>' +
+        '<feDisplacementMap in="bump" in2="grain" scale="5" result="rough"/>' +
+        '<feDiffuseLighting in="rough" surfaceScale="14" diffuseConstant="1.1" lighting-color="#c9d3dc" result="body">' +
+          '<feDistantLight azimuth="225" elevation="35"/>' +
+        '</feDiffuseLighting>' +
+        '<feSpecularLighting in="rough" surfaceScale="18" specularConstant="1.4" specularExponent="28" lighting-color="#ffffff" result="shine">' +
+          '<feDistantLight azimuth="225" elevation="50"/>' +
+        '</feSpecularLighting>' +
+        '<feComposite in="shine" in2="body" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="lit"/>' +
+        '<feComposite in="lit" in2="SourceAlpha" operator="in" result="metal"/>' +
+        '<feDropShadow in="metal" dx="2" dy="3" stdDeviation="2" flood-color="#5a6470" flood-opacity="0.45"/>' +
+      '</filter>' +
+    '</svg>';
+  if (!isMobile && !document.getElementById('chrome')) {
+    var filterHost = document.createElement('div');
+    filterHost.innerHTML = CHROME_FILTER;
+    document.body.appendChild(filterHost.firstChild);
+  }
 
   // A tiny inline script at the very top of <body> (before the nav/hero
   // markup) may already have created this element — see the head of each
@@ -158,7 +178,7 @@
   var ctx = canvas.getContext('2d');
 
   /* ----------------------------------------------------------------------
-   * Canvas glowing-stroke drawing engine
+   * Canvas chrome-stroke drawing engine
    * -------------------------------------------------------------------- */
   var draw = (function () {
     var dpr = Math.max(window.devicePixelRatio || 1, 1);
@@ -169,18 +189,33 @@
     var listening = false;
     var dirty = false;
 
-    // Crisp (unblurred) accumulator buffers. The glow/body/core layers on
-    // the visible canvas are all produced by compositing these with
-    // ctx.filter='blur(...)' at different radii/alphas — never by
-    // stroking with ctx.shadowBlur per segment. shadowBlur recomputes a
-    // fresh blur for each independent short stroke, and its falloff tapers
-    // near that stroke's own endpoints; where two segments meet, their
-    // tapered edges don't sum back up to full brightness, leaving a
-    // visible dashed/seamed look along the line. Blurring one accumulated
-    // bitmap has no such seams, and — since it operates on canvas pixels
-    // rather than path complexity — its cost per frame stays constant no
-    // matter how long the accumulated stroke gets.
-    var bodySrc, bodyCtx, coreSrc, coreCtx;
+    // Crisp accumulator buffer: every segment is stroked here as a plain
+    // shape, and the visible canvas is produced by running that one
+    // accumulated bitmap through the chrome filter. Filtering the whole
+    // bitmap (rather than each short segment) is what keeps the lighting
+    // seamless where segments meet.
+    var bodySrc, bodyCtx;
+
+    // Bounding box of everything drawn so far, in CSS pixels. The filter
+    // (turbulence + two lighting passes) is by far the most expensive
+    // thing here, so composite() only runs it over this box, not the whole
+    // viewport.
+    var bounds = null;
+
+    function growBounds(seg) {
+      var pad = CONFIG.stroke.width;
+      var xs = [seg[0], seg[2], seg[4]];
+      var ys = [seg[1], seg[3], seg[5]];
+      var x0 = Math.min.apply(null, xs) - pad;
+      var y0 = Math.min.apply(null, ys) - pad;
+      var x1 = Math.max.apply(null, xs) + pad;
+      var y1 = Math.max.apply(null, ys) + pad;
+      if (!bounds) { bounds = { x0: x0, y0: y0, x1: x1, y1: y1 }; return; }
+      bounds.x0 = Math.min(bounds.x0, x0);
+      bounds.y0 = Math.min(bounds.y0, y0);
+      bounds.x1 = Math.max(bounds.x1, x1);
+      bounds.y1 = Math.max(bounds.y1, y1);
+    }
 
     // Every drawn segment, as the exact args passed to crispSegment
     // ([x0,y0,cx,cy,x1,y1]). This is a real cross-document navigation —
@@ -218,30 +253,27 @@
       bodyCtx = bodySrc.getContext('2d');
       bodyCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      coreSrc = makeOffscreen(canvas.width, canvas.height);
-      coreCtx = coreSrc.getContext('2d');
-      coreCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
       redrawAll();
       composite();
     }
 
     function redrawAll() {
       var s = CONFIG.stroke;
+      bounds = null;
       for (var i = 0; i < pathLog.length; i++) {
         var seg = pathLog[i];
         crispSegment(bodyCtx, s.color, s.width, seg[0], seg[1], seg[2], seg[3], seg[4], seg[5]);
-        crispSegment(coreCtx, s.coreColor, Math.max(1, s.width * s.coreWidthRatio), seg[0], seg[1], seg[2], seg[3], seg[4], seg[5]);
+        growBounds(seg);
       }
     }
 
     function clear() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (bodyCtx) bodyCtx.clearRect(0, 0, bodySrc.width, bodySrc.height);
-      if (coreCtx) coreCtx.clearRect(0, 0, coreSrc.width, coreSrc.height);
       raw = smoothed = lastMid = null;
       dirty = false;
       pathLog = [];
+      bounds = null;
     }
 
     function onMove(e) {
@@ -268,7 +300,6 @@
     }
 
     function composite() {
-      var s = CONFIG.stroke;
       var w = canvas.width / dpr;
       var h = canvas.height / dpr;
       // A zero-sized canvas (e.g. a layout pass caught mid-flight) makes
@@ -279,26 +310,23 @@
       // the next real frame corrects, which is far safer than crashing.
       if (w <= 0 || h <= 0) return;
       ctx.clearRect(0, 0, w, h);
+      if (!bounds) return;
 
-      // 1. soft outer glow — the body stroke, heavily blurred and dimmed
-      ctx.save();
-      ctx.globalAlpha = s.glowAlpha;
-      ctx.filter = 'blur(' + s.glowBlur + 'px)';
-      ctx.drawImage(bodySrc, 0, 0, w, h);
-      ctx.restore();
+      // Clamp the box to the canvas, then draw just that region of the
+      // accumulator through the chrome filter. Source rect is in device
+      // pixels (bodySrc's own size); the destination is in CSS pixels
+      // (ctx carries the dpr transform).
+      var x0 = Math.max(0, Math.floor(bounds.x0));
+      var y0 = Math.max(0, Math.floor(bounds.y0));
+      var x1 = Math.min(w, Math.ceil(bounds.x1));
+      var y1 = Math.min(h, Math.ceil(bounds.y1));
+      if (x1 <= x0 || y1 <= y0) return;
 
-      // 2. bright stroke body — the same shape, lightly blurred
       ctx.save();
-      ctx.globalAlpha = s.bodyAlpha;
-      ctx.filter = s.bodyBlur ? 'blur(' + s.bodyBlur + 'px)' : 'none';
-      ctx.drawImage(bodySrc, 0, 0, w, h);
-      ctx.restore();
-
-      // 3. thin white-hot core
-      ctx.save();
-      ctx.globalAlpha = s.coreAlpha;
-      ctx.filter = s.coreBlur ? 'blur(' + s.coreBlur + 'px)' : 'none';
-      ctx.drawImage(coreSrc, 0, 0, w, h);
+      ctx.filter = 'url(#chrome)';
+      ctx.drawImage(bodySrc,
+        x0 * dpr, y0 * dpr, (x1 - x0) * dpr, (y1 - y0) * dpr,
+        x0, y0, x1 - x0, y1 - y0);
       ctx.restore();
     }
 
@@ -316,7 +344,7 @@
       if (lastMid) {
         var seg = [lastMid.x, lastMid.y, prev.x, prev.y, mid.x, mid.y];
         crispSegment(bodyCtx, s.color, s.width, seg[0], seg[1], seg[2], seg[3], seg[4], seg[5]);
-        crispSegment(coreCtx, s.coreColor, Math.max(1, s.width * s.coreWidthRatio), seg[0], seg[1], seg[2], seg[3], seg[4], seg[5]);
+        growBounds(seg);
         pathLog.push(seg);
         dirty = true;
       }

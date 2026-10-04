@@ -86,12 +86,13 @@
   height: var(--pt-cursor-size, 16px);
   margin: calc(var(--pt-cursor-size, 16px) / -2);
   border-radius: 50%;
+  /* a small chrome bead — same palette as the brush filter */
   background:
-    radial-gradient(circle at center,
-      #fff 0%,
-      color-mix(in srgb, var(--pt-stroke-color, #5b6dff) 70%, #fff 30%) 35%,
-      var(--pt-stroke-color, #5b6dff) 70%,
-      transparent 100%);
+    radial-gradient(circle at 35% 30%,
+      #ffffff 0%,
+      #c9d3dc 40%,
+      #5a6470 100%);
+  box-shadow: 1px 2px 3px rgba(90, 100, 112, 0.45);
   opacity: 0;
   pointer-events: none;
   will-change: transform;
