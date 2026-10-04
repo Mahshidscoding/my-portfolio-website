@@ -23,9 +23,10 @@
     document.addEventListener('mousemove', function (e) {
       x = e.clientX;
       y = e.clientY;
-      // only a flower itself swaps in the real OS watering-can cursor —
-      // hide the custom dot there; everywhere else in the hero keeps it
-      var overPlant = !!(e.target && e.target.closest && e.target.closest('.garden-plant'));
+      // the flower swaps in the OS watering-can cursor, and the globe needs
+      // its own native grab/grabbing/pointer cursor — hide the custom dot
+      // over both; everywhere else keeps it
+      var overPlant = !!(e.target && e.target.closest && e.target.closest('.garden-plant, #projects-globe'));
       if (overPlant !== hidden) {
         hidden = overPlant;
         cursor.style.opacity = hidden ? '0' : '1';
@@ -39,7 +40,7 @@
     })();
 
     var grow = 'a, button, .project-tile, .nav-contact-row, .nav-info__links a,' +
-      ' .project-float, .rail-item, .rail-section, .to-cards, .jump-link';
+      ' .project-float, .rail-item, .rail-section, .to-cards, .jump-link, .globe-list__item';
     document.addEventListener('mouseover', function (e) {
       if (e.target.closest(grow)) {
         cursor.style.width = '60px';

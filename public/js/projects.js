@@ -1,6 +1,7 @@
 /**
  * projects.js — Projects SPA
- *  - cards view: a static, categorized project list (click a card -> reading view opens)
+ *  - cards view: an interactive globe (js/globe.js) + a flat numbered
+ *    project list (click a project -> rotates the globe there and opens it)
  *  - reading view: left rail (flat project navigation) + scrolling panel
  *  - switch projects without a page reload
  *  - #slug hash routing + "All projects" button back to the cards view
@@ -9,13 +10,14 @@
   'use strict';
 
   var app = document.querySelector('.projects-app');
-  var cardsList = document.querySelector('.cards-list');
+  var globeList = document.querySelector('.globe-list');
+  var globeCanvas = document.getElementById('projects-globe');
   var railList = document.querySelector('.rail-list');
   var panelsWrap = document.querySelector('.reading-panels');
   var toCardsBtn = document.querySelector('.to-cards');
-  if (!app || !cardsList || !panelsWrap) return;
+  if (!app || !globeList || !panelsWrap) return;
 
-  var cards = Array.prototype.slice.call(document.querySelectorAll('.project-tile'));
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.globe-list__item'));
   var panels = {};
   Array.prototype.forEach.call(panelsWrap.querySelectorAll('.project-panel'), function (p) {
     panels[p.dataset.slug] = p;
@@ -57,6 +59,7 @@
     if (template) {
       panel.insertBefore(template.content.cloneNode(true), template);
       template.remove();
+      if (window.imageReveal) window.imageReveal.init(panel);
     }
   }
 
@@ -130,7 +133,7 @@
 
   function nameFor(slug) {
     var card = cards.find(function (c) { return c.dataset.slug === slug; });
-    return card ? card.querySelector('.project-tile__name').textContent : slug;
+    return card ? card.dataset.name : slug;
   }
 
   function buildRail() {
@@ -173,6 +176,9 @@
     Array.prototype.forEach.call(railList.children, function (item) {
       item.classList.toggle('is-active', item.dataset.slug === slug);
     });
+    cards.forEach(function (el) {
+      el.classList.toggle('is-current', el.dataset.slug === slug);
+    });
   }
 
   /* ====================================================================
@@ -188,6 +194,7 @@
     void p.offsetWidth;
     p.style.animation = '';
     window.scrollTo({ top: 0, behavior: 'auto' });
+    if (window.imageReveal) window.imageReveal.refresh();
   }
 
   function doOpenProject(slug) {
@@ -219,24 +226,54 @@
     if (history.replaceState) history.replaceState(null, '', location.pathname);
     else location.hash = '';
     Object.keys(panels).forEach(function (s) { panels[s].hidden = true; });
+    cards.forEach(function (el) { el.classList.remove('is-current'); });
     window.scrollTo({ top: 0, behavior: 'auto' });
     closePasswordModal();
   }
 
-  if (toCardsBtn) toCardsBtn.addEventListener('click', backToCards);
+  if (toCardsBtn) {
+    toCardsBtn.addEventListener('click', function () {
+      backToCards();
+      if (window.globe) window.globe.clear(); // resume idle spin, not stuck on the last project
+    });
+  }
 
   /* ====================================================================
-   * Cards — click / keyboard to open
+   * Cards — click / keyboard to open. Each click also rotates the globe
+   * to that project first (window.globe.focusSlug), matching the frame
+   * you'd get by clicking its card directly on the sphere.
    * ================================================================== */
+  function selectAndOpen(slug) {
+    if (window.globe && window.globe.focusSlug) window.globe.focusSlug(slug, function () { openProject(slug); });
+    else openProject(slug);
+  }
+
   cards.forEach(function (el) {
-    el.addEventListener('click', function () { openProject(el.dataset.slug); });
+    el.addEventListener('click', function () { selectAndOpen(el.dataset.slug); });
     el.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        openProject(el.dataset.slug);
+        selectAndOpen(el.dataset.slug);
       }
     });
   });
+
+  /* ====================================================================
+   * Globe — clicking a frame directly opens that project too; hovering a
+   * frame highlights the matching list entry.
+   * ================================================================== */
+  if (globeCanvas) {
+    globeCanvas.addEventListener('globe:select', function (e) {
+      var slug = e.detail && e.detail.project && e.detail.project.slug;
+      if (slug) openProject(slug);
+    });
+    globeCanvas.addEventListener('globe:hover', function (e) {
+      var slug = e.detail && e.detail.project && e.detail.project.slug;
+      cards.forEach(function (el) {
+        el.classList.toggle('is-hovered', !!slug && el.dataset.slug === slug);
+      });
+    });
+  }
 
   /* ====================================================================
    * Hash routing

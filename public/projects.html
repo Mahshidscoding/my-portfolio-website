@@ -67,7 +67,7 @@
                 <a href="/playground">Playground</a>
                 <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
             </div>
-            <p class="nav-info__bio">With a strong foundation in software and tool design, I blend precision and creativity to craft simple, efficient experiences full of character. Here&rsquo;s a glimpse of selected work &mdash; reach out for full details.</p>
+            <p class="nav-info__bio">A selection of my work. Reach out for their full stories or some more unpublished projects.</p>
             <div class="nav-contact-panel">
                 <div class="nav-contact-panel__inner">
                     <span class="nav-contact-panel__loc">Currently in Toronto, Canada (GMT-4)</span>
@@ -94,95 +94,46 @@
 
     <main class="projects-app" data-view="cards">
 
-        <!-- ===================== CARDS VIEW ===================== -->
+        <!-- ===================== CARDS VIEW =====================
+             An interactive wireframe globe (js/globe.js, Three.js) replaces
+             the old categorized grid. Each frame on the sphere shows a
+             project's real cover image. The flat numbered list below is the
+             click target — it both rotates the globe to that project
+             (window.globe.focusSlug) and opens it, same as clicking the
+             frame itself. Order here is NOT grouped by category; it's the
+             flat left-to-right, top-to-bottom order from the Figma globe
+             design (node 296-984). -->
         <section class="cards-view" data-reveal>
-            <div class="cards-list">
-                <div class="cards-list__label"><p>Product</p></div>
-                <div class="cards-list__group">
-                    <article class="project-tile" role="button" tabindex="0" data-slug="loblaws">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">Loblaws</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">Product Design</span>
-                        </div>
-                        <div class="project-tile__media"><img src="images/pco/COVER.png" alt="Loblaws"></div>
-                    </article>
-                    <article class="project-tile" role="button" tabindex="0" data-slug="sunlife">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">Sunlife</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">Product Design</span>
-                        </div>
-                        <div class="project-tile__media"><img src="images/sunlife/COVER.png" alt="Sun Life"></div>
-                    </article>
-                </div>
+            <canvas id="projects-globe" class="globe-canvas" aria-label="Interactive rotating globe of project covers — drag to look around, click a project to open it"></canvas>
 
-                <div class="cards-list__label"><p>Product + Brand</p></div>
-                <div class="cards-list__group">
-                    <article class="project-tile" role="button" tabindex="0" data-slug="arch">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">Arch</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">Product Design</span>
-                        </div>
-                        <div class="project-tile__media gif-container">
-                            <img src="images/arch/card.png" alt="Arch" class="static-image">
-                            <img src="images/arch/card.gif" alt="" class="animated-gif">
-                        </div>
-                    </article>
-                    <article class="project-tile" role="button" tabindex="0" data-slug="tembo">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">Tembo</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">Product Design</span>
-                        </div>
-                        <div class="project-tile__media gif-container">
-                            <img src="images/tembo/card.png" alt="Tembo" class="static-image">
-                            <img src="images/tembo/card.gif" alt="" class="animated-gif">
-                        </div>
-                    </article>
-                    <article class="project-tile" role="button" tabindex="0" data-slug="brandmarch">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">Brandmarch</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">Product Design</span>
-                        </div>
-                        <div class="project-tile__media"><img src="images/bm/card1.png" alt="Brandmarch"></div>
-                    </article>
-                    <article class="project-tile" role="button" tabindex="0" data-slug="sqlite">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">SQLite</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">Product Design</span>
-                        </div>
-                        <div class="project-tile__media gif-container">
-                            <img src="images/sqlite/card1.png" alt="SQLite Cloud" class="static-image">
-                            <img src="images/sqlite/card.gif" alt="" class="animated-gif">
-                        </div>
-                    </article>
-                    <article class="project-tile" role="button" tabindex="0" data-slug="descript">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">Descript</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">System Design</span>
-                        </div>
-                        <div class="project-tile__media"><img src="images/descript/card.png" alt="Descript"></div>
-                    </article>
-                </div>
-
-                <div class="cards-list__label"><p>XR Design</p></div>
-                <div class="cards-list__group">
-                    <article class="project-tile" role="button" tabindex="0" data-slug="command">
-                        <div class="project-tile__label">
-                            <span class="project-tile__name">CommandFreak</span>
-                            <span class="project-tile__sep">|</span>
-                            <span class="project-tile__kind">XR application</span>
-                        </div>
-                        <div class="project-tile__media"><img src="images/commandfreak/card.png" alt="CommandFreak"></div>
-                    </article>
-                </div>
-            </div>
         </section>
+
+            <nav class="globe-list" aria-label="All projects">
+                <button type="button" class="globe-list__item" data-slug="arch" data-name="Arch">
+                    <span class="globe-list__index">01</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><span class="globe-list__name">Arch</span>
+                </button>
+                <button type="button" class="globe-list__item" data-slug="tembo" data-name="Tembo">
+                    <span class="globe-list__index">02</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><span class="globe-list__name">Tembo</span>
+                </button>
+                <button type="button" class="globe-list__item" data-slug="loblaws" data-name="Loblaws">
+                    <span class="globe-list__index">03</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><svg class="globe-list__lock" aria-hidden="true" viewBox="0 0 24 24" width="11" height="11"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="globe-list__name">Loblaws</span>
+                </button>
+                <button type="button" class="globe-list__item" data-slug="sunlife" data-name="Sunlife">
+                    <span class="globe-list__index">04</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><svg class="globe-list__lock" aria-hidden="true" viewBox="0 0 24 24" width="11" height="11"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="globe-list__name">Sunlife</span>
+                </button>
+                <button type="button" class="globe-list__item" data-slug="brandmarch" data-name="Brandmarch">
+                    <span class="globe-list__index">05</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><span class="globe-list__name">Brandmarch</span>
+                </button>
+                <button type="button" class="globe-list__item" data-slug="sqlite" data-name="SQLite">
+                    <span class="globe-list__index">06</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><span class="globe-list__name">SQLite</span>
+                </button>
+                <button type="button" class="globe-list__item" data-slug="descript" data-name="Descript">
+                    <span class="globe-list__index">07</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><span class="globe-list__name">Descript</span>
+                </button>
+                <button type="button" class="globe-list__item" data-slug="command" data-name="CommandFreak">
+                    <span class="globe-list__index">08</span><span class="globe-list__dots" aria-hidden="true">&middot;&middot;&middot;&middot;</span><span class="globe-list__name">CommandFreak</span>
+                </button>
+            </nav>
 
         <!-- ===================== READING VIEW ===================== -->
         <div class="reading-view">
@@ -777,8 +728,12 @@
         </div>
     </main>
 
-    <footer class="site-footer">&copy; 2026 Mahshid Mahmoudian</footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/image-reveal.js"></script>
+    <script src="js/globe.js"></script>
     <script src="js/site.js"></script>
     <script src="js/page-transition.js"></script>
     <script src="js/projects.js"></script>

@@ -53,13 +53,94 @@ a, button, [role="button"],
 .cards-view {
   position: relative;
   width: 100%;
+  min-height: 100vh;
   padding: 190px 0 120px;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .projects-app[data-view="reading"] .cards-view {
   display: none;
 }
+
+/* --------------------------------------------------------------------------
+   1a. Interactive globe + flat project list — replaces the old categorized
+   grid. The globe is the flex-centered content of .cards-view; the list is
+   pinned bottom-right, aligned with the nav-info card's right edge at the
+   top of the page (same 24px side padding as .site-nav).
+   -------------------------------------------------------------------------- */
+.globe-canvas {
+  display: block;
+  position: absolute;
+  left: calc(40.7vw - min(96vh, 78vw) / 2);
+  top: 47%;
+  transform: translateY(-50%);
+  width: min(96vh, 78vw);
+  aspect-ratio: 1;
+  touch-action: none;
+  cursor: grab;
+}
+
+/* Desktop: the projects list view is a fixed screen — no page scroll. */
+@media (min-width: 1025px) {
+  html:has(.projects-app[data-view="cards"]),
+  body:has(.projects-app[data-view="cards"]) {
+    overflow: hidden;
+  }
+  .projects-app[data-view="cards"] .cards-view {
+    height: 100vh;
+    min-height: 0;
+    padding: 0;
+  }
+}
+
+.globe-canvas.dragging { cursor: grabbing; }
+.globe-canvas.hot { cursor: pointer; }
+
+.globe-list {
+  position: fixed;
+  right: 24px;
+  bottom: 48px;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  column-gap: 48px;
+  row-gap: 10px;
+}
+
+.globe-list__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  font-family: 'Chivo Mono', var(--font-primary);
+  font-size: 12px;
+  color: #fff;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.globe-list__item:hover,
+.globe-list__item:focus-visible,
+.globe-list__item.is-hovered {
+  opacity: 0.6;
+}
+
+/* Reading view: the list stays put as the project index — the open
+   project full strength, the rest at half. */
+.projects-app[data-view="reading"] .globe-list__item { opacity: 0.5; }
+.projects-app[data-view="reading"] .globe-list__item.is-current { opacity: 1; }
+
+.globe-list__index { opacity: 0.5; }
+.globe-list__dots { opacity: 0.35; letter-spacing: 1px; }
+.globe-list__lock { color: #fff; opacity: 0.6; flex-shrink: 0; }
+.globe-list__name { font-weight: 400; }
 
 .cards-list {
   display: grid;
@@ -665,6 +746,24 @@ a, button, [role="button"],
   .cards-list__group { padding: 0 20px; row-gap: 16px; }
   .cards-list__group + .cards-list__label { margin-top: 16px; }
 
+  /* Globe + list stack instead of overlapping on narrow screens — the list
+     no longer needs to reserve bottom-right corner space for itself. */
+  .cards-view {
+    flex-direction: column;
+    gap: 40px;
+    padding: 110px 20px 60px;
+  }
+  .globe-canvas {
+    position: static;
+    transform: none;
+    width: min(80vw, 420px);
+  }
+  .globe-list {
+    position: static;
+    column-gap: 32px;
+    justify-content: center;
+  }
+
   .projects-app[data-view="reading"] .reading-view {
     grid-template-columns: 1fr;
     column-gap: 0;
@@ -753,3 +852,53 @@ a, button, [role="button"],
 
 /* the reading view scrolls with the page now, so the footer just sits at
    the very bottom in normal flow (not pinned) */
+
+/* --------------------------------------------------------------------------
+   Desktop project page — images + paragraphs on the left, title/details and
+   stats on the right (sticky so they stay in view while the images scroll).
+   -------------------------------------------------------------------------- */
+@media (min-width: 1025px) {
+  .project-panel[hidden] { display: none; }
+
+  .project-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    column-gap: 56px;
+    align-items: start;
+  }
+
+  .projects-rail { display: none; }
+  .projects-app[data-view="reading"] .reading-view {
+    grid-template-columns: minmax(0, 1600px);
+  }
+  .reading-view .single-image-container { max-width: none; }
+  .reading-view .text-section-content p { font-size: 13px !important; line-height: 1.5; }
+  .project-panel { grid-template-columns: minmax(0, 1fr) 340px; column-gap: 48px; padding-top: 158px; }
+
+  .project-panel > .panel-head .panel-overview__intro h1 { font-size: 20px; line-height: 1; margin-top: -3px; }
+  .project-panel > .panel-head .project-description { font-size: 13px; line-height: 1.5; }
+  .project-panel > .panel-head .stat-label,
+  .project-panel > .panel-head .stat-value { font-size: 13px; }
+
+  .project-panel > .projects-container { grid-column: 1; grid-row: 1; }
+  .project-panel > .next-project { grid-column: 1; grid-row: 2; }
+
+  .project-panel > .panel-head {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    top: 158px;
+    margin: 0;
+    padding-left: 16px;
+  }
+  .project-panel > .panel-head .panel-overview {
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+  }
+  .project-panel > .panel-head .panel-overview__intro { max-width: none; }
+}
+
+@media (max-width: 1024px) {
+  .projects-app[data-view="reading"] .globe-list { display: none; }
+  .globe-list { margin: 0 auto 60px; }
+}
