@@ -2,6 +2,11 @@
  * smooth-scroll.js — eased page scrolling for the Projects page (desktop,
  * mouse/trackpad). Scrolls the window through Lenis, so sticky elements and
  * the scroll-linked image reveal stay in sync with it.
+ *
+ * Lenis measures the page height once and only re-measures when the window
+ * resizes. This page grows after load (images and videos arrive, panels
+ * switch), so the scroll limit has to be refreshed whenever the height
+ * changes — otherwise long projects stop scrolling partway down.
  */
 (function () {
   'use strict';
@@ -25,4 +30,22 @@
     requestAnimationFrame(raf);
   }
   requestAnimationFrame(raf);
+
+  var lastHeight = 0;
+  function syncHeight() {
+    var h = document.documentElement.scrollHeight;
+    if (h === lastHeight) return;
+    lastHeight = h;
+    lenis.resize();
+  }
+
+  // Images/videos finishing loading, the window finishing loading, and
+  // switching between the globe and a project all change the page height.
+  document.addEventListener('load', syncHeight, true);
+  document.addEventListener('loadedmetadata', syncHeight, true);
+  window.addEventListener('load', syncHeight);
+  window.addEventListener('hashchange', syncHeight);
+  document.addEventListener('click', function () { setTimeout(syncHeight, 50); setTimeout(syncHeight, 600); });
+  setInterval(syncHeight, 400);
+  syncHeight();
 })();
