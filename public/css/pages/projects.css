@@ -867,42 +867,52 @@ a, button, [role="button"],
 @media (min-width: 1025px) {
   .project-panel[hidden] { display: none; }
 
-  .project-panel {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
-    column-gap: 56px;
-    align-items: start;
-  }
-
   .projects-rail { display: none; }
   .projects-app[data-view="reading"] .reading-view {
     grid-template-columns: minmax(0, 1600px);
   }
   .reading-view .single-image-container { max-width: none; }
   .reading-view .text-section-content p { font-size: 13px !important; line-height: 1.5; }
-  .project-panel { grid-template-columns: minmax(0, 1fr) 340px; column-gap: 48px; padding-top: 158px; }
+  /* The title/details block and the project list share the nav info box's
+     exact column: 320px wide, 24px in from the right edge of the screen. The
+     images take the rest, leaving a 48px gutter. (Fixed rather than sticky so
+     the column lines up with the nav at any screen width.) */
+  .project-panel {
+    padding-top: 158px;
+    padding-right: max(32px, calc(392px - max(0px, (100vw - 1600px) / 2)));
+    animation: panel-fade-in 0.5s ease both;
+  }
+  @keyframes panel-fade-in { from { opacity: 0; } to { opacity: 1; } }
 
   .project-panel > .panel-head .panel-overview__intro h1 { font-size: 20px; line-height: 1; margin-top: -3px; }
   .project-panel > .panel-head .project-description { font-size: 13px; line-height: 1.5; }
   .project-panel > .panel-head .stat-label,
   .project-panel > .panel-head .stat-value { font-size: 13px; }
 
-  .project-panel > .projects-container { grid-column: 1; grid-row: 1; }
-  .project-panel > .next-project { grid-column: 1; grid-row: 2; }
-
   .project-panel > .panel-head {
-    grid-column: 2;
-    grid-row: 1;
-    position: sticky;
+    position: fixed;
     top: 158px;
+    right: 24px;
+    width: 320px;
+    max-width: calc(100vw - 48px);
     margin: 0;
-    padding-left: 16px;
+    padding: 0;
+    box-sizing: border-box;
   }
   .project-panel > .panel-head .panel-overview {
     grid-template-columns: 1fr;
     row-gap: 24px;
   }
   .project-panel > .panel-head .panel-overview__intro { max-width: none; }
+}
+
+@media (min-width: 1025px) {
+  .globe-list {
+    width: 320px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+    justify-items: start;
+  }
 }
 
 @media (max-width: 1024px) {
