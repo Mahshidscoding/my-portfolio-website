@@ -1,0 +1,186 @@
+/* ==========================================================================
+   home-scales.css — Home page: full-screen WebGL "fish scale" tile grid with
+   the portrait/bio card in one cell. One screen, no scroll. The site nav
+   (css/nav.css) floats on top, aligned to the grid's margin (see
+   js/home-scales.js). Loaded AFTER theme.css so it wins the shared defaults.
+   ========================================================================== */
+
+html,
+body.home-page {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #161616;   /* must match gl.clearColor in js/home-scales.js */
+  /* main.css hides the system cursor for the site's custom dot; this page
+     has no dot, so give the real cursor back */
+  cursor: auto;
+}
+
+/* main.css forces cursor:none on links/buttons/[role=button] (for the site's
+   custom dot, which this page doesn't have) — restore real cursors */
+body.home-page .site-nav a,
+body.home-page .site-nav button,
+body.home-page .photo a {
+  cursor: pointer !important;
+}
+body.home-page .site-nav [role="button"] {
+  cursor: default !important;
+}
+
+/* nav sits on the grid's 32px margin so its box lines up with the tiles
+   (the JS sizes the info box to a whole number of grid columns) */
+body.home-page .site-nav {
+  padding: 32px;
+}
+body.home-page .nav-logo {
+  justify-content: flex-start;
+}
+
+/* the page itself: a fixed full-viewport layer under the nav */
+body.home-page main {
+  position: fixed;
+  inset: 0;
+  min-height: 0;
+  z-index: 0;
+  background: transparent;
+}
+
+#gl {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+.nogl {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #888;
+  margin: 0;
+}
+
+/* ---------- portrait card: sits in a grid cell; positions set by layout() ---------- */
+.stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+.card {
+  position: absolute;
+  background: #fff;
+  color: #000;
+  border-radius: 6px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+  pointer-events: auto;
+}
+
+/* one cell; click to open across 2 × 2 cells with links + bio */
+.photo {
+  --home-ease: cubic-bezier(.2, .8, .2, 1);
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  z-index: 2;
+  transition: left .5s var(--home-ease), top .5s var(--home-ease),
+              width .5s var(--home-ease), height .5s var(--home-ease);
+}
+.photo:focus-visible { outline: 2px solid #9fb3f5; outline-offset: 3px; }
+
+/* the full Mahshid.png, filling the frame (cells are close to the photo's own
+   proportions, so almost nothing is trimmed) */
+.photo .img {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  border-radius: 8px;
+  filter: grayscale(1);
+  background: url("../../images/Mahshid.png") 50% 30% / cover no-repeat;
+  transition: width .5s var(--home-ease), height .5s var(--home-ease);
+}
+.photo .links,
+.photo .bio {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s, visibility 0s .2s;
+}
+.photo .links {
+  left: calc(52% + 18px);
+  bottom: 50%;
+  display: grid;
+  gap: 8px;
+}
+.photo .links a {
+  font: 13px/1.3 'Space Grotesk', sans-serif;
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.photo .links a:hover { color: #555; }
+.photo .bio {
+  left: 22px;
+  right: 22px;
+  top: calc(50% + 18px);
+  margin: 0;
+  font: 13px/1.7 'Space Grotesk', sans-serif;
+  color: #111;
+}
+body.home-page .photo { cursor: pointer !important; }   /* role="button" → main.css hid it */
+body.home-page .photo.open { cursor: default !important; }
+.photo.open .img { width: calc(52% - 16px); height: calc(50% - 16px); }
+.photo.open .links,
+.photo.open .bio {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .35s .3s, visibility 0s;
+}
+@media (max-width: 768px) {
+  /* the opened card is only ~2 phone-cells wide — tighter type so the bio fits */
+  .photo .links a { font-size: 12px; }
+  .photo .bio { left: 16px; right: 16px; top: calc(50% + 12px); font-size: 11px; line-height: 1.5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo, .photo .img, .photo .links, .photo .bio { transition: none; }
+}
+
+/* ---------- mute button: bottom-left, tucked into the corner tile ---------- */
+.sound-toggle {
+  position: fixed;
+  left: 46px;          /* grid margin (32) + 14px inside the corner tile */
+  bottom: 46px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: #fff;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  cursor: pointer !important;   /* main.css hides the cursor on buttons */
+}
+.sound-toggle img { display: block; }
+.sound-toggle img[hidden] { display: none; }
+.sound-toggle:focus-visible { outline: 2px solid #9fb3f5; outline-offset: 3px; }
+
+/* ---------- name badge: "Mahshid Mahmoudian ········ 2:15 PM EDT" ---------- */
+body.home-page .nav-logo { gap: 12px; }
+.nav-logo__dots {
+  flex: 1 1 auto;
+  min-width: 18px;
+  height: 4px;
+  align-self: center;
+  /* a row of small dots, same ink as the text, tucked mid-height */
+  background: radial-gradient(circle, currentColor 1.1px, transparent 1.5px) 0 50% / 7px 4px repeat-x;
+  opacity: .45;
+}
+.nav-logo__time {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

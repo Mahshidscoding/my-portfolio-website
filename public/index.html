@@ -18,15 +18,13 @@
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/sections.css">
-    <link rel="stylesheet" href="css/projects.css">
     <link rel="stylesheet" href="css/nav.css">
-    <link rel="stylesheet" href="css/pages/home.css">
     <link rel="stylesheet" href="css/page-transition.css">
     <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/pages/home-scales.css">
 </head>
 
-<body class="about-page">
+<body class="home-page">
     <script>
     (function () {
       // Mirrors js/page-transition.js's handoff check (CONFIG.storageKey /
@@ -59,19 +57,17 @@
       } catch (e) { /* sessionStorage unavailable — normal load proceeds */ }
     })();
     </script>
-    <div class="cursor"></div>
 
     <!-- Navigation -->
     <nav class="site-nav">
-        <a href="/about" class="nav-logo"><span class="nav-logo__mark"></span>Mahshid Mahmoudian</a>
+        <a href="/" class="nav-logo"><span class="nav-logo__name">Mahshid Mahmoudian</span><span class="nav-logo__dots" aria-hidden="true"></span><span class="nav-logo__time" id="nav-time" aria-label="Local time in Toronto"></span></a>
         <div class="nav-info">
             <div class="nav-info__links">
-                <a href="/about" aria-current="page">About</a>
+                <a href="/" aria-current="page">About</a>
                 <a href="/projects">Projects</a>
                 <a href="/playground">Playground</a>
                 <span class="nav-info__contact" tabindex="0" role="button" aria-haspopup="true">Contact</span>
             </div>
-            <p class="nav-info__bio">Product design by day, visual experiments, music, and other rabbit holes whenever I get the chance.</p>
             <div class="nav-contact-panel">
                 <div class="nav-contact-panel__inner">
                     <span class="nav-contact-panel__loc">Currently in Toronto, Canada (GMT-4)</span>
@@ -96,79 +92,33 @@
         </div>
     </nav>
 
+    <!-- The whole page: one screen, no scroll. WebGL tile grid + the portrait/bio card (a grid cell). -->
     <main>
-        <!-- Intro hero — interactive ASCII garden behind the intro copy -->
-        <section class="home-hero" data-reveal>
-            <div class="ascii-garden" data-garden aria-hidden="true"></div>
-            <div class="intro-text">
-                <h1>Hey I&rsquo;m Mahshid,<br>A Product Designer<br>Who Builds things.</h1>
-                <a href="/projects" class="intro-cta">Projects <img class="intro-cta__arrow" src="images/icons/arrow-right-square-contained.svg" alt="" aria-hidden="true"></a>
-            </div>
-        </section>
+        <canvas id="gl"></canvas>
 
-        <!-- Introduction — portrait sits beside the lede as its own block,
-             not inline inside the sentence. -->
-        <section class="intro-section" data-reveal>
-            <div class="intro-copy">
-                <div class="intro-lede-row">
-                    <img class="intro-avatar" src="images/Mahshid.png" alt="Mahshid Mahmoudian">
-                    <p class="intro-lede">
-                        Hey there :) I&rsquo;m a designer working across product, visual art, and sound. I&rsquo;m interested in the unexpected details that make something feel intuitive, intentional, and distinctly human.
-                    </p>
-                </div>
-                <p class="intro-body">
-                    I like figuring out how things work, but I&rsquo;m equally interested in how they feel. My background in software, visual art, and music means I tend to approach a problem somewhere between systems and sensibilities.
-                </p>
-                <p class="intro-body">
-                    Outside of work, I&rsquo;m playing around with music, putting together zines, or getting lost somewhere new.
-                </p>
+        <div class="stage" id="stage">
+            <div class="card photo" id="c-photo" role="button" tabindex="0" aria-expanded="false" aria-label="About Mahshid">
+                <div class="img" role="img" aria-label="Portrait of Mahshid Mahmoudian"></div>
+                <nav class="links" aria-label="Contact">
+                    <a href="mailto:mahshidmdnn@gmail.com">Email</a>
+                    <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="images/cv.pdf" target="_blank" rel="noopener">Resume</a>
+                </nav>
+                <p class="bio">Mahshid here :) I’m an interaction designer. I take ideas and shape them into experiences, pulling from a mix of creative and visual skills to get the details right. Lately, I’ve been working on AI interfaces and adaptive, personalized experiences.</p>
             </div>
-        </section>
-
-        <div class="site-container">
-            <!-- Skills & experiences -->
-            <section class="about-skills" data-reveal>
-                <div class="skills-title">
-                    <h2 class="section-title">Skills &amp; experiences</h2>
-                </div>
-                <div class="skills-content">
-                    <div class="skills-stage">
-                        <!-- Rabbit holes / Field notes / Unfinished / Collectables — scattered
-                             receipt notes, all baked into one background image; drop a new
-                             receipts-bg.png in here to update the notes themselves. -->
-                        <img src="images/receipts-bg.png" alt="" aria-hidden="true" class="skills-bg-receipts">
-                        <div class="skills-card skills-card--exp">
-                            <img src="images/exp.svg" alt="Experience" class="skill-svg">
-                            <a href="images/cv.pdf" download class="skills-cta-button">
-                                <img src="images/social/download.svg" alt="" class="button-icon">
-                                Download CV
-                            </a>
-                        </div>
-                        <div class="skills-card skills-card--hard">
-                            <img src="images/hard.svg" alt="Hard skills" class="skill-svg">
-                        </div>
-                        <div class="skills-card skills-card--soft">
-                            <img src="images/soft.svg" alt="Soft skills" class="skill-svg">
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
-
-        <div class="bottom-spacer"></div>
     </main>
 
-    <footer class="site-footer site-footer--connect" data-reveal>
-        <span class="site-footer__cta">Let&rsquo;s Connect!</span>
-        <div class="site-footer__links">
-            <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="mailto:mahshidmdnn@gmail.com">Email</a>
-        </div>
-    </footer>
+    <!-- mute / unmute the tile sounds (js/tile-sound.js) -->
+    <button type="button" class="sound-toggle" aria-pressed="false" aria-label="Mute tile sounds">
+        <img class="sound-toggle__on" src="images/icons/volume-max.svg" alt="" width="28" height="28">
+        <img class="sound-toggle__off" src="images/icons/volume-x.svg" alt="" width="26" height="26" hidden>
+    </button>
 
     <script src="js/site.js"></script>
     <script src="js/page-transition.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <script defer src="js/garden.js"></script>
+    <script src="js/nav-clock.js"></script>
+    <script src="js/tile-sound.js"></script>
+    <script src="js/home-scales.js"></script>
 </body>
 </html>
