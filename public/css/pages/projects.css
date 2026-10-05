@@ -85,6 +85,10 @@ a, button, [role="button"],
 
 /* Desktop: the projects list view is a fixed screen — no page scroll. */
 @media (min-width: 1025px) {
+  /* Reserve the scrollbar's space always, so the nav box, project list and
+     details don't shift sideways when the page goes from the fixed globe
+     view (no scrollbar) to a scrolling project page (scrollbar). */
+  html:has(.projects-app) { scrollbar-gutter: stable; }
   html:has(.projects-app[data-view="cards"]),
   body:has(.projects-app[data-view="cards"]) {
     overflow: hidden;
