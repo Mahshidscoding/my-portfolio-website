@@ -122,8 +122,9 @@
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-.nav-info__links a:hover {
-  background: #e4e4e4;
+.nav-info__links a:hover,
+.nav-info__links .nav-info__contact:hover {
+  background: #d2d2d2;
 }
 
 .nav-info__links a[aria-current="page"] {
