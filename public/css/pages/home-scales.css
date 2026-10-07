@@ -550,14 +550,6 @@ body.outro-live .sound-toggle {
   .outro [data-outro] { translate: none; }
 }
 
-/* ---------- home page (body.home-scroll): Geist everywhere ----------
-   Overrides every font on the page (nav, name badge, buttons, frame text) —
-   the shared sheets set Space Mono / Space Grotesk on many elements,
-   some with !important, hence the blanket rule. */
-body.home-scroll,
-body.home-scroll * {
-  font-family: 'Geist', 'Space Grotesk', sans-serif !important;
-}
 
 /* ---------- text roll on buttons (js/text-roll.js) ----------
    Each letter is a tiny window; on hover its text slides up and an identical

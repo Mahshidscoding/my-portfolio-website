@@ -43,7 +43,7 @@ window.HOME_FRAMES = {
                    'I’ve led branding and visual direction on<br>' +
                    'the products I’ve worked on, and created<br>' +
                    'full identities from scratch. I work in XR,<br>' +
-                   'make music, and play with sound design.<br>' +
+                   'make zines, and play with sound design.<br>' +
                    'The mix is what lets me think in layers.</p>' },
 
     // frames 3–5 — bottom two rows clear, one line at a time

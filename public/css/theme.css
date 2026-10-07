@@ -9,6 +9,18 @@ body {
   color: var(--color-text);
 }
 
+/* --- Geist everywhere (nav, buttons, labels, page-transition title…).
+   Many older rules set Space Grotesk / Space Mono / Poppins / Azeret Mono
+   directly, some with !important, so this one overrides them all. Geist is
+   loaded by the Google Fonts link in each page's <head>. --- */
+html,
+body,
+body *,
+body *::before,
+body *::after {
+  font-family: 'Geist', 'Space Grotesk', sans-serif !important;
+}
+
 /* --- reading view: image-grid text sections were forced black --- */
 .reading-view .text-section-title h2,
 .reading-view .text-section-content p,
