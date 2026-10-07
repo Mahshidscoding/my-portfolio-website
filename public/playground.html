@@ -95,22 +95,75 @@
         </div>
     </nav>
 
-    <main class="projects-app playground-app" data-view="cards">
+    <main class="projects-app playground-app" data-view="folders">
+
+        <!-- ===================== FOLDERS VIEW =====================
+             Landing view — one folder per category. Each folder's cover
+             (up to 3 stacked images) and its blue count badge are filled in
+             by js/playground.js from the .project-float cards below that
+             share its data-folder, so adding a project to a folder is just
+             adding a card with the right data-folder — nothing to edit here.
+             Empty slots fall back to a plain tinted paper card. To add a new
+             folder, copy a .pg-folder and give it a new data-folder. -->
+        <section class="folders-view" data-reveal>
+            <div class="folders-grid">
+
+                <button type="button" class="pg-folder pg-folder--art" data-folder="art">
+                    <span class="pg-folder__stack" aria-hidden="true">
+                        <span class="pg-folder__card pg-folder__card--left"></span>
+                        <span class="pg-folder__card pg-folder__card--right"></span>
+                        <span class="pg-folder__card pg-folder__card--front"></span>
+                        <svg class="pg-folder__clip" viewBox="0 0 24 64" fill="none"><path d="M16 22V50a6 6 0 0 1-12 0V12a8 8 0 0 1 16 0v36a2 2 0 0 1-4 0V18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+                        <span class="pg-folder__count"></span>
+                    </span>
+                    <span class="pg-folder__name">Art</span>
+                </button>
+                <button type="button" class="pg-folder pg-folder--branding" data-folder="branding">
+                    <span class="pg-folder__stack" aria-hidden="true">
+                        <span class="pg-folder__card pg-folder__card--left"></span>
+                        <span class="pg-folder__card pg-folder__card--right"></span>
+                        <span class="pg-folder__card pg-folder__card--front"></span>
+                        <span class="pg-folder__count"></span>
+                    </span>
+                    <span class="pg-folder__name">Branding</span>
+                </button>
+                <button type="button" class="pg-folder pg-folder--experiments" data-folder="experiments">
+                    <span class="pg-folder__stack" aria-hidden="true">
+                        <span class="pg-folder__card pg-folder__card--left"></span>
+                        <span class="pg-folder__card pg-folder__card--right"></span>
+                        <span class="pg-folder__card pg-folder__card--front"></span>
+                        <svg class="pg-folder__scribble" viewBox="0 0 400 120" fill="none" preserveAspectRatio="none"><path d="M4 30C120 52 250 86 396 112M6 82C140 74 270 70 396 66" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg>
+                        <span class="pg-folder__count"></span>
+                    </span>
+                    <span class="pg-folder__name">Experiments</span>
+                </button>
+
+            </div>
+        </section>
 
         <!-- ===================== CARDS VIEW =====================
-             Floating, draggable cards (like the very first Projects SPA
-             build) — a deliberately different feel from the Projects page's
-             static tile grid. Add one .project-float per playground
-             project: copy the card, give it a unique data-slug, set --x/--y
+             Opened from a folder: floating, draggable cards (like the very
+             first Projects SPA build) — only the cards whose data-folder
+             matches the open folder are shown. Add one .project-float per
+             playground project: copy the card, give it a unique data-slug,
+             set data-folder (art / branding / experiments), set --x/--y
              (its resting position, in px/%, relative to .cards-stage) and
-             swap the name + media. Drop the "--empty" placeholder markup
-             once a real cover image exists at the path noted in the
-             comment. Bump .cards-stage's min-height in playground.css as
-             more cards are added so they have room to drift/spread out. -->
+             swap the name + media. Bump .cards-stage's min-height in
+             playground.css as more cards are added so they have room to
+             drift/spread out. -->
         <section class="cards-view" data-reveal>
+            <div class="folder-bar">
+                <button type="button" class="to-folders">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Playground</span>
+                </button>
+                <span class="folder-bar__sep" aria-hidden="true">/</span>
+                <h1 class="folder-bar__title"></h1>
+            </div>
+            <p class="folder-empty" hidden>Nothing in this folder yet &mdash; check back soon.</p>
             <div class="cards-stage">
 
-                <button type="button" class="project-float" data-slug="cuelab" style="--x:4%;--y:20px">
+                <button type="button" class="project-float" data-slug="cuelab" data-folder="experiments" style="--x:4%;--y:150px">
                     <span class="project-float__inner">
                         <span class="project-float__label">
                             <span class="project-float__name">Cuelab</span>
@@ -121,7 +174,7 @@
                     </span>
                 </button>
 
-                <button type="button" class="project-float" data-slug="depicklefy" style="--x:48%;--y:360px">
+                <button type="button" class="project-float" data-slug="depicklefy" data-folder="experiments" style="--x:52%;--y:360px">
                     <span class="project-float__inner">
                         <span class="project-float__label">
                             <span class="project-float__name">DePicklefy</span>
@@ -146,12 +199,12 @@
              Each panel is just a title, a short description, and one
              image — pair each panel's data-slug with its floating card
              above. Copy a panel + the "Next" button wiring is automatic
-             (js/playground.js chains panels in card order). -->
+             (js/playground.js chains panels in card order, within the open folder). -->
         <div class="reading-view">
             <aside class="projects-rail">
-                <button type="button" class="to-cards" aria-label="All playground projects" title="All playground projects">
+                <button type="button" class="to-cards" aria-label="Back to folder" title="Back to folder">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-                    <span class="to-cards__label">All Playground</span>
+                    <span class="to-cards__label">Back to folder</span>
                 </button>
                 <nav class="rail-list"></nav>
             </aside>

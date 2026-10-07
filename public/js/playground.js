@@ -1,5 +1,8 @@
 /**
  * playground.js — Playground SPA
+ *  - folders view (landing): one folder per category (art / branding /
+ *    experiments); each folder's stacked cover images + count badge are
+ *    built from the .project-float cards that share its data-folder
  *  - cards view: floating, draggable project cards (interact.js) with a
  *    gentle idle drift (GSAP) — the same interaction the very first
  *    Projects SPA build used, kept here to feel deliberately looser/more
@@ -7,7 +10,8 @@
  *  - reading view: left rail (flat project navigation) + scrolling panel,
  *    each panel just a title, a short description, and one image
  *  - switch projects without a page reload
- *  - #slug hash routing + "All playground" button back to the cards view
+ *  - #folder / #slug hash routing; "Back to folder" returns to the cards
+ *    view, the "Playground" crumb returns to the folders
  */
 (function () {
   'use strict';
@@ -20,6 +24,9 @@
   var railList = document.querySelector('.rail-list');
   var panelsWrap = document.querySelector('.reading-panels');
   var toCardsBtn = document.querySelector('.to-cards');
+  var toFoldersBtn = document.querySelector('.to-folders');
+  var folderTitle = document.querySelector('.folder-bar__title');
+  var folderEmpty = document.querySelector('.folder-empty');
   if (!app || !stage || !panelsWrap) return;
 
   var floats = Array.prototype.slice.call(document.querySelectorAll('.project-float'));
@@ -28,8 +35,12 @@
     panels[p.dataset.slug] = p;
   });
 
-  var SLUGS = floats.map(function (f) { return f.dataset.slug; });
+  var folderEls = Array.prototype.slice.call(document.querySelectorAll('.pg-folder'));
+  var folders = {};
+  folderEls.forEach(function (el) { folders[el.dataset.folder] = el; });
+
   var current = null;
+  var currentFolder = null;
   var drifts = {};
   var dragMoved = {}; // slug -> cumulative px moved this pointer-down, to tell a drag from a tap
   var DRAG_THRESHOLD = 6;
@@ -39,14 +50,34 @@
    * ================================================================== */
   var RAIL_DOTS = ['#e389ac', '#6b8afd', '#a77bd6', '#6fae82', '#e8a95a', '#7cc3d6'];
 
+  function floatFor(slug) {
+    return floats.find(function (f) { return f.dataset.slug === slug; });
+  }
+
+  function folderOf(slug) {
+    var float = floatFor(slug);
+    return float ? float.dataset.folder : null;
+  }
+
+  // slugs in the open folder, in card order — drives the rail, "Next" and drift
+  function folderSlugs() {
+    return floats.filter(function (f) { return f.dataset.folder === currentFolder; })
+      .map(function (f) { return f.dataset.slug; });
+  }
+
+  function folderName(folder) {
+    var el = folders[folder];
+    return el ? el.querySelector('.pg-folder__name').textContent : folder;
+  }
+
   function nameFor(slug) {
-    var float = floats.find(function (f) { return f.dataset.slug === slug; });
+    var float = floatFor(slug);
     return float ? float.querySelector('.project-float__name').textContent : slug;
   }
 
   function buildRail() {
     railList.innerHTML = '';
-    SLUGS.forEach(function (slug, i) {
+    folderSlugs().forEach(function (slug, i) {
       var item = document.createElement('div');
       item.className = 'rail-item';
       item.dataset.slug = slug;
@@ -66,17 +97,60 @@
   }
 
   /* ====================================================================
-   * "Next project" button — bottom of every panel, wraps around SLUGS
+   * "Next project" button — bottom of every panel, wraps around the
+   * projects in the open folder (hidden when the folder has only one)
    * ================================================================== */
+  function nextSlugFor(slug) {
+    var slugs = folderSlugs();
+    var i = slugs.indexOf(slug);
+    return slugs.length > 1 && i > -1 ? slugs[(i + 1) % slugs.length] : null;
+  }
+
   function buildNextButtons() {
-    SLUGS.forEach(function (slug, i) {
-      var btn = panels[slug] && panels[slug].querySelector('[data-next-project]');
+    Object.keys(panels).forEach(function (slug) {
+      var btn = panels[slug].querySelector('[data-next-project]');
       if (!btn) return;
-      var nextSlug = SLUGS[(i + 1) % SLUGS.length];
-      btn.querySelector('.next-project__name').textContent = nameFor(nextSlug);
       btn.addEventListener('click', function () {
-        openProject(nextSlug);
+        var nextSlug = nextSlugFor(slug);
+        if (nextSlug) openProject(nextSlug);
       });
+    });
+  }
+
+  function refreshNextButton(slug) {
+    var btn = panels[slug].querySelector('[data-next-project]');
+    if (!btn) return;
+    var nextSlug = nextSlugFor(slug);
+    btn.hidden = !nextSlug;
+    if (nextSlug) btn.querySelector('.next-project__name').textContent = nameFor(nextSlug);
+  }
+
+  /* ====================================================================
+   * Folder covers — up to 3 project images per folder (front, then the
+   * two fanned behind it), plus the count badge
+   * ================================================================== */
+  function buildFolders() {
+    folderEls.forEach(function (el) {
+      var items = floats.filter(function (f) { return f.dataset.folder === el.dataset.folder; });
+      var slots = ['front', 'left', 'right'];
+      slots.forEach(function (slot, i) {
+        var card = el.querySelector('.pg-folder__card--' + slot);
+        var img = items[i] && items[i].querySelector('.project-float__media img');
+        card.innerHTML = '';
+        card.classList.toggle('is-empty', !img);
+        if (img) {
+          var copy = document.createElement('img');
+          copy.src = img.getAttribute('src');
+          copy.alt = '';
+          copy.draggable = false;
+          card.appendChild(copy);
+        }
+      });
+      var count = el.querySelector('.pg-folder__count');
+      count.textContent = items.length;
+      count.hidden = !items.length;
+      el.setAttribute('aria-label', folderName(el.dataset.folder) + ', ' +
+        items.length + (items.length === 1 ? ' project' : ' projects'));
     });
   }
 
@@ -106,26 +180,61 @@
     if (slug === current && app.dataset.view === 'reading') return;
 
     stopAllDrift();
+    if (folderOf(slug) !== currentFolder || !railList.children.length) {
+      currentFolder = folderOf(slug);
+      buildRail();
+    }
     current = slug;
     app.dataset.view = 'reading';
-    if (!railList.children.length) buildRail();
     markActiveRail(slug);
+    refreshNextButton(slug);
     showPanel(slug);
     if (history.replaceState) history.replaceState(null, '', '#' + slug);
     else location.hash = slug;
   }
 
-  function backToCards() {
+  function setHash(hash) {
+    if (history.replaceState) history.replaceState(null, '', hash ? '#' + hash : location.pathname);
+    else location.hash = hash;
+  }
+
+  function openFolder(folder) {
+    if (!folders[folder]) return;
+    stopAllDrift();
     current = null;
+    currentFolder = folder;
     app.dataset.view = 'cards';
-    if (history.replaceState) history.replaceState(null, '', location.pathname);
-    else location.hash = '';
+    var slugs = folderSlugs();
+    floats.forEach(function (f) { f.hidden = f.dataset.folder !== folder; });
+    if (folderTitle) folderTitle.textContent = folderName(folder);
+    if (folderEmpty) folderEmpty.hidden = slugs.length > 0;
+    stage.hidden = !slugs.length;
+    buildRail();
+    setHash(folder);
     Object.keys(panels).forEach(function (s) { panels[s].hidden = true; });
     window.scrollTo({ top: 0, behavior: 'auto' });
     startAllDrift();
   }
 
-  if (toCardsBtn) toCardsBtn.addEventListener('click', backToCards);
+  function backToFolders() {
+    stopAllDrift();
+    current = null;
+    currentFolder = null;
+    app.dataset.view = 'folders';
+    setHash('');
+    Object.keys(panels).forEach(function (s) { panels[s].hidden = true; });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  if (toCardsBtn) toCardsBtn.addEventListener('click', function () {
+    if (currentFolder) openFolder(currentFolder);
+    else backToFolders();
+  });
+  if (toFoldersBtn) toFoldersBtn.addEventListener('click', backToFolders);
+
+  folderEls.forEach(function (el) {
+    el.addEventListener('click', function () { openFolder(el.dataset.folder); });
+  });
 
   /* ====================================================================
    * Floating cards — drag + idle drift
@@ -164,8 +273,8 @@
 
   function startDrift(slug) {
     if (reduce || isCompact() || typeof gsap === 'undefined') return;
-    var el = floats.find(function (f) { return f.dataset.slug === slug; });
-    if (!el || drifts[slug]) return;
+    var el = floatFor(slug);
+    if (!el || el.hidden || drifts[slug]) return;
     var baseX = parseFloat(el.dataset.x) || 0;
     var baseY = parseFloat(el.dataset.y) || 0;
     var ax = 10 + Math.random() * 12;
@@ -188,8 +297,8 @@
     if (drifts[slug]) { drifts[slug].kill(); delete drifts[slug]; }
   }
 
-  function startAllDrift() { SLUGS.forEach(function (s) { setTimeout(function () { startDrift(s); }, Math.random() * 600); }); }
-  function stopAllDrift() { SLUGS.forEach(stopDrift); }
+  function startAllDrift() { folderSlugs().forEach(function (s) { setTimeout(function () { startDrift(s); }, Math.random() * 600); }); }
+  function stopAllDrift() { Object.keys(drifts).forEach(stopDrift); }
 
   floats.forEach(function (el) {
     el.addEventListener('click', function () {
@@ -210,21 +319,24 @@
   /* ====================================================================
    * Hash routing
    * ================================================================== */
-  window.addEventListener('hashchange', function () {
-    var slug = location.hash.replace('#', '');
-    if (panels[slug] && slug !== current) openProject(slug);
-    else if (!panels[slug] && current) backToCards();
-  });
+  function route() {
+    var hash = location.hash.replace('#', '');
+    if (panels[hash] && folderOf(hash)) {
+      if (hash !== current) openProject(hash);
+    } else if (folders[hash]) {
+      if (hash !== currentFolder || current) openFolder(hash);
+    } else if (app.dataset.view !== 'folders') {
+      backToFolders();
+    }
+  }
+
+  window.addEventListener('hashchange', route);
 
   /* ====================================================================
    * Boot
    * ================================================================== */
-  buildRail();
+  buildFolders();
   buildNextButtons();
   initDrag();
-  if (location.hash && panels[location.hash.replace('#', '')]) {
-    openProject(location.hash.replace('#', ''));
-  } else {
-    startAllDrift();
-  }
+  route();
 })();

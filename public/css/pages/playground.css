@@ -7,6 +7,344 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
+   0. Folders view — landing: one stacked "folder" per category. Each folder
+   is three cards (two fanned behind, one in front) + a blue count badge.
+   js/playground.js fills the card images and the count from the
+   .project-float cards that share the folder's data-folder; any slot
+   without an image stays a plain tinted paper card (.is-empty).
+   -------------------------------------------------------------------------- */
+.folders-view,
+.playground-app[data-view="folders"] .cards-view {
+  display: none;
+}
+
+.playground-app[data-view="folders"] .folders-view {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 190px 24px 140px;
+  box-sizing: border-box;
+  /* faint graph-paper grid behind the folders */
+  background-image:
+    linear-gradient(var(--pg-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pg-grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center;
+}
+
+.playground-page {
+  --pg-grid: rgba(255, 255, 255, 0.045);
+  --pg-badge: #1a7bff;
+}
+
+.folders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: center;
+  column-gap: clamp(110px, 11vw, 190px);
+  row-gap: 72px;
+}
+
+.pg-folder {
+  /* front card size — the back cards and badge scale off this */
+  --size: clamp(200px, 20vw, 300px);
+  /* paper tints for empty slots (per folder below) */
+  --tint-left: #8a3a2a;
+  --tint-right: #c8a564;
+  --tint-front: #e6e1d6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--color-primary);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pg-folder--branding { --tint-left: #2d4a8c; --tint-right: #d9cdb4; --tint-front: #d8c7a3; }
+.pg-folder--experiments { --tint-left: #b8352c; --tint-right: #7fb4d6; --tint-front: #e9e4d8; }
+
+.pg-folder__stack {
+  position: relative;
+  display: block;
+  width: var(--size);
+  height: var(--size);
+}
+
+.pg-folder__card {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+
+.pg-folder__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* back cards — a bit smaller, tucked behind and tilted outward */
+.pg-folder__card--left,
+.pg-folder__card--right {
+  inset: 8% 0;
+}
+
+.pg-folder__card--left {
+  background: var(--tint-left);
+  transform: translateX(-21%) rotate(-5deg);
+}
+
+.pg-folder__card--right {
+  background: var(--tint-right);
+  transform: translateX(21%) rotate(5deg);
+}
+
+.pg-folder__card--front {
+  background: var(--tint-front);
+  z-index: 2;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* empty front card: faint ruled-paper texture so it reads as paper,
+   not a broken image */
+.pg-folder__card--front.is-empty {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.pg-folder__count {
+  position: absolute;
+  top: calc(var(--size) * -0.06);
+  right: calc(var(--size) * -0.06);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--pg-badge);
+  color: #fff;
+  font-size: 19px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pg-folder__count[hidden] { display: none; }
+
+.pg-folder__name {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* hover / focus: back cards fan out further, front card lifts */
+.pg-folder:hover .pg-folder__card--left,
+.pg-folder:focus-visible .pg-folder__card--left {
+  transform: translateX(-30%) rotate(-10deg);
+}
+.pg-folder:hover .pg-folder__card--right,
+.pg-folder:focus-visible .pg-folder__card--right {
+  transform: translateX(30%) rotate(10deg);
+}
+.pg-folder:hover .pg-folder__card--front,
+.pg-folder:focus-visible .pg-folder__card--front {
+  transform: translateY(-8px) rotate(-1deg);
+  box-shadow: 0 26px 50px rgba(0, 0, 0, 0.55);
+}
+.pg-folder:hover .pg-folder__count,
+.pg-folder:focus-visible .pg-folder__count {
+  transform: translateY(-8px) scale(1.06);
+}
+
+.pg-folder:focus-visible { outline: none; }
+.pg-folder:focus-visible .pg-folder__name {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* --- per-folder front-card dressing --- */
+
+/* Art: white photo border + paperclip */
+.pg-folder--art .pg-folder__card--front { border: 6px solid #f4f1ea; }
+
+.pg-folder__clip {
+  position: absolute;
+  top: calc(var(--size) * -0.14);
+  left: 12%;
+  z-index: 3;
+  width: calc(var(--size) * 0.11);
+  height: auto;
+  color: #c9ccd1;
+  filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Branding: 35mm slide mount — image inset in a kraft-paper frame */
+.pg-folder--branding .pg-folder__card--front {
+  padding: 13% 9% 19%;
+  box-sizing: border-box;
+}
+.pg-folder--branding .pg-folder__card--front img { border-radius: 6px; }
+.pg-folder--branding .pg-folder__card--front.is-empty {
+  background-image: none;
+}
+.pg-folder--branding .pg-folder__card--front.is-empty::before {
+  content: '';
+  display: block;
+  height: 100%;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Experiments: blue marker scribble across the front card */
+.pg-folder__scribble {
+  position: absolute;
+  left: -6%;
+  right: -10%;
+  top: 40%;
+  z-index: 3;
+  width: 116%;
+  height: 24%;
+  color: var(--pg-badge);
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pg-folder:hover .pg-folder__clip,
+.pg-folder:hover .pg-folder__scribble,
+.pg-folder:focus-visible .pg-folder__clip,
+.pg-folder:focus-visible .pg-folder__scribble {
+  transform: translateY(-8px) rotate(-1deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-folder__card,
+  .pg-folder__count,
+  .pg-folder__clip,
+  .pg-folder__scribble { transition: none; }
+}
+
+@media (max-width: 1024px) {
+  .playground-app[data-view="folders"] .folders-view {
+    align-items: flex-start;
+    min-height: 0;
+    padding: 110px 20px 120px;
+  }
+  .folders-grid {
+    grid-template-columns: 1fr;
+    row-gap: 64px;
+  }
+  .pg-folder {
+    --size: min(240px, 58vw);
+    gap: 28px;
+  }
+  .pg-folder__name { font-size: 20px; }
+  .pg-folder__count { width: 40px; height: 40px; font-size: 17px; }
+}
+
+/* --------------------------------------------------------------------------
+   0b. Folder bar — "‹ Playground / Experiments" above an open folder's cards
+   -------------------------------------------------------------------------- */
+.playground-page .cards-view {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.folder-bar {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto 32px;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.to-folders {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--color-gray);
+  font-size: 22px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+.to-folders svg { width: 20px; height: 20px; align-self: center; }
+.to-folders:hover { color: var(--color-primary); }
+
+.folder-bar__sep {
+  color: var(--color-gray);
+  font-size: 22px;
+}
+
+.folder-bar__title {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.folder-empty {
+  max-width: 1440px;
+  width: 100%;
+  margin: 24vh auto 0;
+  padding: 0 24px;
+  box-sizing: border-box;
+  text-align: center;
+  color: var(--color-gray);
+  font-size: 16px;
+}
+
+.folder-empty[hidden],
+.cards-stage[hidden],
+.project-float[hidden],
+.next-project[hidden] { display: none; }
+
+/* desktop cards view is a fixed, non-scrolling screen (pages/projects.css
+   zeroes its padding), so the bar floats under the nav logo instead of
+   pushing the stage down — keep the cards' --y clear of it */
+@media (min-width: 1025px) {
+  .folder-bar {
+    position: absolute;
+    top: 92px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .folder-bar > * { pointer-events: auto; }
+}
+
+@media (max-width: 1024px) {
+  .playground-page .cards-view { padding-top: 110px; }
+  .folder-bar { padding: 0 20px; margin-bottom: 24px; }
+  .to-folders, .folder-bar__sep, .folder-bar__title { font-size: 18px; }
+}
+
+/* --------------------------------------------------------------------------
    1. Cards view — floating, draggable project cards
    -------------------------------------------------------------------------- */
 .cards-stage {
