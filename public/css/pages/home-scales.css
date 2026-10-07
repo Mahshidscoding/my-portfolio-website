@@ -618,3 +618,18 @@ body.home-page { touch-action: none; }
   }
   .outro-card__label span + span { display: none; }   /* name only; the role is too long here */
 }
+
+/* Touch screens: no cursor, so no light on the bio — and drawing it as plain
+   text matters: iOS Safari sometimes doesn't paint background-clip:text after
+   the block fades in, so the bio only appeared on the next swipe. */
+@media (hover: none) {
+  .fr-para p {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: #8a8a8a;
+  }
+}
+/* phones: the text comes in sooner after the tiles start flipping */
+@media (max-width: 700px) and (orientation: portrait) {
+  .frame-block.on { transition-delay: .3s; }
+}
