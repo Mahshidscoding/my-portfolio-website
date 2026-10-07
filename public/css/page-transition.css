@@ -1,9 +1,8 @@
-/* page-transition.css — cinematic black-overlay page transition.
+/* page-transition.css — black-overlay page transition (a quick blink).
  *
- * Structural/timing values are pushed onto these custom properties at
- * runtime by js/page-transition.js's CONFIG object — that's the single
- * place to retune durations/easing. Colours not tied to the canvas
- * drawing (stroke colour, cursor size) are mirrored here the same way.
+ * Timing and easing are pushed onto these custom properties at runtime by
+ * js/page-transition.js's CONFIG object — that's the single place to
+ * retune them.
  */
 
 /* A real cross-document navigation (this site has no client-side router)
@@ -72,46 +71,6 @@
   transition-duration: var(--pt-exit-title-fade-ms, 200ms);
 }
 
-.pt-canvas {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.pt-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: var(--pt-cursor-size, 16px);
-  height: var(--pt-cursor-size, 16px);
-  margin: calc(var(--pt-cursor-size, 16px) / -2);
-  border-radius: 50%;
-  /* a small chrome bead — same palette as the brush filter */
-  background:
-    radial-gradient(circle at 35% 30%,
-      #ffffff 0%,
-      #c9d3dc 40%,
-      #5a6470 100%);
-  box-shadow: 1px 2px 3px rgba(90, 100, 112, 0.45);
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform;
-  transition: opacity 0.15s ease;
-}
-
-.pt-cursor.is-visible {
-  opacity: 1;
-}
-
-html.pt-active,
-html.pt-active * {
-  cursor: none !important;
-}
-
-html.pt-active .cursor {
-  opacity: 0 !important;
-}
-
 @media (prefers-reduced-motion: reduce) {
   #pt-overlay,
   #pt-overlay.is-exiting {
@@ -120,18 +79,12 @@ html.pt-active .cursor {
   .pt-title {
     transition-duration: 80ms !important;
   }
-  .pt-canvas,
-  .pt-cursor {
-    display: none !important;
-  }
 }
 
-/* js/page-transition.js already skips setting up the draw engine on
-   touch/narrow viewports (matching this site's own 768px breakpoint), so
-   these never receive any pixels there — hidden here too as a backstop. */
-@media (pointer: coarse), (max-width: 768px) {
-  .pt-canvas,
-  .pt-cursor {
-    display: none !important;
-  }
+/* The inline early-paint script at the top of each page's <body> still
+   creates a canvas and a cursor node left over from the old drawing layer;
+   they're unused, so keep them out of the way. */
+.pt-canvas,
+.pt-cursor {
+  display: none;
 }
