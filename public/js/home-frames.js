@@ -17,10 +17,22 @@
  *                scrolling is continuous (scrubbing) instead of one step per
  *                gesture.
  *
+ * mobile: the phone layout (narrow + portrait screens). Same block ids, text and
+ *         frames, its own grid: `cols` columns and as many rows as keep the tiles
+ *         square (at least `minRows`). Block `h` ≤ 0 counts from the bottom:
+ *         0 = down to the last row, -1 = stop one row short.
+ *
  * After the last image, more scrolling slides the grid away and brings in the
  * Work / Contact section (.outro in index.html; its timing is the
  * data-outro attributes there).
  */
+(() => {   // private scope for the shared strings below
+const PORTRAIT = '<div class="fr-photo__img" role="img" aria-label="Portrait of Mahshid Mahmoudian"></div>';
+const NAME = '<span>Mahshid</span><span>Mahmoudian</span>';
+const LINE1 = 'I don’t think in straight lines,';
+const LINE2 = 'I experiment until it clicks,';
+const LINE3 = 'and iterate until it’s right.';
+
 window.HOME_FRAMES = {
   cols: 10,
   rows: 5,
@@ -30,9 +42,9 @@ window.HOME_FRAMES = {
     role:  { c: 0, r: 2, w: 2, h: 1, cls: 'fr-small fr-left',
              html: 'Senior Experience Designer,<br>Currently at Konrad Group' },
     photo: { c: 4, r: 2, w: 1, h: 1, cls: 'fr-photo',
-             html: '<div class="fr-photo__img" role="img" aria-label="Portrait of Mahshid Mahmoudian"></div>' },
+             html: PORTRAIT },
     name:  { c: 5, r: 2, w: 1, h: 1, cls: 'fr-name',
-             html: '<span>Mahshid</span><span>Mahmoudian</span>' },
+             html: NAME },
     next:  { c: 8, r: 2, w: 2, h: 1, cls: 'fr-small fr-right',
              html: 'Working on what digital<br>interaction becomes next' },
 
@@ -48,9 +60,38 @@ window.HOME_FRAMES = {
 
     // frames 3–5 — bottom two rows clear, one line at a time
     below: { c: 0, r: 3, w: 10, h: 2 },
-    line1: { c: 1, r: 1, w: 2, h: 1, cls: 'fr-line', html: 'I don’t think in straight lines,' },
-    line2: { c: 4, r: 1, w: 2, h: 1, cls: 'fr-line', html: 'I experiment until it clicks,' },
-    line3: { c: 7, r: 1, w: 2, h: 1, cls: 'fr-line', html: 'and iterate until it’s right.' },
+    line1: { c: 1, r: 1, w: 2, h: 1, cls: 'fr-line', html: LINE1 },
+    line2: { c: 4, r: 1, w: 2, h: 1, cls: 'fr-line', html: LINE2 },
+    line3: { c: 7, r: 1, w: 2, h: 1, cls: 'fr-line', html: LINE3 },
+  },
+
+  // ---------- phones ----------
+  //   row 0: nav       frame 1 steps down the screen: title (left) →
+  //   portrait + name → "working on" (right). Bio fills the middle; the three
+  //   lines stagger down the top half; images fly out of the bottom rows.
+  mobile: {
+    cols: 4,
+    minRows: 8,
+    blocks: {
+      role:  { c: 0, r: 2, w: 2, h: 1, cls: 'fr-small fr-left',
+               html: 'Senior Experience Designer,<br>Currently at Konrad Group' },
+      photo: { c: 1, r: 3, w: 1, h: 1, cls: 'fr-photo', html: PORTRAIT },
+      name:  { c: 2, r: 3, w: 2, h: 1, cls: 'fr-name fr-name--wide', html: NAME },
+      next:  { c: 2, r: 5, w: 2, h: 1, cls: 'fr-small fr-right',
+               html: 'Working on what digital<br>interaction becomes next' },
+
+      // wraps on its own here (no hand-set breaks); first line still right-aligned
+      bio:   { c: 0, r: 1, w: 4, h: -1, cls: 'fr-para fr-para--wrap',
+               html: '<p><span class="fr-para__first">I’m a designer and an artist.</span> ' +
+                     'I’ve led branding and visual direction on the products I’ve worked on, ' +
+                     'and created full identities from scratch. I work in XR, make zines, ' +
+                     'and play with sound design. The mix is what lets me think in layers.</p>' },
+
+      below: { c: 0, r: 5, w: 4, h: 0 },
+      line1: { c: 0, r: 1, w: 3, h: 1, cls: 'fr-line', html: LINE1 },
+      line2: { c: 1, r: 2, w: 3, h: 1, cls: 'fr-line', html: LINE2 },
+      line3: { c: 0, r: 3, w: 3, h: 1, cls: 'fr-line', html: LINE3 },
+    },
   },
 
   flyFrom: 'below',
@@ -66,3 +107,4 @@ window.HOME_FRAMES = {
       fly: ['images/home-fly/descript.jpg', 'images/home-fly/commandfreak.jpg', 'images/home-fly/tembo.jpg'] },
   ],
 };
+})();

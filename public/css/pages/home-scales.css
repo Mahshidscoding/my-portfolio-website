@@ -576,3 +576,45 @@ body.outro-live .sound-toggle {
   .roll__in { transition: none; }
   .has-roll:hover .roll__in, .has-roll:focus-visible .roll__in { transform: none; }
 }
+
+/* ---------- phones (narrow + portrait): HOME_FRAMES.mobile layout ----------
+   Must match MOBILE_MQ in js/home-scales.js. The grid there uses a 16px
+   margin, so the nav and the corner button follow it here. */
+.fr-name--wide span { font-size: min(9cqw, 18px); }
+
+/* the bio on phones wraps by itself instead of using hand-set line breaks */
+.fr-para--wrap p {
+  width: auto;
+  margin: auto 0;
+  padding: 0 4px;
+  white-space: normal;
+  font-size: max(17px, min(6.6cqw, 5.2cqh));
+  line-height: 1.3;
+}
+
+/* the page is driven by swipes, not native scrolling: no bounce / pull-to-refresh */
+html:has(body.home-page),
+body.home-page {
+  overscroll-behavior: none;
+}
+body.home-page { touch-action: none; }
+
+@media (max-width: 700px) and (orientation: portrait) {
+  body.home-page .site-nav { padding: 16px; }
+  .sound-toggle { left: 28px; bottom: 28px; width: 42px; height: 42px; }
+  .fr-small { padding: 0 6px; font-size: 12px; line-height: 1.35; }
+  .fr-line { font-size: 15px; padding: 0 8px; }
+  .outro { --outro-edge: 16px; }
+  /* no hover on a phone: show each project's name under its card instead */
+  .outro-card { display: flex; flex-direction: column-reverse; }
+  .outro-card__media { height: 26vh; }
+  .outro-card__label {
+    position: static;
+    display: block;
+    padding: 8px 0 0;
+    font-size: 12px;
+    opacity: .8;
+    translate: none;
+  }
+  .outro-card__label span + span { display: none; }   /* name only; the role is too long here */
+}

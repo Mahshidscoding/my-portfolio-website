@@ -19,14 +19,29 @@
   // scroll frames (only when js/home-frames.js is loaded, i.e. index.html): sets window.HOME_FRAMES
   // and fixes the grid size, so the frames' cells mean the same thing on every screen
   const FR = window.HOME_FRAMES || null;
+  // Phones (narrow + portrait) use HOME_FRAMES.mobile instead: its own column
+  // count, rows worked out from the screen height so tiles stay square, and
+  // its own block layout. Frames, text ids and flying images are shared.
+  const MOBILE_MQ = matchMedia('(max-width: 700px) and (orientation: portrait)');
+  const MARGIN_M = 16;   // phone grid margin (= the nav's side padding there)
+  let V = null;          // current layout: { mobile, cols, rows | minRows, blocks }
+  const pickVariant = () => (FR.mobile && MOBILE_MQ.matches)
+    ? { mobile: true, ...FR.mobile }
+    : { mobile: false, cols: FR.cols, rows: FR.rows, blocks: FR.blocks };
   const NAV_MIN = 300;   // narrowest the nav info box can be (px) before its tabs crowd
   function fitGrid(W, H) {
-    const aw = W - 2 * MARGIN, ah = H - 2 * MARGIN;
-    const R = FR ? FR.rows : Math.max(3, Math.min(8, Math.round((ah + GAP) / (TARGET + GAP))));
+    const M = V && V.mobile ? MARGIN_M : MARGIN;
+    const aw = W - 2 * M, ah = H - 2 * M;
+    if (V && V.mobile) {   // fixed columns, as many rows as keep the tiles square
+      const C = V.cols, tw = (aw - (C - 1) * GAP) / C;
+      const R = Math.max(V.minRows || 6, Math.round((ah + GAP) / (tw + GAP)));
+      return { C, R, w: tw, h: (ah - (R - 1) * GAP) / R, x: M, y: M };
+    }
+    const R = V ? V.rows : Math.max(3, Math.min(8, Math.round((ah + GAP) / (TARGET + GAP))));
     const th = (ah - (R - 1) * GAP) / R;
-    const C = FR ? FR.cols : Math.max(3, Math.round((aw + GAP) / (th + GAP)));
+    const C = V ? V.cols : Math.max(3, Math.round((aw + GAP) / (th + GAP)));
     const tw = (aw - (C - 1) * GAP) / C;
-    return { C, R, w: tw, h: th, x: MARGIN, y: MARGIN };
+    return { C, R, w: tw, h: th, x: M, y: M };
   }
 
   // pearl glass look — values from PEARL_SETTINGS in playground/pearl-material.js
@@ -301,6 +316,10 @@ void main() {
   }
 
   function layout() {
+    if (FR) {   // phone ↔ desktop layout (e.g. rotating a phone): rebuild the text blocks
+      const nv = pickVariant();
+      if (!V || nv.mobile !== V.mobile) { V = nv; buildBlocks(); }
+    }
     const dpr = Math.min(1.5, devicePixelRatio || 1);   // 1.5 is plenty for this texture (and keeps it fast)
     geo.w = innerWidth; geo.h = innerHeight;
     canvas.width = Math.round(geo.w * dpr);
@@ -308,6 +327,7 @@ void main() {
     gl.viewport(0, 0, canvas.width, canvas.height);
 
     const { C, R, w, h, x, y } = fitGrid(geo.w, geo.h);
+    geo.R = R;
     geo.left = x; geo.top = y;                  // tiles live in grid space from here
     geo.tile = Math.min(w, h);
     const sx = w + GAP, sy = h + GAP;
@@ -352,8 +372,11 @@ void main() {
     tiles = next; order = tiles.slice();
     hovered = null;
     if (FR) {
-      for (const [id, b] of Object.entries(FR.blocks)) {
-        const r = blockRects[id] = [x + b.c * sx, y + b.r * sy, b.w * w + (b.w - 1) * GAP, b.h * h + (b.h - 1) * GAP];
+      // h ≤ 0 counts from the bottom: 0 = down to the last row, -1 = stop one row short
+      for (const [id, b] of Object.entries(V.blocks)) {
+        const bh = b.h > 0 ? b.h : Math.max(1, R - b.r + b.h);
+        blocks[id] = { c: b.c, r: b.r, w: b.w, h: bh };
+        const r = blockRects[id] = [x + b.c * sx, y + b.r * sy, b.w * w + (b.w - 1) * GAP, bh * h + (bh - 1) * GAP];
         if (blockEls[id]) place(blockEls[id], ...r);
       }
       syncFrame(true);   // new tiles start in the current frame's state, no flip
@@ -370,7 +393,7 @@ void main() {
   const FLIP_MS = 800;      // one tile's flip
   const STAGGER_MS = 260;   // spread of start times, top → bottom in the scroll direction
   let frameIdx = 0, flipDir = 1;
-  const blockEls = {}, blockRects = {};
+  const blockEls = {}, blockRects = {}, blocks = {};   // blocks = the current layout's, rows resolved
   let frameLayer = null, flyLayer = null;
   if (FR) {
     flyLayer = document.createElement('div');
@@ -378,7 +401,14 @@ void main() {
     document.querySelector('main').appendChild(flyLayer);
     frameLayer = document.createElement('div');
     frameLayer.className = 'frame-layer';
-    for (const [id, b] of Object.entries(FR.blocks)) {
+    document.querySelector('main').appendChild(frameLayer);
+  }
+  // (re)create the text blocks for the current layout (V)
+  function buildBlocks() {
+    frameLayer.textContent = '';
+    for (const k in blockEls) delete blockEls[k];
+    for (const k in blocks) delete blocks[k];
+    for (const [id, b] of Object.entries(V.blocks)) {
       if (!b.html) continue;
       const el = document.createElement('div');
       el.className = 'frame-block ' + (b.cls || '');
@@ -386,7 +416,8 @@ void main() {
       frameLayer.appendChild(el);
       blockEls[id] = el;
     }
-    document.querySelector('main').appendChild(frameLayer);
+    lit.length = 0;
+    for (const el of frameLayer.querySelectorAll('.fr-para p')) lit.push({ el, x: 0, y: 0, r: 0 });
   }
   // ---------- light on the bio paragraph ----------
   // The paragraph sits dim; a soft circle of it lights up around the cursor.
@@ -395,8 +426,8 @@ void main() {
   const LIGHT_R = 150;        // px, radius of the lit circle
   const LIGHT_FOLLOW = 3.5;   // how quickly the light catches up with the cursor (higher = snappier)
   const LIGHT_FADE = 2.5;     // how quickly it swells / fades
-  const lit = FR ? [...frameLayer.querySelectorAll('.fr-para p')].map(el => ({ el, x: 0, y: 0, r: 0 })) : [];
-  if (lit.length) {
+  const lit = [];   // filled by buildBlocks()
+  if (FR) {
     let mx = -1e4, my = -1e4, lightOn = false, lightT = 0;
     const lightStep = now => {
       const dt = Math.min(0.05, (now - lightT) / 1000);
@@ -431,7 +462,7 @@ void main() {
 
   function syncFrame(instant) {
     const ids = FR.frames[frameIdx].open;
-    const open = ids.map(id => FR.blocks[id]);
+    const open = ids.map(id => blocks[id]).filter(Boolean);
     const now = performance.now();
     const snap = instant || reduceMQ.matches;
     for (const t of tiles) {
@@ -444,8 +475,8 @@ void main() {
       const base = hide ? 180 : 0;
       const to = flipDir > 0 ? base + 360 * Math.ceil((t.f - base) / 360)
                              : base + 360 * Math.floor((t.f - base) / 360);
-      const row = flipDir > 0 ? t.r : FR.rows - 1 - t.r;
-      const delay = (row / FR.rows) * STAGGER_MS + jitter(t) * 120;
+      const row = flipDir > 0 ? t.r : geo.R - 1 - t.r;
+      const delay = (row / geo.R) * STAGGER_MS + jitter(t) * 120;
       t.flip = { from: t.f, to, t0: now + delay };
     }
     frameLayer.classList.toggle('snap', snap);
@@ -470,6 +501,13 @@ void main() {
   const SCRUB_LEAD = 0.3;
   const SCRUB_MAX_SPEED = 1.6;
   const REWIND_SPEED = 9;     // frames per second when About / the name badge rewinds to the start
+  // touch: the page follows the finger directly (no lead cap) and keeps
+  // gliding after a flick, slowing down — like native scrolling
+  const TOUCH_PX_PER_FRAME = 340;   // finger travel for one frame of scrubbing
+  const TOUCH_MAX_SPEED = 8;        // frames/s the picture may move while dragging
+  const GLIDE_MAX = 3;              // frames/s, fastest a flick can carry on
+  const GLIDE_FRICTION = 3.2;       // how quickly a flick slows (higher = shorter glide)
+  let touchScrub = false;           // last scrub input was a finger
   let rewinding = false, onSettle = null;
   const FLY_W = 0.3;          // image width at scale 1, × window width
   const FLY_END = 3;          // scale at the end of the trip (so ~90% of the window wide)
@@ -550,7 +588,7 @@ void main() {
     const dt = Math.min(0.05, (now - flyLast) / 1000);
     flyLast = now;
     const step = (posT - pos) * (1 - Math.exp(-dt * 12));   // smooth out wheel notches…
-    const vmax = rewinding ? REWIND_SPEED : SCRUB_MAX_SPEED;
+    const vmax = rewinding ? REWIND_SPEED : touchScrub ? TOUCH_MAX_SPEED : SCRUB_MAX_SPEED;
     pos += clamp(step, -vmax * dt, vmax * dt);   // …up to the top speed
     if (Math.abs(posT - pos) < 1e-4) pos = posT;
     renderFly();
@@ -600,6 +638,7 @@ void main() {
       if (now - lastWheel > 180) { hold = false; acc = 0; }
       lastWheel = now;
       if (hold) return;
+      touchScrub = false;
       const dy = e.deltaMode ? e.deltaY * 30 : e.deltaY;
       if (inScrub()) { scrubBy(dy / PX_PER_FRAME); return; }
       if (now < lockUntil) return;
@@ -609,19 +648,47 @@ void main() {
       acc = 0;
     }, { passive: true });
 
-    let touchY = null, touchY0 = null, dragged = false;
-    addEventListener('touchstart', e => { touchY = touchY0 = e.touches[0].clientY; dragged = false; hold = false; }, { passive: true });
+    // touch: before the scrub stretch, one frame per swipe; inside it, the
+    // picture follows the finger, and a flick glides on and slows to a stop
+    let touchY = null, touchY0 = null, dragged = false, moves = [], glideV = 0, gliding = false;
+    const glide = () => {
+      let last = performance.now();
+      const step = now => {
+        if (!gliding) return;
+        const dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        glideV *= Math.exp(-dt * GLIDE_FRICTION);
+        if (hold || !inScrub() || Math.abs(glideV) < 0.05) { gliding = false; return; }
+        scrubBy(glideV * dt, true);
+        requestAnimationFrame(step);
+      };
+      gliding = true;
+      requestAnimationFrame(step);
+    };
+    addEventListener('touchstart', e => {
+      touchY = touchY0 = e.touches[0].clientY;
+      dragged = false; hold = false; gliding = false; moves = [];
+    }, { passive: true });
     addEventListener('touchmove', e => {
       if (touchY == null || hold || !inScrub()) return;
-      const y = e.touches[0].clientY;
-      scrubBy((touchY - y) * 1.5 / PX_PER_FRAME);
+      const y = e.touches[0].clientY, now = performance.now();
+      touchScrub = true;
+      scrubBy((touchY - y) / TOUCH_PX_PER_FRAME, true);
+      moves.push([now, y]);
+      while (moves.length > 2 && now - moves[0][0] > 100) moves.shift();
       touchY = y; dragged = true;
     }, { passive: true });
     addEventListener('touchend', e => {
       if (touchY0 == null) return;
       const dy = touchY0 - e.changedTouches[0].clientY;
       touchY = touchY0 = null;
-      if (!dragged && Math.abs(dy) > 40 && performance.now() >= lockUntil) go(Math.sign(dy));
+      if (dragged) {
+        // flick speed over the last ~100ms, in frames per second
+        const [t0, y0] = moves[0] || [0, 0], [t1, y1] = moves[moves.length - 1] || [0, 0];
+        const v = t1 > t0 && performance.now() - t1 < 80 ? (y0 - y1) / TOUCH_PX_PER_FRAME / ((t1 - t0) / 1000) : 0;
+        glideV = clamp(v, -GLIDE_MAX, GLIDE_MAX);
+        if (Math.abs(glideV) > 0.2 && !hold) glide();
+      } else if (Math.abs(dy) > 40 && performance.now() >= lockUntil) go(Math.sign(dy));
     }, { passive: true });
 
     addEventListener('keydown', e => {
