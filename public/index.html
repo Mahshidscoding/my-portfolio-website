@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- CSS -->
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="css/pages/home-scales.css">
 </head>
 
-<body class="home-page">
+<body class="home-page home-scroll">
     <script>
     (function () {
       // Mirrors js/page-transition.js's handoff check (CONFIG.storageKey /
@@ -92,21 +92,52 @@
         </div>
     </nav>
 
-    <!-- The whole page: one screen, no scroll. WebGL tile grid + the portrait/bio card (a grid cell). -->
+    <!-- Home: the WebGL tile grid. Each scroll step flips tiles away to open
+         the cells listed in js/home-frames.js, then images fly out, then the
+         Work / Contact ending rises in (all driven by js/home-scales.js). -->
     <main>
         <canvas id="gl"></canvas>
 
-        <div class="stage" id="stage">
-            <div class="card photo" id="c-photo" role="button" tabindex="0" aria-expanded="false" aria-label="About Mahshid">
-                <div class="img" role="img" aria-label="Portrait of Mahshid Mahmoudian"></div>
-                <nav class="links" aria-label="Contact">
-                    <a href="mailto:mahshidmdnn@gmail.com">Email</a>
-                    <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">LinkedIn</a>
-                    <a href="images/cv.pdf" target="_blank" rel="noopener">Resume</a>
-                </nav>
-                <p class="bio">Mahshid here :) I’m an interaction designer. I take ideas and shape them into experiences, pulling from a mix of creative and visual skills to get the details right. Lately, I’ve been working on AI interfaces and adaptive, personalized experiences.</p>
+        <!-- Ending: once the last flying image is gone, more scrolling slides the
+             tile grid up and off, and these rise in from below — Work, then
+             Contact. Each [data-outro="start end"] fades/rises over that stretch
+             of the scroll (in frames past the images; see js/home-scales.js). -->
+        <section class="outro" aria-label="Work and contact">
+            <div class="outro-row outro-work">
+                <div class="outro-side" data-outro="0.6 1.3">
+                    <h2 class="outro-title">Work</h2>
+                    <p class="outro-copy">Some projects I loved working on.</p>
+                    <a class="outro-btn" href="/projects">Projects</a>
+                </div>
+                <div class="outro-cards">
+                    <a class="outro-card outro-card--arch" href="/projects#arch" data-outro="0.75 1.45">
+                        <span class="outro-card__label"><span>Arch</span><span>Creative Lead, Product Design</span></span>
+                        <video class="outro-card__media" src="images/arch/card.mp4" poster="images/arch/card.png" muted loop playsinline preload="metadata" aria-label="Arch"></video>
+                    </a>
+                    <a class="outro-card outro-card--tembo" href="/projects#tembo" data-outro="0.85 1.55">
+                        <span class="outro-card__label"><span>Tembo</span><span>Brand Designer, Product Designer</span></span>
+                        <video class="outro-card__media" src="images/tembo/card.mp4" poster="images/tembo/card.png" muted loop playsinline preload="metadata" aria-label="Tembo"></video>
+                    </a>
+                    <a class="outro-card outro-card--sqlite" href="/projects#sqlite" data-outro="0.95 1.65">
+                        <span class="outro-card__label"><span>SQLite Cloud</span><span>Brand Designer, Product Designer</span></span>
+                        <video class="outro-card__media" src="images/sqlite/card.mp4" poster="images/sqlite/card1.png" muted loop playsinline preload="metadata" aria-label="SQLite Cloud"></video>
+                    </a>
+                </div>
             </div>
-        </div>
+
+            <div class="outro-row outro-contact" data-outro="1.45 2.2">
+                <div class="outro-side">
+                    <h2 class="outro-title">Contact</h2>
+                    <p class="outro-copy">Contact me for more details or unpublished work.</p>
+                </div>
+                <nav class="outro-links" aria-label="Contact">
+                    <a href="mailto:mahshidmdnn@gmail.com">(Email)</a>
+                    <a href="https://www.linkedin.com/in/mahshid-mahmoudian/" target="_blank" rel="noopener">(LinkedIn)</a>
+                    <a href="images/cv.pdf" target="_blank" rel="noopener">(Resume)</a>
+                </nav>
+            </div>
+
+            <footer class="site-footer outro-footer" data-outro="1.6 2.3">&copy; 2026 Mahshid Mahmoudian</footer>
     </main>
 
     <!-- mute / unmute the tile sounds (js/tile-sound.js) -->
@@ -115,10 +146,12 @@
         <img class="sound-toggle__off" src="images/icons/volume-x.svg" alt="" width="26" height="26" hidden>
     </button>
 
+    <script src="js/text-roll.js"></script>
     <script src="js/site.js"></script>
     <script src="js/page-transition.js"></script>
     <script src="js/nav-clock.js"></script>
     <script src="js/tile-sound.js"></script>
+    <script src="js/home-frames.js"></script>
     <script src="js/home-scales.js"></script>
 </body>
 </html>

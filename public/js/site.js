@@ -208,7 +208,7 @@
    *    the sound is just the numbers below, not an asset to re-record.
    * -------------------------------------------------------------------- */
   function initClickSound() {
-    var SOUND_SELECTOR = '.intro-cta, .skills-cta-button, .nav-info__links a, .project-tile, .globe-list__item';
+    var SOUND_SELECTOR = '.intro-cta, .skills-cta-button, .nav-info__links a, .project-tile, .globe-list__item, .photo-tab, .photo-close';
 
     // --- tweak these to change the sound ---------------------------------
     var TONE_FREQ = 280;      // Hz — starting pitch of the thump
@@ -269,8 +269,15 @@
       noise.start(now);
     }
 
+    // the home page's mute button (js/tile-sound.js) silences these clicks too
+    function playIfAllowed() {
+      if (window.tileSound && window.tileSound.isMuted()) return;
+      playClick();
+    }
+    window.playSiteClick = playIfAllowed;   // for scripts that open things on click (home card)
+
     document.addEventListener('click', function (e) {
-      if (e.target.closest(SOUND_SELECTOR)) playClick();
+      if (e.target.closest(SOUND_SELECTOR)) playIfAllowed();
     });
   }
 

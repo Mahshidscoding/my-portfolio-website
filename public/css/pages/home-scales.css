@@ -100,7 +100,7 @@ body.home-page main {
   border-radius: 8px;
   filter: grayscale(1);
   background: url("../../images/Mahshid.png") 50% 30% / cover no-repeat;
-  transition: width .5s var(--home-ease), height .5s var(--home-ease);
+  transition: width .5s var(--home-ease), height .5s var(--home-ease), opacity .2s .1s;
 }
 .photo .links,
 .photo .bio {
@@ -183,4 +183,404 @@ body.home-page .nav-logo { gap: 12px; }
 .nav-logo__time {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+}
+
+/* ---------- opened card: Being / Doing tabs + close, floating above it ---------- */
+.photo-tabs {
+  position: absolute;
+  z-index: 3;
+  pointer-events: auto;        /* .stage ignores pointers; the tabs opt back in (hidden = no events) */
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  gap: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .2s, visibility 0s .2s, top .5s var(--home-ease, cubic-bezier(.2, .8, .2, 1));
+}
+.photo-tabs.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .35s .3s, visibility 0s, top .5s var(--home-ease, cubic-bezier(.2, .8, .2, 1));
+}
+.photo-tablist { display: flex; gap: 8px; width: 56%; }
+
+/* same look as the nav buttons (css/nav.css): Space Mono 12px, 6px radius,
+   #d2d2d2 on hover — white at rest since they sit on the dark page, not in
+   the nav's white box */
+.photo-tab,
+.photo-close {
+  font: 400 12px/1 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #000;
+  background: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 4px;
+  transition: background .2s ease, color .2s ease;
+  cursor: pointer !important;   /* main.css hides the cursor on buttons */
+}
+.photo-tab { flex: 1; }
+.photo-close { flex: 0 0 34px; font-size: 18px; }
+.photo-tab:hover,
+.photo-close:hover { background: #d2d2d2; }
+.photo-tab:focus-visible,
+.photo-close:focus-visible { outline: 2px solid #9fb3f5; outline-offset: 2px; }
+
+/* selected: the nav's black "current page" state plus a hairline white stroke inside */
+.photo-tab[aria-selected="true"],
+.photo-tab[aria-selected="true"]:hover {
+  background: #000;
+  color: #fff;
+  box-shadow: inset 0 0 0 .5px #fff;
+}
+
+/* ---------- the two panes: Being (portrait + links + bio) / Doing (list) ---------- */
+.photo.open[data-tab="doing"] .img,
+.photo.open[data-tab="doing"] .links,
+.photo.open[data-tab="doing"] .bio {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .15s, visibility 0s .15s, width .5s var(--home-ease), height .5s var(--home-ease);
+}
+
+.doing {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 16px;
+  bottom: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;   /* rows spread over the one-tile-tall card */
+  font: 400 12px/1.3 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .15s, visibility 0s .15s;
+}
+.photo.open[data-tab="doing"] .doing {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .3s .3s, visibility 0s .3s;
+}
+.doing li { display: flex; align-items: center; }
+.doing i {
+  flex: 1;                     /* dots run from each label to the card's right edge */
+  min-width: 0;
+  height: 4px;
+  margin-left: 8px;
+  background: radial-gradient(circle, currentColor 1px, transparent 1.4px) 0 50% / 7px 4px repeat-x;
+}
+@media (max-width: 768px) {
+  .doing { left: 16px; right: 16px; top: 12px; bottom: 12px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-tabs, .photo-tabs.open, .doing, .photo.open[data-tab="doing"] .doing,
+  .photo.open[data-tab="doing"] .img, .photo.open[data-tab="doing"] .links,
+  .photo.open[data-tab="doing"] .bio { transition: none; }
+}
+
+/* ---------- scroll frames (index.html + js/home-frames.js) ----------
+   Text that appears in the cells whose tiles have flipped away. Blocks are
+   positioned by js/home-scales.js; .on = open in the current frame. */
+.frame-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.frame-block {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.frame-block.on {
+  opacity: 1;
+  transform: none;
+  /* wait for the tiles over it to flip away */
+  transition: opacity .6s ease .65s, transform .6s var(--home-ease, cubic-bezier(.2, .8, .2, 1)) .65s;
+}
+.frame-layer.snap .frame-block { transition: none; }
+
+.fr-small {
+  padding: 0 16px;
+  font: 400 14px/1.35 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #cfcfcf;
+}
+.fr-right { justify-content: flex-end; text-align: right; }
+
+/* the portrait fills its cell like a tile: same size, same corner radius
+   (the tiles' radius is 0.11 × their short side — PEARL.radius in js/home-scales.js) */
+.fr-photo { container-type: size; }
+.fr-photo__img {
+  width: 100%;
+  height: 100%;
+  border-radius: 11cqmin;
+  filter: grayscale(1);
+  background: url("../../images/Mahshid.png") 50% 30% / cover no-repeat;
+}
+
+/* two lines, the second stepped in, centred in the cell like a tile would be.
+   Sized to the cell (cqw) so "Mahmoudian" always fits inside it; same weight
+   and colour as the other frame text. */
+.fr-name {
+  container-type: size;
+  display: grid;
+  place-content: center;     /* the two-line group sits in the middle of the cell… */
+  justify-items: start;      /* …with its lines left-aligned inside it */
+  white-space: nowrap;
+  color: #cfcfcf;
+}
+.fr-name span { font: 400 min(13cqw, 24px)/1.3 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+.fr-name span + span { padding-left: .8em; }
+
+.fr-para {
+  container-type: size;   /* the paragraph sizes itself to this block (cqw / cqh) */
+}
+.fr-para p {
+  /* dim text with a soft circle of light around the cursor: the gradient is
+     clipped to the glyphs; js/home-scales.js eases --lx/--ly (cursor, px in
+     the paragraph) and --lr (light radius, 0 when the cursor is away) */
+  --lx: 0px;
+  --ly: 0px;
+  --lr: 0px;
+  /* lines are broken by hand (js/home-frames.js), so the block is as wide as
+     its longest line and centred in the dark area, with room all around */
+  width: max-content;
+  margin: auto;
+  white-space: nowrap;
+  /* sized to the dark area: by width, capped by its height */
+  font: 400 max(16px, min(3.2cqw, 8cqh))/1.22 'Geist', 'Space Grotesk', sans-serif;
+  color: #626262;
+  background: radial-gradient(circle var(--lr) at var(--lx) var(--ly), #f2f2f2 0%, #d8d8d8 30%, #626262 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fr-para__first { display: block; text-align: right; }
+
+.fr-line {
+  justify-content: center;
+  text-align: center;
+  padding: 0 12px;
+  font: 400 clamp(15px, 1.4vw, 20px)/1.3 'Geist', 'Space Grotesk', sans-serif;
+  color: #f4f4f4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame-block, .frame-block.on { transition: opacity .2s; transform: none; }
+}
+
+/* ---------- flying images (frames with `fly` in js/home-frames.js) ----------
+   Positioned + scaled from the scroll position by js/home-scales.js. */
+.fly-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;            /* over the tiles and the frame text, under the nav */
+  overflow: hidden;
+  pointer-events: none;
+}
+.fly {
+  position: absolute;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+  display: none;
+  will-change: transform;
+}
+
+/* ---------- ending: Work + Contact (index.html .outro) ----------
+   Fixed over the page; js/home-scales.js sets --p (0 → 1) on each
+   [data-outro] element from the scroll, so it fades + rises in place.
+   Two rows on one grid: a text column, then the cards / contact links. */
+.outro {
+  --outro-side: 20.2vw;   /* where the cards + links start */
+  --outro-edge: 32px;     /* = the nav's side margin, so the text + cards line up with the white nav boxes */
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  color: #f4f4f4;
+  font-family: 'Geist', 'Space Grotesk', sans-serif;
+}
+.outro.is-live a { pointer-events: auto; }
+.outro [data-outro] {
+  --p: 0;
+  opacity: var(--p);
+  translate: 0 calc((1 - var(--p)) * 90px);
+}
+
+.outro-row {
+  position: absolute;
+  left: var(--outro-edge);
+  right: var(--outro-edge);
+  display: grid;
+  grid-template-columns: calc(var(--outro-side) - var(--outro-edge)) 1fr;
+  align-items: start;
+}
+.outro-work { top: 23vh; }
+.outro-work .outro-side { padding-top: 20px; }
+.outro-contact { top: 74.5vh; }
+
+.outro-title {
+  margin: 0 0 8px;
+  font: 400 34px/1.1 'Geist', 'Space Grotesk', sans-serif;
+  letter-spacing: -.01em;
+  color: #fff;
+}
+.outro-copy {
+  margin: 0;
+  max-width: 230px;
+  font-size: 17px;
+  line-height: 1.3;
+  opacity: .8;
+}
+.outro-work .outro-copy { max-width: none; }
+
+/* same look as the nav buttons (css/nav.css): Space Mono 11px on white */
+.outro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 34px;
+  padding: 0 20px;
+  height: 28px;
+  background: #fff;
+  border-radius: 6px;   /* = the nav buttons */
+  font: 400 11px/1 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #000;
+  text-decoration: none;
+  transition: background .2s ease;
+  cursor: pointer !important;   /* main.css hides the cursor on links */
+}
+.outro-btn:hover { background: #d2d2d2; }
+
+.outro-links {
+  display: flex;
+  gap: 26px;
+  padding-top: 45px;   /* lines up with the contact copy */
+  font-size: 17px;
+}
+.outro-links a {
+  color: #f4f4f4;
+  text-decoration: none;
+  cursor: pointer !important;
+}
+.outro-links a:hover { color: #9a9a9a; }
+
+/* three cards in a row; hover shows name + role above */
+.outro-cards {
+  display: grid;
+  grid-template-columns: .91fr 1fr 1fr;
+  gap: 16px;
+}
+.outro-card {
+  position: relative;
+  display: block;
+  color: #f4f4f4;
+  text-decoration: none;
+  cursor: pointer !important;
+}
+.outro-card:focus-visible { outline: 2px solid #9fb3f5; outline-offset: 3px; }
+.outro-card__media {
+  display: block;
+  width: 100%;
+  height: 40.5vh;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #222;
+}
+.outro-card__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  font-size: 14px;     /* = the nav name badge */
+  white-space: nowrap;
+  opacity: 0;
+  translate: 0 6px;
+  transition: opacity .25s ease, translate .25s ease;
+}
+.outro-card:hover .outro-card__label,
+.outro-card:focus-visible .outro-card__label { opacity: 1; translate: 0 0; }
+
+/* the © line (css/nav.css .site-footer), pinned to the bottom of the last screen */
+.outro-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-left: var(--outro-edge);
+  padding-right: var(--outro-edge);
+  pointer-events: none;
+}
+
+/* the mute button is for the tiles — gone once they are */
+.sound-toggle { transition: opacity .3s ease, visibility 0s; }
+body.outro-live .sound-toggle {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility 0s .3s;
+}
+
+@media (max-width: 820px) {
+  .outro-row { display: block; left: 16px; right: 16px; }
+  .outro-work { top: 12vh; }
+  .outro-work .outro-side { padding: 0 0 24px; }
+  .outro-btn { margin-top: 16px; }
+  .outro-cards { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .outro-card__media { height: 22vh; }
+  .outro-card__label { display: none; }
+  .outro-contact { top: auto; bottom: 12vh; }
+  .outro-links { padding-top: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .outro [data-outro] { translate: none; }
+}
+
+/* ---------- home page (body.home-scroll): Geist everywhere ----------
+   Overrides every font on the page (nav, name badge, buttons, frame text) —
+   the shared sheets set Space Mono / Space Grotesk on many elements,
+   some with !important, hence the blanket rule. */
+body.home-scroll,
+body.home-scroll * {
+  font-family: 'Geist', 'Space Grotesk', sans-serif !important;
+}
+
+/* ---------- text roll on buttons (js/text-roll.js) ----------
+   Each letter is a tiny window; on hover its text slides up and an identical
+   copy rolls in from below, staggered letter by letter. */
+.roll { display: inline-flex; white-space: pre; }
+.roll__ch {
+  display: inline-block;
+  height: 1.25em;
+  line-height: 1.25em;
+  overflow: hidden;
+  vertical-align: top;
+}
+.roll__in {
+  display: flex;
+  flex-direction: column;
+  transition: transform .45s cubic-bezier(.65, 0, .35, 1);
+  transition-delay: calc(var(--i) * 22ms);
+}
+.has-roll:hover .roll__in,
+.has-roll:focus-visible .roll__in {
+  transform: translateY(-50%);   /* = one letter up: the copy below takes its place */
+}
+@media (prefers-reduced-motion: reduce) {
+  .roll__in { transition: none; }
+  .has-roll:hover .roll__in, .has-roll:focus-visible .roll__in { transform: none; }
 }

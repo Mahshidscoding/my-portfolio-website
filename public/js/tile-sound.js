@@ -104,6 +104,7 @@
   }
 
   window.tileSound = {
+    isMuted() { return muted; },
     hover(i) {
       if (!muted && click && click.running) click.strike(freqOf(i % NOTE_COUNT));
     }
