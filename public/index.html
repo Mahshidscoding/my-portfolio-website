@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Geist:wght@100..900&display=block" rel="stylesheet">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- CSS -->
@@ -54,6 +54,11 @@
         el.appendChild(h1);
         el.appendChild(cursor);
         document.body.appendChild(el);
+        // centre the title on the screen, re-measured if reserved scrollbar space
+        // appears once the page parses (css/page-transition.css .pt-title)
+        var centre = function () { el.style.setProperty('--pt-shift', (innerWidth - el.getBoundingClientRect().width) / 2 + 'px'); };
+        centre();
+        if (window.ResizeObserver) new ResizeObserver(centre).observe(el);
       } catch (e) { /* sessionStorage unavailable — normal load proceeds */ }
     })();
     </script>

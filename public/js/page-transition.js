@@ -108,6 +108,19 @@
 
   var titleEl = overlay.querySelector('.pt-title');
 
+  // Centre the title on the screen, not the overlay: the overlay is narrower
+  // by any reserved scrollbar space, which only some pages have (see
+  // .pt-title in css/page-transition.css). Same calculation as the inline
+  // early-paint script at the top of each page's <body>.
+  function centreTitle() {
+    overlay.style.setProperty('--pt-shift', (window.innerWidth - overlay.getBoundingClientRect().width) / 2 + 'px');
+  }
+  centreTitle();
+  window.addEventListener('resize', centreTitle);
+  // the overlay's width also changes when a page's reserved scrollbar space
+  // appears; ResizeObserver catches that before the next paint
+  if (window.ResizeObserver) new ResizeObserver(centreTitle).observe(overlay);
+
   /* ----------------------------------------------------------------------
    * Title / route helpers
    * -------------------------------------------------------------------- */
