@@ -151,6 +151,16 @@
         <img class="sound-toggle__off" src="images/icons/volume-x.svg" alt="" width="26" height="26" hidden>
     </button>
 
+    <!-- scroll hint: a tiny mouse in the strip under the tiles, first frame only
+         (body.at-start, set by js/home-scales.js); phones show just the arrow -->
+    <div class="scroll-hint" aria-hidden="true">
+        <svg viewBox="0 0 24 40" width="15" height="25">
+            <rect class="scroll-hint__mouse" x="5" y="1.5" width="14" height="22" rx="7" fill="none" stroke="currentColor" stroke-width="1.9"/>
+            <line class="scroll-hint__wheel" x1="12" y1="6.5" x2="12" y2="10" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+            <polyline class="scroll-hint__chev" points="8,30 12,33.5 16,30" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
     <script src="js/text-roll.js"></script>
     <script src="js/site.js"></script>
     <script src="js/page-transition.js"></script>

@@ -633,3 +633,44 @@ body.home-page { touch-action: none; }
 @media (max-width: 700px) and (orientation: portrait) {
   .frame-block.on { transition-delay: .3s; }
 }
+
+/* ---------- scroll hint: tiny mouse, bottom centre, first frame only ----------
+   Sits in the grid's bottom margin (32px; 16px on phones) so it never covers
+   a tile. body.at-start is set by js/home-scales.js while on frame 1. */
+.scroll-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 3px;
+  translate: -50% 0;
+  z-index: 4;
+  color: #fff;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+body.at-start .scroll-hint {
+  opacity: 1;
+  transition: opacity .8s ease 1s;   /* comes in a beat after the page */
+}
+.scroll-hint svg { display: block; }
+.scroll-hint__wheel { animation: hint-wheel 1.8s ease-in-out infinite; }
+.scroll-hint__chev  { animation: hint-chev 1.8s ease-in-out infinite; }
+@keyframes hint-wheel {
+  0%   { transform: translateY(0);   opacity: 1; }
+  60%  { transform: translateY(5px); opacity: 0; }
+  100% { transform: translateY(0);   opacity: 0; }
+}
+@keyframes hint-chev {
+  0%, 100% { transform: translateY(0);   opacity: .7; }
+  50%      { transform: translateY(2px); opacity: 1; }
+}
+/* touch screens: no mouse — just the arrow */
+@media (pointer: coarse) {
+  .scroll-hint { bottom: 2px; }
+  .scroll-hint svg { width: 30px; height: 50px; }   /* the arrow alone, big enough to see */
+  .scroll-hint__mouse,
+  .scroll-hint__wheel { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint__wheel, .scroll-hint__chev { animation: none; }
+}

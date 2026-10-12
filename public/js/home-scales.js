@@ -482,6 +482,7 @@ void main() {
     frameLayer.classList.toggle('snap', snap);
     for (const [id, el] of Object.entries(blockEls)) el.classList.toggle('on', ids.includes(id));
     if (snap) frameLayer.offsetWidth;   // apply without transition, then let later steps animate
+    document.body.classList.toggle('at-start', frameIdx === 0);   // shows the scroll hint
     kick();
   }
 
