@@ -653,18 +653,44 @@ body.home-page { touch-action: none; }
   .fr-small { padding: 0 6px; font-size: 12px; line-height: 1.35; }
   .fr-line { font-size: 15px; padding: 0 8px; }
   .outro { --outro-edge: 16px; }
-  /* no hover on a phone: show each project's name under its card instead */
-  .outro-card { display: flex; flex-direction: column-reverse; }
-  .outro-card__media { height: 26vh; }
+  /* the cards: a sideways-swiping row, the next card peeking in at the edge
+     (js/home-scales.js leaves sideways swipes here to the row) */
+  .outro.is-live .outro-cards { pointer-events: auto; }
+  .outro-cards {
+    display: flex;
+    gap: 12px;
+    margin: 0 -16px;
+    padding: 0 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 16px;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    scrollbar-width: none;
+  }
+  .outro-cards::-webkit-scrollbar { display: none; }
+  /* no hover on a phone: name + role under each card instead */
+  .outro-card {
+    flex: 0 0 82%;
+    display: flex;
+    flex-direction: column-reverse;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;   /* one card per swipe */
+  }
+  .outro-card__media { aspect-ratio: 5 / 4; height: auto; }
   .outro-card__label {
     position: static;
     display: block;
-    padding: 8px 0 0;
-    font-size: 12px;
-    opacity: .8;
+    padding: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.35;
+    white-space: normal;
+    opacity: 1;
     translate: none;
   }
-  .outro-card__label span + span { display: none; }   /* name only; the role is too long here */
+  .outro-card__label span { display: block; }
+  .outro-card__label span + span { color: #8f8f8f; }
 }
 
 /* Touch screens: no cursor, so no light on the bio — and drawing it as plain

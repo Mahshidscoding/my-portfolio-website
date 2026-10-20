@@ -650,8 +650,11 @@ void main() {
     }, { passive: true });
 
     // touch: before the scrub stretch, one frame per swipe; inside it, the
-    // picture follows the finger, and a flick glides on and slows to a stop
+    // picture follows the finger, and a flick glides on and slows to a stop.
+    // A swipe that starts on the ending's cards (a sideways row on phones) is
+    // the row's if it goes sideways: then the page ignores it.
     let touchY = null, touchY0 = null, dragged = false, moves = [], glideV = 0, gliding = false;
+    let touchX0 = 0, onCards = false;
     const glide = () => {
       let last = performance.now();
       const step = now => {
@@ -668,10 +671,19 @@ void main() {
     };
     addEventListener('touchstart', e => {
       touchY = touchY0 = e.touches[0].clientY;
+      touchX0 = e.touches[0].clientX;
+      onCards = !!(e.target.closest && e.target.closest('.outro-cards'));
       dragged = false; hold = false; gliding = false; moves = [];
     }, { passive: true });
     addEventListener('touchmove', e => {
-      if (touchY == null || hold || !inScrub()) return;
+      if (touchY == null) return;
+      if (onCards) {   // wait for the first few px to tell which way it's going
+        const dx = e.touches[0].clientX - touchX0, dy = e.touches[0].clientY - touchY0;
+        if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+        onCards = false;
+        if (Math.abs(dx) > Math.abs(dy)) { touchY = touchY0 = null; return; }
+      }
+      if (hold || !inScrub()) return;
       const y = e.touches[0].clientY, now = performance.now();
       touchScrub = true;
       scrubBy((touchY - y) / TOUCH_PX_PER_FRAME, true);
