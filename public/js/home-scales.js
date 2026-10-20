@@ -494,13 +494,13 @@ void main() {
   // and slides out to the left or right until, far wider than the screen,
   // it's gone past the edge. Scroll back and it comes back in.
   const FLY_SPAN = 1.3;       // frames of scroll for one image's trip, centre → off screen
-  const PX_PER_FRAME = 700;   // wheel/trackpad px for one frame of scrubbing
+  const PX_PER_FRAME = 420;   // wheel/trackpad px for one frame of scrubbing
   // speed limit, so a hard flick can't fling you past everything: the scroll
   // may only run SCRUB_LEAD frames ahead of what's on screen (extra wheel input
   // is dropped, not queued) and the page moves at most SCRUB_MAX_SPEED frames a
   // second. Slow scrolling is unaffected; nothing ever stops you.
-  const SCRUB_LEAD = 0.3;
-  const SCRUB_MAX_SPEED = 1.6;
+  const SCRUB_LEAD = 0.6;
+  const SCRUB_MAX_SPEED = 2.4;
   const REWIND_SPEED = 9;     // frames per second when About / the name badge rewinds to the start
   // touch: the page follows the finger directly (no lead cap) and keeps
   // gliding after a flick, slowing down — like native scrolling
