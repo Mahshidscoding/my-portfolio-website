@@ -512,7 +512,7 @@ void main() {
   let rewinding = false, onSettle = null;
   const FLY_W = 0.3;          // image width at scale 1, × window width
   const FLY_END = 3;          // scale at the end of the trip (so ~90% of the window wide)
-  const OUTRO_LEN = 2.4;      // frames of scroll after the last image: grid slides off, Work + Contact rise in
+  const OUTRO_LEN = 3.4;      // frames of scroll after the last image: grid slides off, Work rises in, then slides up for Contact
   const outro = document.querySelector('.outro');
   const outroEls = outro ? [...outro.querySelectorAll('[data-outro]')].map(el => {
     const [a, b] = el.dataset.outro.split(' ').map(Number);
